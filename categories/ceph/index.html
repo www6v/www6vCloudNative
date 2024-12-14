@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/www6vCloudNative/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=www6vCloudNative/livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/www6vCloudNative/categories/ceph/">
+  <meta property="og:site_name" content="Cloud Native">
+  <meta property="og:title" content="Ceph">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+<title>Ceph | Cloud Native</title>
+<link rel="icon" href="/www6vCloudNative/favicon.png" >
+<link rel="manifest" href="/www6vCloudNative/manifest.json">
+<link rel="canonical" href="http://localhost:1313/www6vCloudNative/categories/ceph/">
+<link rel="stylesheet" href="/www6vCloudNative/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
+  <script defer src="/www6vCloudNative/fuse.min.js"></script>
+  <script defer src="/www6vCloudNative/en.search.min.88487f5c85e0fcac35ab03d645c71fb463adc540323a90bc857ae85b847c6bfa.js" integrity="sha256-iEh/XIXg/Kw1qwPWRccftGOtxUAyOpC8hXroW4R8a/o=" crossorigin="anonymous"></script>
+
+  
+
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/www6vCloudNative/categories/ceph/index.xml" title="Cloud Native" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/www6vCloudNative/"><span>Cloud Native</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>编排原理</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sStatefulSet/" class="">Kubernetes StatefulSet原理和源码</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sResouceModel/" class="">Kubenetes资源模型</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/www6vCloudNative/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Ceph</h3>
+
+  <label for="toc-control">
+    
+    <img src="/www6vCloudNative/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav>
+  <ul>
+  
+    
+    <li class="book-section-flat">
+      <strong>Categories</strong>
+      <ul>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/Kubernetes/">Kubernetes</a>
+          <span>38</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>
+          <span>39</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/security/">Security</a>
+          <span>3</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/metric/">Metric</a>
+          <span>2</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/">可观测性</a>
+          <span>3</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/etcd/">Etcd</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/KV/">KV</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/ceph/">Ceph</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/">云计算</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E5%AD%98%E5%82%A8/">存储</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/kernel/">Kernel</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/linux/">Linux</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E5%8F%82%E6%95%B0/">参数</a>
+          <span>1</span>
+        </li>
+      
+      </ul>
+    </li>
+    
+  
+    
+    <li class="book-section-flat">
+      <strong>Tags</strong>
+      <ul>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/Kubernetes/">Kubernetes</a>
+          <span>38</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/prometheus/">Prometheus</a>
+          <span>2</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/etcd/">Etcd</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/">可观测性</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/%E5%AD%98%E5%82%A8/">存储</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/linux/">Linux</a>
+          <span>1</span>
+        </li>
+      
+      </ul>
+    </li>
+    
+  
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/www6vCloudNative/ref/cloudNative/ceph/">Ceph 总结</a>
+    </h2>
+    
+  <div class="flex align-center text-small book-post-date">
+    <img src="/www6vCloudNative/svg/calendar.svg" class="book-icon " alt="" />
+    <span>January 8, 2022</span>
+  </div>
+
+
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/">云计算</a>, 
+      <a href="/www6vCloudNative/categories/%E5%AD%98%E5%82%A8/">存储</a>, 
+      <a href="/www6vCloudNative/categories/ceph/">Ceph</a>
+  </div>
+  
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/tags/%E5%AD%98%E5%82%A8/">存储</a>
+  </div>
+  
+
+
+    <p>目录 # Ceph架构图 # 架构[2] # 基础存储系统
+rados:基础存现系统RADOS(Reliable,Autonomic,Distribuuted object store，既可靠的、自动化的、分布式的对象存储).所有存储在Ceph系统中的用户数据事实上最终都是由这一层来存储的。Ceph的高可靠、高可扩展、高性能、高自动化等等特性本质上也是由这一层所提供的。 RADOS -
+RADOS全称Reliable Autonomic Distrubuted object Store,是Ceph集群的精华，用户实现数据分配，Failover等集群操作 基础库librados:
+librodos:这一层的功能是对RADOS进行抽象和封装，并向上层提供API，以便直接基于RADOS进行应用开发。特别要注意的是，RADOS是一个对象存储系统，因此，librodos实现的API也只是针对对象存储功能的。 Libradio - Librados是RODOS提供库，因为RADOS是协议很难直接访问，因此上层的RBD、RGW和CephFS都是通过librados访问的，目前提供PHP、Ruby、Java、Python、C和C++支持。 高层应用接口
+radosgw:对象网关接口 rbd:块存储 cephfs：文件系统存储，其作用是在librodos库的基础上提供抽象层次更高、更便于应用或客户端使用的上层接口。 RBD -
+RBD全称RADOS Block Device，是ceph对外提供服务的块设备服务。 RGW -
+RGW全称RADOS gateway,是ceph对外提供的对象存储服务，接口与S3和Swift兼容 CephFS -
+CephFS全称Ceph File System，是ceph对外提供的文件系统服务。 Ceph主要有三个基本进程[2][5] # osd:
+用于集群中所有数据与对象的存储。处理集群数据的复制、恢复、回填、再负载。并向其他osd守护进程发送心跳，然后向Mon提供一些监控信息。
+当Ceph存储集群设定数据有两个副本时，则至少需要两个OSD守护进程即OSD节点，集群才能达到active+clean状态。
+MDS(可选)
+为Ceph文件系统提供元数据计算、缓存与同步(也就是说，ceph块设备和ceph对象存储不使用MDS)。在ceph中，元数据也是存储在osd节点中的，mds类似于元数据的代理缓存服务器。MDS进程并不是必须的进程，只有需要使用CEPHFS时，才需要配置MDS节点。
+Monitor
+监控整个集群的状态，维护集群的cluster MA二进制表，保证集群数据的一致性。ClusterMAP描述了对象存储的物理位置，以及一个将设备聚合到物理位置的桶列表。
+Manager(ceph-mgr)
+用于收集ceph集群状态，运行指标，比如存储利用率、当前性能指标和系统负载。对外提供ceph dashboard(ceph-ui)和resetful api,manger组件开启高可用时，至少2个
+MDS -
+MDS全称Ceph Metadata Server，是CephFS服务依赖的元数据服务
+Monitor -
+监控整个集群的状态，维护集群的cluster MA二进制表，保证集群数据的一致性
+OSD -
+OSD全程Object storage Device,也就是负责响应客户端请求返回具体数据的进程。一个Ceph集群一般都有很多个OSD
+rbd: 不需要部署独立的守护进程 Cephfs 需要部署独立的守护进程 MDS 对象存储 需要部署独立的守护进程 radosgw 生产环境
+        <a href="/www6vCloudNative/ref/cloudNative/ceph/">...</a>
+      
+    </p>
+  </article>
+  
+
+  
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  <nav>
+  <ul>
+  
+    
+    <li class="book-section-flat">
+      <strong>Categories</strong>
+      <ul>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/Kubernetes/">Kubernetes</a>
+          <span>38</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>
+          <span>39</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/security/">Security</a>
+          <span>3</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/metric/">Metric</a>
+          <span>2</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/">可观测性</a>
+          <span>3</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/etcd/">Etcd</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/KV/">KV</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/ceph/">Ceph</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/">云计算</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E5%AD%98%E5%82%A8/">存储</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/kernel/">Kernel</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/linux/">Linux</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E5%8F%82%E6%95%B0/">参数</a>
+          <span>1</span>
+        </li>
+      
+      </ul>
+    </li>
+    
+  
+    
+    <li class="book-section-flat">
+      <strong>Tags</strong>
+      <ul>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/Kubernetes/">Kubernetes</a>
+          <span>38</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/prometheus/">Prometheus</a>
+          <span>2</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/etcd/">Etcd</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/">可观测性</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/%E5%AD%98%E5%82%A8/">存储</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/linux/">Linux</a>
+          <span>1</span>
+        </li>
+      
+      </ul>
+    </li>
+    
+  
+  </ul>
+</nav>
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/www6vCloudNative/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=www6vCloudNative/livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="MutatingAdmissionWebhook 是如何工作的[1][chat] # MutatingAdmissionWebhook拦截与MutatingWebhookConfiguration中定义的规则匹配的请求，然后将其发送到Webhook服务器进行处理，然后再持久化到etcd 中。 MutatingAdmissionWebhook通过向Webhook服务器发送admission请求来执行变更。Webhook服务器只是遵循Kubernetes的API 的普通HTTP服务器。
+以下图示了MutatingAdmissionWebhook的工作原理:
+MutatingAdmissionWebhook需要三个对象才能正常工作:
+MutatingWebhookConfiguration
+MutatingAdmissionWebhook需要在apiserver中注册，提供MutatingWebhookConfiguration。在注册过程中，MutatingAdmissionWebhook说明以下内容:
+如何连接到Webhook Admission服务器 如何验证Webhook Admission服务器 Webhook Admission服务器的URL路径 定义了哪些资源和操作它处理的规则 如何处理来自Webhook Admission服务器的无法识别的错误 apiVersion: admissionregistration.k8s.io/v1beta1kind: MutatingWebhookConfigurationmetadata:name: sidecar-injector-webhook-cfglabels:app: sidecar-injectorwebhooks:- name: sidecar-injector.morven.meclientConfig:service:name: sidecar-injector-webhook-svc #2namespace: defaultpath: &#34;/mutate&#34;caBundle: ${CA_BUNDLE}rules:- operations: [ &#34;CREATE&#34; ]apiGroups: [&#34;&#34;]apiVersions: [&#34;v1&#34;]resources: [&#34;pods&#34;]namespaceSelector:matchLabels:sidecar-injector: enabled MutatingAdmissionWebhook本身
+MutatingAdmissionWebhook是一种插件式的Admission控制器，可以配置到apiserver中。MutatingAdmissionWebhook插件从MutatingWebhookConfiguration中获取感兴趣的Admission Webhooks列表。然后，MutatingAdmissionWebhook观察到对apiserver的请求，并拦截与admission webhook规则匹配的请求，并并行地调用它们。
+Webhook Admission Server
+Webhook Admission服务器只是一个符合Kubernetes API的普通HTTP服务器。对于每个API server的请求，MutatingAdmissionWebhook将admissionReview（用于参考的API）发送到相关的webhook admission服务器。webhook admission服务器会从admissionReview中收集信息，如object，oldobject和userInfo，然后返回一个admissionReview响应，其中包括填充了admission决策和可选的Patch以改变资源的AdmissionResponse。">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sAdmissionWebhook/">
+  <meta property="og:site_name" content="Cloud Native">
+  <meta property="og:title" content="K8s  AdmissionWebhook">
+  <meta property="og:description" content="MutatingAdmissionWebhook 是如何工作的[1][chat] # MutatingAdmissionWebhook拦截与MutatingWebhookConfiguration中定义的规则匹配的请求，然后将其发送到Webhook服务器进行处理，然后再持久化到etcd 中。 MutatingAdmissionWebhook通过向Webhook服务器发送admission请求来执行变更。Webhook服务器只是遵循Kubernetes的API 的普通HTTP服务器。
+以下图示了MutatingAdmissionWebhook的工作原理:
+MutatingAdmissionWebhook需要三个对象才能正常工作:
+MutatingWebhookConfiguration
+MutatingAdmissionWebhook需要在apiserver中注册，提供MutatingWebhookConfiguration。在注册过程中，MutatingAdmissionWebhook说明以下内容:
+如何连接到Webhook Admission服务器 如何验证Webhook Admission服务器 Webhook Admission服务器的URL路径 定义了哪些资源和操作它处理的规则 如何处理来自Webhook Admission服务器的无法识别的错误 apiVersion: admissionregistration.k8s.io/v1beta1kind: MutatingWebhookConfigurationmetadata:name: sidecar-injector-webhook-cfglabels:app: sidecar-injectorwebhooks:- name: sidecar-injector.morven.meclientConfig:service:name: sidecar-injector-webhook-svc #2namespace: defaultpath: &#34;/mutate&#34;caBundle: ${CA_BUNDLE}rules:- operations: [ &#34;CREATE&#34; ]apiGroups: [&#34;&#34;]apiVersions: [&#34;v1&#34;]resources: [&#34;pods&#34;]namespaceSelector:matchLabels:sidecar-injector: enabled MutatingAdmissionWebhook本身
+MutatingAdmissionWebhook是一种插件式的Admission控制器，可以配置到apiserver中。MutatingAdmissionWebhook插件从MutatingWebhookConfiguration中获取感兴趣的Admission Webhooks列表。然后，MutatingAdmissionWebhook观察到对apiserver的请求，并拦截与admission webhook规则匹配的请求，并并行地调用它们。
+Webhook Admission Server
+Webhook Admission服务器只是一个符合Kubernetes API的普通HTTP服务器。对于每个API server的请求，MutatingAdmissionWebhook将admissionReview（用于参考的API）发送到相关的webhook admission服务器。webhook admission服务器会从admissionReview中收集信息，如object，oldobject和userInfo，然后返回一个admissionReview响应，其中包括填充了admission决策和可选的Patch以改变资源的AdmissionResponse。">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="ref">
+    <meta property="article:published_time" content="2023-10-16T16:07:04+00:00">
+    <meta property="article:modified_time" content="2023-10-16T16:07:04+00:00">
+    <meta property="article:tag" content="Kubernetes">
+<title>K8s  AdmissionWebhook | Cloud Native</title>
+<link rel="icon" href="/www6vCloudNative/favicon.png" >
+<link rel="manifest" href="/www6vCloudNative/manifest.json">
+<link rel="canonical" href="http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sAdmissionWebhook/">
+<link rel="stylesheet" href="/www6vCloudNative/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
+  <script defer src="/www6vCloudNative/fuse.min.js"></script>
+  <script defer src="/www6vCloudNative/en.search.min.88487f5c85e0fcac35ab03d645c71fb463adc540323a90bc857ae85b847c6bfa.js" integrity="sha256-iEh/XIXg/Kw1qwPWRccftGOtxUAyOpC8hXroW4R8a/o=" crossorigin="anonymous"></script>
+
+  
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/www6vCloudNative/"><span>Cloud Native</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>编排原理</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sStatefulSet/" class="">Kubernetes StatefulSet原理和源码</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sResouceModel/" class="">Kubenetes资源模型</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/www6vCloudNative/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>K8s  AdmissionWebhook</h3>
+
+  <label for="toc-control">
+    
+    <img src="/www6vCloudNative/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#mutatingadmissionwebhook-是如何工作的1chat">MutatingAdmissionWebhook 是如何工作的[1][chat]</a>
+          <ul>
+            <li><a href="#服务部署">服务部署</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p></p>
+<!-- more -->
+<h2 id="mutatingadmissionwebhook-是如何工作的1chat">
+  MutatingAdmissionWebhook 是如何工作的[1][chat]
+  <a class="anchor" href="#mutatingadmissionwebhook-%e6%98%af%e5%a6%82%e4%bd%95%e5%b7%a5%e4%bd%9c%e7%9a%841chat">#</a>
+</h2>
+<p><code>MutatingAdmissionWebhook</code>拦截与<code>MutatingWebhookConfiguration</code>中定义的规则匹配的请求，然后将其发送到Webhook服务器进行处理，然后再持久化到<a href="https://github.com/coreos/etcd">etcd</a> 中。 <code>MutatingAdmissionWebhook</code>通过向Webhook服务器发送admission请求来执行变更。Webhook服务器只是遵循<a href="https://github.com/kubernetes/kubernetes/blob/v1.9.0/pkg/apis/admission/types.go">Kubernetes的API</a>  的普通HTTP服务器。</p>
+<p>以下图示了<code>MutatingAdmissionWebhook</code>的工作原理:</p>
+<p><img src=".%5ck8sAdmissionWebhook%5cadmissionWebhook.jpg" alt="admissionWebhook" /></p>
+<p><code>MutatingAdmissionWebhook</code>需要三个对象才能正常工作:</p>
+<ol>
+<li>
+<p><strong>MutatingWebhookConfiguration</strong></p>
+<p><code>MutatingAdmissionWebhook</code>需要在<code>apiserver</code>中注册，提供<code>MutatingWebhookConfiguration</code>。在注册过程中，MutatingAdmissionWebhook说明以下内容:</p>
+<ul>
+<li>如何连接到Webhook Admission服务器</li>
+<li>如何验证Webhook Admission服务器</li>
+<li>Webhook Admission服务器的URL路径</li>
+<li>定义了哪些资源和操作它处理的规则</li>
+<li>如何处理来自Webhook Admission服务器的无法识别的错误</li>
+</ul>
+</li>
+</ol>
+<pre tabindex="0"><code>apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: sidecar-injector-webhook-cfg
+  labels:
+    app: sidecar-injector
+webhooks:
+  - name: sidecar-injector.morven.me
+    clientConfig:
+      service:
+        name: sidecar-injector-webhook-svc   #2
+        namespace: default
+        path: &#34;/mutate&#34;
+      caBundle: ${CA_BUNDLE}
+    rules:
+      - operations: [ &#34;CREATE&#34; ]
+        apiGroups: [&#34;&#34;]
+        apiVersions: [&#34;v1&#34;]
+        resources: [&#34;pods&#34;]
+    namespaceSelector:
+      matchLabels:
+        sidecar-injector: enabled
+</code></pre><ol start="2">
+<li>
+<p><strong>MutatingAdmissionWebhook本身</strong></p>
+<p><code>MutatingAdmissionWebhook</code>是一种插件式的Admission控制器，可以配置到<code>apiserver</code>中。<code>MutatingAdmissionWebhook</code>插件从<code>MutatingWebhookConfiguration</code>中获取感兴趣的Admission Webhooks列表。然后，<code>MutatingAdmissionWebhook</code>观察到对apiserver的请求，并拦截与admission webhook规则匹配的请求，并并行地调用它们。</p>
+</li>
+<li>
+<p><strong>Webhook Admission Server</strong></p>
+<p><code>Webhook Admission服务器</code>只是一个符合Kubernetes <a href="https://github.com/kubernetes/kubernetes/blob/v1.9.0/pkg/apis/admission/types.go">API</a>的普通HTTP服务器。对于每个API server的请求，<code>MutatingAdmissionWebhook</code>将admissionReview（用于参考的<a href="https://github.com/kubernetes/kubernetes/blob/v1.9.0/pkg/apis/admission/types.go">API</a>）发送到相关的webhook admission服务器。webhook admission服务器会从admissionReview中收集信息，如<code>object</code>，<code>oldobject</code>和<code>userInfo</code>，然后返回一个admissionReview响应，其中包括填充了admission决策和可选的<code>Patch</code>以改变资源的AdmissionResponse。</p>
+</li>
+</ol>
+<h3 id="服务部署">
+  服务部署
+  <a class="anchor" href="#%e6%9c%8d%e5%8a%a1%e9%83%a8%e7%bd%b2">#</a>
+</h3>
+<pre tabindex="0"><code>apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sidecar-injector-webhook-deployment
+  labels:
+    app: sidecar-injector
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sidecar-injector
+    spec:
+      containers:
+        - name: sidecar-injector
+          image: morvencao/sidecar-injector:v1
+          imagePullPolicy: IfNotPresent
+          args:
+            - -sidecarCfgFile=/etc/webhook/config/sidecarconfig.yaml  #1
+            - -tlsCertFile=/etc/webhook/certs/cert.pem
+            - -tlsKeyFile=/etc/webhook/certs/key.pem
+            - -alsologtostderr
+            - -v=4
+            - 2&gt;&amp;1
+          volumeMounts:
+            - name: webhook-certs
+              mountPath: /etc/webhook/certs
+              readOnly: true
+            - name: webhook-config
+              mountPath: /etc/webhook/config
+      volumes:
+        - name: webhook-certs
+          secret:
+            secretName: sidecar-injector-webhook-certs
+        - name: webhook-config
+          configMap:
+            name: sidecar-injector-webhook-configmap
+</code></pre><pre tabindex="0"><code class="language-#1" data-lang="#1">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sidecar-injector-webhook-configmap
+data:
+  sidecarconfig.yaml: |
+    containers:
+      - name: sidecar-nginx
+        image: nginx:1.12.2
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 80
+        volumeMounts:
+          - name: nginx-conf
+            mountPath: /etc/nginx
+    volumes:
+      - name: nginx-conf
+        configMap:
+          name: nginx-configmap
+</code></pre><pre tabindex="0"><code>apiVersion: v1
+kind: Service
+metadata:
+  name: sidecar-injector-webhook-svc  #2
+  labels:
+    app: sidecar-injector
+spec:
+  ports:
+  - port: 443
+    targetPort: 443
+  selector:
+    app: sidecar-injector
+</code></pre><h1 id="参考">
+  参考
+  <a class="anchor" href="#%e5%8f%82%e8%80%83">#</a>
+</h1>
+<ol>
+<li><a href="https://medium.com/ibm-cloud/diving-into-kubernetes-mutatingadmissionwebhook-6ef3c5695f74">Diving into Kubernetes MutatingAdmissionWebhook</a>
+<a href="https://github.com/www6v/kube-sidecar-injector">kube-sidecar-injector</a>  git</li>
+</ol>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#mutatingadmissionwebhook-是如何工作的1chat">MutatingAdmissionWebhook 是如何工作的[1][chat]</a>
+          <ul>
+            <li><a href="#服务部署">服务部署</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

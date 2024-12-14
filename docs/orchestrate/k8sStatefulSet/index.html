@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/www6vCloudNative/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=www6vCloudNative/livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="源码分析 # 1. StatefulSet资源定义 # 1.1 StatefulSet定义 # staging/src/k8s.io/api/apps/v1beta2/types.gotype StatefulSet struct {metal.TypeMetametal.ObjectMetaSpec StatefulSetspec #1Status StatefulSetStatus #2} 1.2 StatefulSetspec定义 # #1staging/src/k8s.io/api/apps/v1beta2/types.gotype StatefulSetspec struct {/// Pod副本数控制	Replicas *int32/// Pod创建或者删除Selector *metav1.LabelSelectorTemplate v1.PodTemplateSpecVolumeClaimTemplates []v1.PersistentVolumeClaim # 存储状态【2】ServiceName stringPodManagementPolicy PodManagementPolicyType # 2.2节 /// Pod升级和回滚UpdateStrategy StatefulSetUpdateStrategy # 2.4节RevisionHistoryLimit *int32} 1.3 StatefulSetStatus定义 # #2staging/src/k8s.io/api/apps/v1beta2/types.gotype StatefulSetStatus struct {ObservedGeneration *int64Replicas int32 # 所有属于该 StatefulSet的Pod数量ReadyReplicas int32 # 所有属于该 Statefulset的Pod且状态为ready的数量CurrentReplicas int32 # 所有属于该 StatefulSet当前版本的Pod数量(升级完成时会等于UpdatedReplicas)UpdatedReplicas int32 # 所有属于该 StatefulSet升级版本的Pod数量CurrentRevision string # Statefulset当前版本的 set.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/www6vCloudNative/docs/orchestrate/k8sStatefulSet/">
+  <meta property="og:site_name" content="Cloud Native">
+  <meta property="og:title" content="Kubernetes StatefulSet原理和源码">
+  <meta property="og:description" content="源码分析 # 1. StatefulSet资源定义 # 1.1 StatefulSet定义 # staging/src/k8s.io/api/apps/v1beta2/types.gotype StatefulSet struct {metal.TypeMetametal.ObjectMetaSpec StatefulSetspec #1Status StatefulSetStatus #2} 1.2 StatefulSetspec定义 # #1staging/src/k8s.io/api/apps/v1beta2/types.gotype StatefulSetspec struct {/// Pod副本数控制	Replicas *int32/// Pod创建或者删除Selector *metav1.LabelSelectorTemplate v1.PodTemplateSpecVolumeClaimTemplates []v1.PersistentVolumeClaim # 存储状态【2】ServiceName stringPodManagementPolicy PodManagementPolicyType # 2.2节 /// Pod升级和回滚UpdateStrategy StatefulSetUpdateStrategy # 2.4节RevisionHistoryLimit *int32} 1.3 StatefulSetStatus定义 # #2staging/src/k8s.io/api/apps/v1beta2/types.gotype StatefulSetStatus struct {ObservedGeneration *int64Replicas int32 # 所有属于该 StatefulSet的Pod数量ReadyReplicas int32 # 所有属于该 Statefulset的Pod且状态为ready的数量CurrentReplicas int32 # 所有属于该 StatefulSet当前版本的Pod数量(升级完成时会等于UpdatedReplicas)UpdatedReplicas int32 # 所有属于该 StatefulSet升级版本的Pod数量CurrentRevision string # Statefulset当前版本的 set.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+<title>Kubernetes StatefulSet原理和源码 | Cloud Native</title>
+<link rel="icon" href="/www6vCloudNative/favicon.png" >
+<link rel="manifest" href="/www6vCloudNative/manifest.json">
+<link rel="canonical" href="http://localhost:1313/www6vCloudNative/docs/orchestrate/k8sStatefulSet/">
+<link rel="stylesheet" href="/www6vCloudNative/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
+  <script defer src="/www6vCloudNative/fuse.min.js"></script>
+  <script defer src="/www6vCloudNative/en.search.min.88487f5c85e0fcac35ab03d645c71fb463adc540323a90bc857ae85b847c6bfa.js" integrity="sha256-iEh/XIXg/Kw1qwPWRccftGOtxUAyOpC8hXroW4R8a/o=" crossorigin="anonymous"></script>
+
+  
+
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/www6vCloudNative/docs/orchestrate/k8sStatefulSet/index.xml" title="Cloud Native" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/www6vCloudNative/"><span>Cloud Native</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>编排原理</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sStatefulSet/" class="active">Kubernetes StatefulSet原理和源码</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sResouceModel/" class="">Kubenetes资源模型</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/www6vCloudNative/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Kubernetes StatefulSet原理和源码</h3>
+
+  <label for="toc-control">
+    
+    <img src="/www6vCloudNative/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#源码分析">源码分析</a>
+      <ul>
+        <li><a href="#1-statefulset资源定义">1. StatefulSet资源定义</a>
+          <ul>
+            <li><a href="#11-statefulset定义">1.1 StatefulSet定义</a></li>
+            <li><a href="#12-statefulsetspec定义">1.2 StatefulSetspec定义</a></li>
+            <li><a href="#13-statefulsetstatus定义">1.3 StatefulSetStatus定义</a></li>
+            <li><a href="#14-statefulset例子">1.4 StatefulSet例子</a></li>
+          </ul>
+        </li>
+        <li><a href="#2-statefulset-controller详细说明">2. StatefulSet Controller详细说明</a>
+          <ul>
+            <li><a href="#21-pod固定身份标识编号---拓扑状态1">2.1 Pod固定身份标识（编号） -&gt; 拓扑状态【1】</a></li>
+            <li><a href="#22-statefulset-pod创建和删除">2.2 StatefulSet Pod创建和删除</a></li>
+            <li><a href="#23-pod扩缩容">2.3 Pod扩缩容</a></li>
+            <li><a href="#24-pod的升级">2.4 Pod的升级</a></li>
+          </ul>
+        </li>
+        <li><a href="#3-statefulset的控制流程">3. Statefulset的控制流程</a></li>
+      </ul>
+    </li>
+    <li><a href="#draft-here">Draft Here</a>
+      <ul>
+        <li><a href="#参考">参考</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p></p>
+<!-- more -->
+<p><img src="./k8sStatefulSet/statefulSet.jpg" alt="StatefulSet" /></p>
+<h1 id="源码分析">
+  源码分析
+  <a class="anchor" href="#%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90">#</a>
+</h1>
+<h2 id="1-statefulset资源定义">
+  1. StatefulSet资源定义
+  <a class="anchor" href="#1-statefulset%e8%b5%84%e6%ba%90%e5%ae%9a%e4%b9%89">#</a>
+</h2>
+<h3 id="11-statefulset定义">
+  1.1 StatefulSet定义
+  <a class="anchor" href="#11-statefulset%e5%ae%9a%e4%b9%89">#</a>
+</h3>
+<pre tabindex="0"><code>staging/src/k8s.io/api/apps/v1beta2/types.go
+
+type StatefulSet struct {
+  metal.TypeMeta
+  metal.ObjectMeta
+  Spec StatefulSetspec #1
+  Status StatefulSetStatus #2
+}
+</code></pre><h3 id="12-statefulsetspec定义">
+  1.2 StatefulSetspec定义
+  <a class="anchor" href="#12-statefulsetspec%e5%ae%9a%e4%b9%89">#</a>
+</h3>
+<pre tabindex="0"><code>#1
+staging/src/k8s.io/api/apps/v1beta2/types.go
+
+type StatefulSetspec struct {
+  /// Pod副本数控制	
+  Replicas *int32
+
+  /// Pod创建或者删除
+  Selector *metav1.LabelSelector
+  Template v1.PodTemplateSpec
+  VolumeClaimTemplates []v1.PersistentVolumeClaim  # 存储状态【2】
+  ServiceName string
+  PodManagementPolicy PodManagementPolicyType      # 2.2节 
+
+  /// Pod升级和回滚
+  UpdateStrategy StatefulSetUpdateStrategy         # 2.4节
+  RevisionHistoryLimit *int32
+}
+</code></pre><h3 id="13-statefulsetstatus定义">
+  1.3 StatefulSetStatus定义
+  <a class="anchor" href="#13-statefulsetstatus%e5%ae%9a%e4%b9%89">#</a>
+</h3>
+<pre tabindex="0"><code>#2
+staging/src/k8s.io/api/apps/v1beta2/types.go
+
+type StatefulSetStatus struct {
+  ObservedGeneration *int64
+  Replicas int32              # 所有属于该 StatefulSet的Pod数量
+  ReadyReplicas int32         # 所有属于该 Statefulset的Pod且状态为ready的数量
+  CurrentReplicas int32       # 所有属于该 StatefulSet当前版本的Pod数量(升级完成时会等于UpdatedReplicas)
+  UpdatedReplicas int32       # 所有属于该 StatefulSet升级版本的Pod数量
+  CurrentRevision string      # Statefulset当前版本的 set.Name+hash
+  UpdateRevision string       # Stateful|Set升级版本的 set.Name+hash
+  CollisionCount *int32
+  Conditions []StatefulSetCondition
+}
+</code></pre><h3 id="14-statefulset例子">
+  1.4 StatefulSet例子
+  <a class="anchor" href="#14-statefulset%e4%be%8b%e5%ad%90">#</a>
+</h3>
+<pre tabindex="0"><code>apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  ports:
+  - port: 80
+    name: web
+  clusterIP: None
+  selector:
+    app: nginx
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: web
+spec:                    ## 对应StatefulSetspec
+  serviceName: &#34;nginx&#34;
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: k8s.gcr.io/nginx-slim:0.8
+        ports:
+        - containerPort: 80
+          name: web
+        volumeMounts:
+        - name: www
+          mountPath: /usr/share/nginx/html
+  volumeClaimTemplates:       ## 存储状态
+  - metadata:
+      name: www
+    spec:
+      accessModes: [ &#34;ReadWriteOnce&#34; ]
+      resources:
+        requests:
+          storage: 1Gi         
+</code></pre><h2 id="2-statefulset-controller详细说明">
+  2. StatefulSet Controller详细说明
+  <a class="anchor" href="#2-statefulset-controller%e8%af%a6%e7%bb%86%e8%af%b4%e6%98%8e">#</a>
+</h2>
+<p>前提: 应用的各实例启动需要遵循一定的<strong>顺序</strong>， 顺序需要唯一的<strong>标识和编号</strong>.</p>
+<h3 id="21-pod固定身份标识编号---拓扑状态1">
+  2.1 Pod固定身份标识（编号） -&gt; 拓扑状态【1】
+  <a class="anchor" href="#21-pod%e5%9b%ba%e5%ae%9a%e8%ba%ab%e4%bb%bd%e6%a0%87%e8%af%86%e7%bc%96%e5%8f%b7---%e6%8b%93%e6%89%91%e7%8a%b6%e6%80%811">#</a>
+</h3>
+<ul>
+<li>名称维度</li>
+</ul>
+<pre tabindex="0"><code># pkg/controller/statefulset/stateful_set_utils.go
+
+// getPodName gets the name of set&#39;s child Pod with an ordinal index of ordinal
+func getPodName(set *apps.StatefulSet, ordinal int) string {
+	return fmt.Sprintf(&#34;%s-%d&#34;, set.Name, ordinal)
+}
+</code></pre><p>索引号 ordinal={0~ StatefulSetSpec.Replicas - 1}</p>
+<ul>
+<li>网络地址维度</li>
+</ul>
+<p>headless service对应pod的网络地址(完整<strong>域名</strong>)为: <code>&lt;hostname&gt;.&lt;subdomain&gt;.&lt;ns&gt;.svc.cluster.local</code></p>
+<pre tabindex="0"><code># pkg/controller/statefulset/stateful_set_utils.go
+
+func initIdentity(set *apps.StatefulSet, pod *v1.Pod) {
+	updateIdentity(set, pod)
+	// Set these immutable fields only on initial Pod creation, not updates.
+	pod.Spec.Hostname = pod.Name
+	pod.Spec.Subdomain = set.Spec.ServiceName
+}
+</code></pre><p>从名称维度可知，podName是固定的，所以pod的网络地址也是固定的。</p>
+<ul>
+<li>存储维度 -&gt;  存储状态</li>
+</ul>
+<p>Pod的各个 volume是通过PVC来管理的，所以只要 Volume对应的PVC能保持不变，那就可以保证存储不变。那么顺其自然一定会想到，只要PVC的名称也和Pod的索引位置绑定，那问题就解决了。</p>
+<pre tabindex="0"><code># pkg/controller/statefulset/stateful_set_utils.go
+
+// getPersistentVolumeClaimName gets the name of PersistentVolumeClaim for a Pod with an ordinal index of ordinal. claim
+// must be a PersistentVolumeClaim from set&#39;s VolumeClaims template.
+func getPersistentVolumeClaimName(set *apps.StatefulSet, claim *v1.PersistentVolumeClaim, ordinal int) string {
+	// NOTE: This name format is used by the heuristics for zone spreading in ChooseZoneForVolume
+	return fmt.Sprintf(&#34;%s-%s-%d&#34;, claim.Name, set.Name, ordinal)
+}
+</code></pre><p>pod的名字和pvc的名字一一对应。</p>
+<p><strong>总结</strong>: 可以看到3个维度的固定，本质都是依赖Pod的<strong>索引位置</strong>(ordinal)来固定的。</p>
+<h3 id="22-statefulset-pod创建和删除">
+  2.2 StatefulSet Pod创建和删除
+  <a class="anchor" href="#22-statefulset-pod%e5%88%9b%e5%bb%ba%e5%92%8c%e5%88%a0%e9%99%a4">#</a>
+</h3>
+<p>根据<code>StatefulSetSpec.PodManagementPolicy</code>的设置，Pod创建分为<code>OrderedReady</code>和 <code>Parallel</code>两种模式。</p>
+<p><code>OrderedReady模式</code>: 按索引号<code>0 ~ replicas-1</code>的顺序，前序Pod创建成功后，才会接下来创建下一个Pod。
+<code>Parallel模式</code>:并发创建各个Pod。</p>
+<p>而对于Pod<strong>删除</strong>，用户直接删除StatefulSet的Pod是无效的，因为 StatefulSet马上就会重建。
+如果要删除Pod,必须通过调整 StatefulSet的 Spec.Replicas来达到删除目的。即为Pod扩缩容处理。</p>
+<h3 id="23-pod扩缩容">
+  2.3 Pod扩缩容
+  <a class="anchor" href="#23-pod%e6%89%a9%e7%bc%a9%e5%ae%b9">#</a>
+</h3>
+<p>扩容处理: Replicas增大的情况，则直接是Pod创建的逻辑。
+缩容处理: 因为需要减少Pod，为了不和Pod创建过程冲突，缩容是从最大索引号开始删除Pod。</p>
+<pre tabindex="0"><code># pkg/controller/statefulset/stateful_set_control.go
+
+if ord := getOrdinal(pods[i]); 0 &lt;= ord &amp;&amp; ord &lt; replicaCount {
+    replicas[ord] = pods[i]
+} else if ord &gt;= replicaCount {
+    //pod索引号大于最新的Spec.Replicas,说明Replicas减小了，这些Pod需要被缩容掉
+    condemned = append(condemned, pods[i])
+}
+
+// 从最大索引号开始缩容
+for target := len(condemned) - 1; target &gt;= 0; target-- {
+    // 如果该Pod正在被删除,则等待被删除完成即可
+    if isTerminating(condemned[target]) {
+        if monotonic {
+            return &amp;status, nil
+        }
+        continue
+    }
+
+    // 如果被删除pod的前序pod中有不健康的,那么需要等待前序pod恢复为正常状态后才能继续缩容
+    if !isRunningAndReady(condemned[target]) &amp;&amp; monotonic &amp;&amp; condemned[target] != firstUnhealthyPod {
+        return &amp;status, nil
+    }
+
+    // 到这里可以执行pod缩容删除了
+    if err := ssc.podControl.DeleteStatefulPod(set, condemned[target]); err != nil {
+        return &amp;status, err
+    }
+    // 更新StatefulSet.Status
+    if getPodRevision(condemned[target]) == currentRevision.Name {
+        status.CurrentReplicas--
+    } else if getPodRevision(condemned[target]) == updateRevision.Name {
+        status.UpdatedReplicas--
+    }
+    if monotonic {
+        return &amp;status, nil
+    }
+}
+</code></pre><h3 id="24-pod的升级">
+  2.4 Pod的升级
+  <a class="anchor" href="#24-pod%e7%9a%84%e5%8d%87%e7%ba%a7">#</a>
+</h3>
+<p>Pod升级策略由<code>Spec.Update.Strategy</code>字段指定，目前支持<code>OnDelete</code>和<code>RollingUpdate</code>两种模式。</p>
+<h5 id="241-ondelete-模式">
+  2.4.1 OnDelete 模式
+  <a class="anchor" href="#241-ondelete-%e6%a8%a1%e5%bc%8f">#</a>
+</h5>
+<p><code>Spec.UpdateStrategy.Type=OnDelete</code>: <code>Spec.Template</code>更新后，需要用户手动删除旧Pod，然后StatefulSet Controller会利用新的<code>Spec.Template</code>创建新Pod。代码中处理如下:</p>
+<pre tabindex="0"><code>if set.Spec.UpdateStrategy.Type == apps.OnDeleteStatefulSetStrategyType {
+    return &amp;status, nil
+}
+</code></pre><p>当升级策略为OnDelete时，执行直接返回，等待用户手动删除pod。</p>
+<h5 id="242-rollingupdate-模式">
+  2.4.2 RollingUpdate 模式
+  <a class="anchor" href="#242-rollingupdate-%e6%a8%a1%e5%bc%8f">#</a>
+</h5>
+<p><code>Spec.UpdateStrategy.Type=RollingUpdate</code>: <code>Spec.Template</code>更新后，StatefulSet Controller会从最大索引号开始逐个升级Pod。即先删除pod，然后等到删除的pod被创建好后再进行下一个索引号的Pod升级。</p>
+<p>RollingUpdate模式的Pod升级，可以只升级部分Pod。新旧Pod分水岭的索引号由<code>Spec.UpdateStrategy.RollingUpdate.Partition</code>指定。其中<code>[0 ~ partition-1]</code>索引号的Pod为旧版本，而<code>[partition ~ replicas-1]</code>索引号的Pod为新版本。当然如果 <code>partition &gt; Spec.Replicas</code>，则不会升级任何Pod。</p>
+<p>RollingUpdate模式的代码如下(下面主要为删除旧Pod)</p>
+<pre tabindex="0"><code>updateMin := 0
+if set.Spec.UpdateStrategy.RollingUpdate != nil {
+    updateMin = int(*set.Spec.UpdateStrategy.RollingUpdate.Partition)
+}
+
+// 从最大索引号开始执行Pod升级处理(此处为旧Pod删除)
+for target := len(replicas) - 1; target &gt;= updateMin; target-- {
+    // 如果pod为旧版本并且不在被删除状态，则执行Pod删除
+    if getPodRevision(replicas[target]) != updateRevision.Name &amp;&amp; !isTerminating(replicas[target]) {
+        err := ssc.podControl.DeleteStatefulPod(set, replicas[target])
+        status.CurrentReplicas--
+        return &amp;status, err // 直接退出,等待被删除Pod被创建
+    }
+
+    // 等待到被删除pod创建且ready，才进行下一个pod的升级。否则就退出for循环
+    if !isHealthy(replicas[target]) {
+        return &amp;status, nil
+    }
+}
+</code></pre><h2 id="3-statefulset的控制流程">
+  3. Statefulset的控制流程
+  <a class="anchor" href="#3-statefulset%e7%9a%84%e6%8e%a7%e5%88%b6%e6%b5%81%e7%a8%8b">#</a>
+</h2>
+<p>经过上面代码级别的细节说明，下面大致梳理一下 StatefulSet Controller的控制流程。具体如下:</p>
+<ul>
+<li>获取 StatefulSet: 由key从<code>set.Lister</code>(本地缓存)中获取到需要处理的 StatefulSet实例</li>
+<li>获取 Statefulset所有Pod: 由<code>StatefulSet.Spec.Selector</code>从 pod.Lister(本地缓存)中过滤所有符合条件的Pod(且podName和 set.Name匹配) （1.2节）</li>
+<li>获取当前版本和升级版本的 Controller Revision: 如果升级版本的 Controller Revision不存在，就新创建一个。(StatefulSet创建时，当前版本和升级版本相同。当前升级完成后,他们也相同)</li>
+<li>从<code>0 ~ Spec.Replicas-1</code>逐个索引，创建StatefulSet Pod。 (2.2节)</li>
+<li>所有pod创建完成后，进入扩缩容逻辑处理(如果需要扩缩容操作的话)  （2.3节）</li>
+<li>扩缩容操作完成后，进入Pod升级逻辑(如果需要Pod升级操作的话) （2.4节）</li>
+<li>更新 StatefulSet的 Status （1.3节）</li>
+</ul>
+<h1 id="draft-here">
+  Draft Here
+  <a class="anchor" href="#draft-here">#</a>
+</h1>
+<h2 id="参考">
+  参考
+  <a class="anchor" href="#%e5%8f%82%e8%80%83">#</a>
+</h2>
+<ol>
+<li><a href="">深入剖析Kubernetes - 18  深入理解StatefulSet（一）：拓扑状态</a>  张磊</li>
+<li><a href="">深入剖析Kubernetes - 19  深入理解StatefulSet（二）：存储状态</a>  张磊</li>
+<li><a href="https://yq.aliyun.com/articles/702306">kubernetes controller源码解读之StatefulSet</a>  源码 ***</li>
+</ol>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#源码分析">源码分析</a>
+      <ul>
+        <li><a href="#1-statefulset资源定义">1. StatefulSet资源定义</a>
+          <ul>
+            <li><a href="#11-statefulset定义">1.1 StatefulSet定义</a></li>
+            <li><a href="#12-statefulsetspec定义">1.2 StatefulSetspec定义</a></li>
+            <li><a href="#13-statefulsetstatus定义">1.3 StatefulSetStatus定义</a></li>
+            <li><a href="#14-statefulset例子">1.4 StatefulSet例子</a></li>
+          </ul>
+        </li>
+        <li><a href="#2-statefulset-controller详细说明">2. StatefulSet Controller详细说明</a>
+          <ul>
+            <li><a href="#21-pod固定身份标识编号---拓扑状态1">2.1 Pod固定身份标识（编号） -&gt; 拓扑状态【1】</a></li>
+            <li><a href="#22-statefulset-pod创建和删除">2.2 StatefulSet Pod创建和删除</a></li>
+            <li><a href="#23-pod扩缩容">2.3 Pod扩缩容</a></li>
+            <li><a href="#24-pod的升级">2.4 Pod的升级</a></li>
+          </ul>
+        </li>
+        <li><a href="#3-statefulset的控制流程">3. Statefulset的控制流程</a></li>
+      </ul>
+    </li>
+    <li><a href="#draft-here">Draft Here</a>
+      <ul>
+        <li><a href="#参考">参考</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

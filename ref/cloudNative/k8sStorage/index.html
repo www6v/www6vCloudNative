@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/www6vCloudNative/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=www6vCloudNative/livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
+![Kubernetes存储](.\k8sStorage\k8sStorage.jpg)一. Kubernetes 存储的绑定流程 # 1.1 # 三个阶段
+第一个create阶段，主要是创建存储； 第二个attach阶段，就是将那块存储挂载到 node 上面(通常为将存储load到node的/dev下面)； 第三个mount阶段，将对应的存储进一步挂载到 pod 可以使用的路径。 二. Static Provisioning &amp;&amp; Dynamic Provisioning # 2.1 Static Provisioning # 2.2 Dynamic Provisioning # ![relationship](https://user-images.githubusercontent.com/5608425/64247540-aafc5c00-cf41-11e9-83af-64199e79ded7.JPG)**Kubernetes pvc 动态绑定流程**只有同属于一个 StorageClass 的PV 和 PVC，才可以绑定在一起
+CSI driver动态创建pv ， CSI Driver 可以动态创建PV [5]
+创建pvc之后，provisioner 会创建pv ，并做pvc和pv的绑定关系 本地存储[5] # emptyDir
+不是overlayFS ，和写主机的性能是一样的
+和容器的生命周期一致，如果容器销毁， emptyDir也被销毁。 hostPath
+需要的注意点，不建议用 最佳实践[5] # 用户去查询集群中有哪些storageclass
+可能有本地的hostpath，或者远程的nfs， ceph 等等 在storageClass中, provisioner很重要 pod中声明一个pvc
+csi plugin把pv attach到对应的node，mount到对应的pod pvc和pv是一一对应的关系 参考: # 《Kubenetes in Action》七牛容器云团队 &laquo;深入剖析Kubernetes - 28 PV、PVC、StorageClass，这些到底在说啥？&raquo; 张磊 &laquo;深入剖析Kubernetes - 29 PV、PVC体系是不是多此一举？从本地持久化卷谈起&raquo; 张磊 第9 章 ： 应用存储和持久化数据卷：核心知识 云原生训练营 第0期-模块七 ">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sStorage/">
+  <meta property="og:site_name" content="Cloud Native">
+  <meta property="og:title" content="Kubernetes存储">
+  <meta property="og:description" content="
+![Kubernetes存储](.\k8sStorage\k8sStorage.jpg)一. Kubernetes 存储的绑定流程 # 1.1 # 三个阶段
+第一个create阶段，主要是创建存储； 第二个attach阶段，就是将那块存储挂载到 node 上面(通常为将存储load到node的/dev下面)； 第三个mount阶段，将对应的存储进一步挂载到 pod 可以使用的路径。 二. Static Provisioning &amp;&amp; Dynamic Provisioning # 2.1 Static Provisioning # 2.2 Dynamic Provisioning # ![relationship](https://user-images.githubusercontent.com/5608425/64247540-aafc5c00-cf41-11e9-83af-64199e79ded7.JPG)**Kubernetes pvc 动态绑定流程**只有同属于一个 StorageClass 的PV 和 PVC，才可以绑定在一起
+CSI driver动态创建pv ， CSI Driver 可以动态创建PV [5]
+创建pvc之后，provisioner 会创建pv ，并做pvc和pv的绑定关系 本地存储[5] # emptyDir
+不是overlayFS ，和写主机的性能是一样的
+和容器的生命周期一致，如果容器销毁， emptyDir也被销毁。 hostPath
+需要的注意点，不建议用 最佳实践[5] # 用户去查询集群中有哪些storageclass
+可能有本地的hostpath，或者远程的nfs， ceph 等等 在storageClass中, provisioner很重要 pod中声明一个pvc
+csi plugin把pv attach到对应的node，mount到对应的pod pvc和pv是一一对应的关系 参考: # 《Kubenetes in Action》七牛容器云团队 «深入剖析Kubernetes - 28 PV、PVC、StorageClass，这些到底在说啥？» 张磊 «深入剖析Kubernetes - 29 PV、PVC体系是不是多此一举？从本地持久化卷谈起» 张磊 第9 章 ： 应用存储和持久化数据卷：核心知识 云原生训练营 第0期-模块七 ">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="ref">
+    <meta property="article:published_time" content="2019-09-01T17:39:12+00:00">
+    <meta property="article:modified_time" content="2019-09-01T17:39:12+00:00">
+    <meta property="article:tag" content="Kubernetes">
+<title>Kubernetes存储 | Cloud Native</title>
+<link rel="icon" href="/www6vCloudNative/favicon.png" >
+<link rel="manifest" href="/www6vCloudNative/manifest.json">
+<link rel="canonical" href="http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sStorage/">
+<link rel="stylesheet" href="/www6vCloudNative/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
+  <script defer src="/www6vCloudNative/fuse.min.js"></script>
+  <script defer src="/www6vCloudNative/en.search.min.88487f5c85e0fcac35ab03d645c71fb463adc540323a90bc857ae85b847c6bfa.js" integrity="sha256-iEh/XIXg/Kw1qwPWRccftGOtxUAyOpC8hXroW4R8a/o=" crossorigin="anonymous"></script>
+
+  
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/www6vCloudNative/"><span>Cloud Native</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>编排原理</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sStatefulSet/" class="">Kubernetes StatefulSet原理和源码</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sResouceModel/" class="">Kubenetes资源模型</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/www6vCloudNative/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Kubernetes存储</h3>
+
+  <label for="toc-control">
+    
+    <img src="/www6vCloudNative/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一-kubernetes-存储的绑定流程">一. Kubernetes 存储的绑定流程</a>
+          <ul>
+            <li><a href="#11">1.1</a></li>
+          </ul>
+        </li>
+        <li><a href="#二-static-provisioning--dynamic-provisioning">二. Static Provisioning &amp;&amp; Dynamic Provisioning</a>
+          <ul>
+            <li><a href="#21-static-provisioning">2.1 Static Provisioning</a></li>
+            <li><a href="#22-dynamic-provisioning">2.2 Dynamic Provisioning</a></li>
+          </ul>
+        </li>
+        <li><a href="#本地存储5">本地存储[5]</a></li>
+        <li><a href="#最佳实践5">最佳实践[5]</a></li>
+        <li><a href="#参考">参考:</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p></p>
+<!-- more -->
+![Kubernetes存储](.\k8sStorage\k8sStorage.jpg)
+<h2 id="一-kubernetes-存储的绑定流程">
+  一. Kubernetes 存储的绑定流程
+  <a class="anchor" href="#%e4%b8%80-kubernetes-%e5%ad%98%e5%82%a8%e7%9a%84%e7%bb%91%e5%ae%9a%e6%b5%81%e7%a8%8b">#</a>
+</h2>
+<h3 id="11">
+  1.1
+  <a class="anchor" href="#11">#</a>
+</h3>
+<p><img src="https://user-images.githubusercontent.com/5608425/68108028-9593b600-ff21-11e9-8623-5c719772317e.jpg" alt="Kubernetes存储的绑定流程" /></p>
+<p><strong>三个阶段</strong></p>
+<ul>
+<li>第一个<strong>create</strong>阶段，主要是创建存储；</li>
+<li>第二个<strong>attach</strong>阶段，就是将那块存储挂载到 node 上面(通常为将存储load到node的/dev下面)；</li>
+<li>第三个<strong>mount</strong>阶段，将对应的存储进一步挂载到 pod 可以使用的路径。</li>
+</ul>
+<h2 id="二-static-provisioning--dynamic-provisioning">
+  二. Static Provisioning &amp;&amp; Dynamic Provisioning
+  <a class="anchor" href="#%e4%ba%8c-static-provisioning--dynamic-provisioning">#</a>
+</h2>
+<h3 id="21-static-provisioning">
+  2.1 Static Provisioning
+  <a class="anchor" href="#21-static-provisioning">#</a>
+</h3>
+<p><img src=".%5ck8sStorage%5cstatic-provision.PNG" alt="Static Provisioning" /></p>
+<h3 id="22-dynamic-provisioning">
+  2.2 Dynamic Provisioning
+  <a class="anchor" href="#22-dynamic-provisioning">#</a>
+</h3>
+<p><img src=".%5ck8sStorage%5cdynamic-provision.PNG" alt="Dynamic Provisioning" /></p>
+<div style="text-align: center;">
+</div>
+![relationship](https://user-images.githubusercontent.com/5608425/64247540-aafc5c00-cf41-11e9-83af-64199e79ded7.JPG)
+**Kubernetes pvc 动态绑定流程**
+<blockquote>
+<p>只有同属于一个 StorageClass 的PV 和 PVC，才可以绑定在一起</p>
+</blockquote>
+<ul>
+<li>CSI driver动态创建pv ， CSI Driver 可以动态创建PV [5]<br>
+创建pvc之后，provisioner 会创建pv ，并做pvc和pv的绑定关系</li>
+</ul>
+<h2 id="本地存储5">
+  本地存储[5]
+  <a class="anchor" href="#%e6%9c%ac%e5%9c%b0%e5%ad%98%e5%82%a85">#</a>
+</h2>
+<ul>
+<li>emptyDir<br>
+不是overlayFS ，和写主机的性能是一样的<br>
+和容器的生命周期一致，如果容器销毁， emptyDir也被销毁。</li>
+<li>hostPath<br>
+需要的注意点，不建议用</li>
+</ul>
+<h2 id="最佳实践5">
+  最佳实践[5]
+  <a class="anchor" href="#%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b55">#</a>
+</h2>
+<ul>
+<li>用户去查询集群中有哪些storageclass<br>
+可能有本地的hostpath，或者远程的nfs， ceph 等等
+<ul>
+<li>在storageClass中, provisioner很重要</li>
+</ul>
+</li>
+<li>pod中声明一个pvc<br>
+csi  plugin把pv attach到对应的node，mount到对应的pod</li>
+<li>pvc和pv是一一对应的关系</li>
+</ul>
+<h2 id="参考">
+  参考:
+  <a class="anchor" href="#%e5%8f%82%e8%80%83">#</a>
+</h2>
+<ol>
+<li><a href="http://product.dangdang.com/26439199.html?ref=book-65152-9168_1-529800-3">《Kubenetes in Action》七牛容器云团队</a></li>
+<li>&laquo;深入剖析Kubernetes - 28  PV、PVC、StorageClass，这些到底在说啥？&raquo; 张磊</li>
+<li>&laquo;深入剖析Kubernetes - 29  PV、PVC体系是不是多此一举？从本地持久化卷谈起&raquo; 张磊</li>
+<li><a href="https://edu.aliyun.com/lesson_1651_13085#_13085">第9 章 ： 应用存储和持久化数据卷：核心知识</a></li>
+<li>云原生训练营 第0期-模块七</li>
+</ol>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一-kubernetes-存储的绑定流程">一. Kubernetes 存储的绑定流程</a>
+          <ul>
+            <li><a href="#11">1.1</a></li>
+          </ul>
+        </li>
+        <li><a href="#二-static-provisioning--dynamic-provisioning">二. Static Provisioning &amp;&amp; Dynamic Provisioning</a>
+          <ul>
+            <li><a href="#21-static-provisioning">2.1 Static Provisioning</a></li>
+            <li><a href="#22-dynamic-provisioning">2.2 Dynamic Provisioning</a></li>
+          </ul>
+        </li>
+        <li><a href="#本地存储5">本地存储[5]</a></li>
+        <li><a href="#最佳实践5">最佳实践[5]</a></li>
+        <li><a href="#参考">参考:</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

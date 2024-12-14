@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/www6vCloudNative/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=www6vCloudNative/livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/www6vCloudNative/tags/etcd/">
+  <meta property="og:site_name" content="Cloud Native">
+  <meta property="og:title" content="Etcd">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+<title>Etcd | Cloud Native</title>
+<link rel="icon" href="/www6vCloudNative/favicon.png" >
+<link rel="manifest" href="/www6vCloudNative/manifest.json">
+<link rel="canonical" href="http://localhost:1313/www6vCloudNative/tags/etcd/">
+<link rel="stylesheet" href="/www6vCloudNative/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
+  <script defer src="/www6vCloudNative/fuse.min.js"></script>
+  <script defer src="/www6vCloudNative/en.search.min.88487f5c85e0fcac35ab03d645c71fb463adc540323a90bc857ae85b847c6bfa.js" integrity="sha256-iEh/XIXg/Kw1qwPWRccftGOtxUAyOpC8hXroW4R8a/o=" crossorigin="anonymous"></script>
+
+  
+
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/www6vCloudNative/tags/etcd/index.xml" title="Cloud Native" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/www6vCloudNative/"><span>Cloud Native</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>编排原理</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sStatefulSet/" class="">Kubernetes StatefulSet原理和源码</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sResouceModel/" class="">Kubenetes资源模型</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/www6vCloudNative/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Etcd</h3>
+
+  <label for="toc-control">
+    
+    <img src="/www6vCloudNative/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav>
+  <ul>
+  
+    
+    <li class="book-section-flat">
+      <strong>Categories</strong>
+      <ul>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/Kubernetes/">Kubernetes</a>
+          <span>38</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>
+          <span>39</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/security/">Security</a>
+          <span>3</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/metric/">Metric</a>
+          <span>2</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/">可观测性</a>
+          <span>3</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/etcd/">Etcd</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/KV/">KV</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/ceph/">Ceph</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/">云计算</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E5%AD%98%E5%82%A8/">存储</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/kernel/">Kernel</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/linux/">Linux</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E5%8F%82%E6%95%B0/">参数</a>
+          <span>1</span>
+        </li>
+      
+      </ul>
+    </li>
+    
+  
+    
+    <li class="book-section-flat">
+      <strong>Tags</strong>
+      <ul>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/Kubernetes/">Kubernetes</a>
+          <span>38</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/prometheus/">Prometheus</a>
+          <span>2</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/etcd/">Etcd</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/">可观测性</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/%E5%AD%98%E5%82%A8/">存储</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/linux/">Linux</a>
+          <span>1</span>
+        </li>
+      
+      </ul>
+    </li>
+    
+  
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/www6vCloudNative/ref/cloudNative/etcd/">etcd 总结</a>
+    </h2>
+    
+  <div class="flex align-center text-small book-post-date">
+    <img src="/www6vCloudNative/svg/calendar.svg" class="book-icon " alt="" />
+    <span>April 6, 2022</span>
+  </div>
+
+
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>, 
+      <a href="/www6vCloudNative/categories/KV/">KV</a>, 
+      <a href="/www6vCloudNative/categories/etcd/">Etcd</a>
+  </div>
+  
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/tags/etcd/">Etcd</a>
+  </div>
+  
+
+
+    <p>
+读流程 [3] # 一个读请求从 client 通过 Round-robin 负载均衡算法，选择一个-etcd server 节点，发出 gRPC 请求，经过 etcd server 的 KVServer 模块、线性读模块、MVCC 的 treeIndex 和 boltdb 模块紧密协作，完成了一个读请求。
+etcd 提供的两种读机制 (串行读和线性读)
+写流程[4] # etcd 的写请求流程，重点介绍了 Quota、WAL、Apply 和 MVCC 模块。Quota 模块会防止 db 大小超限，WAL 模块保证了集群的一致性和可恢复性，Apply 模块实现了幂等性，MVCC 模块维护索引版本号和内存索引结构。etcd 通过异步、批量提交事务机制提升写 QPS 和吞吐量。这些模块相互协作，实现了在节点遭遇 crash 等异常情况下，不丢任何已提交的数据、不重复执行任何提案。[N AI]
+客户端Lease [5] # etcd 的 Lessor 模块在启动时会创建两个常驻 goroutine，分别用于检查过期 Lease 并撤销，以及定时更新 Lease 的剩余到期时间。该模块提供了 Grant、Revoke、LeaseTimeToLive 和 LeaseKeepAlive API，用于创建、撤销、获取有效期和续期 Lease。[N AI]
+MVCC 和 revision[2] # etcd revision 定义 计数器 键值空间发生变化， revision相应增加 用途 逻辑时钟 MVCC 参考 # 第16 章 ： 深入理解 etcd - 基本原理解析 未 《云原生分布式存储基石-etcd深入解析》 《02 | 基础架构：etcd一个读请求是如何执行的？》 《03丨基础架构：etcd一个写请求是如何执行的？》 《06 | 租约：如何检测你的客户端存活？》 
+    </p>
+  </article>
+  
+
+  
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  <nav>
+  <ul>
+  
+    
+    <li class="book-section-flat">
+      <strong>Categories</strong>
+      <ul>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/Kubernetes/">Kubernetes</a>
+          <span>38</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>
+          <span>39</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/security/">Security</a>
+          <span>3</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/metric/">Metric</a>
+          <span>2</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/">可观测性</a>
+          <span>3</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/etcd/">Etcd</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/KV/">KV</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/ceph/">Ceph</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/">云计算</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E5%AD%98%E5%82%A8/">存储</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/kernel/">Kernel</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/linux/">Linux</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E5%8F%82%E6%95%B0/">参数</a>
+          <span>1</span>
+        </li>
+      
+      </ul>
+    </li>
+    
+  
+    
+    <li class="book-section-flat">
+      <strong>Tags</strong>
+      <ul>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/Kubernetes/">Kubernetes</a>
+          <span>38</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/prometheus/">Prometheus</a>
+          <span>2</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/etcd/">Etcd</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/">可观测性</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/%E5%AD%98%E5%82%A8/">存储</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/linux/">Linux</a>
+          <span>1</span>
+        </li>
+      
+      </ul>
+    </li>
+    
+  
+  </ul>
+</nav>
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

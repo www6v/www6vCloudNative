@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/www6vCloudNative/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=www6vCloudNative/livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Part I # 云原生 序 Part II # 编排原理
+Kubernetes Deployment Kubernetes Workload Kubernetes StatefulSet原理和源码 Kubenetes 资源模型 kubelet和PLEG Operator &amp;&amp; Controller
+Kubernetes Operator-kubebuilder Kubernetes Operator-Etcd Kubernetes声明式API Kubernetes Operator-Redis K8s AdmissionWebhook Container Runtime
+Kubernetes Runtime K8S 弃用Docker 网络
+Kubernetes网络 Calico Calico 服务和DNS
+Kubernetes服务 Kubernetes CoreDNS Kubernetes Nginx Ingress 存储
+Kubernetes存储 Kubernetes Rook Ceph 总结 etcd 总结 调度
+Kubernetes调度器 Kubernetes 高级调度 监控和AutoScale
+Kubernetes自动伸缩和HPA 可观测性-Prometheus 可观测性-Prometheus HA 可观测性-Kubernetes 生产化
+Available K8S高可用-控制面 K8S高可用-零停机[自主中断] K8S高可用-零停机[探针] 集成 K8S 应用迁移至K8S K8s 集成Springcloud 虚拟机和容器中的内核参数 kernel Kubernetes 升级upgrade PaaS">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/www6vCloudNative/ref/SUMMARY/">
+  <meta property="og:site_name" content="Cloud Native">
+  <meta property="og:title" content="Cloud Native">
+  <meta property="og:description" content="Part I # 云原生 序 Part II # 编排原理
+Kubernetes Deployment Kubernetes Workload Kubernetes StatefulSet原理和源码 Kubenetes 资源模型 kubelet和PLEG Operator &amp;&amp; Controller
+Kubernetes Operator-kubebuilder Kubernetes Operator-Etcd Kubernetes声明式API Kubernetes Operator-Redis K8s AdmissionWebhook Container Runtime
+Kubernetes Runtime K8S 弃用Docker 网络
+Kubernetes网络 Calico Calico 服务和DNS
+Kubernetes服务 Kubernetes CoreDNS Kubernetes Nginx Ingress 存储
+Kubernetes存储 Kubernetes Rook Ceph 总结 etcd 总结 调度
+Kubernetes调度器 Kubernetes 高级调度 监控和AutoScale
+Kubernetes自动伸缩和HPA 可观测性-Prometheus 可观测性-Prometheus HA 可观测性-Kubernetes 生产化
+Available K8S高可用-控制面 K8S高可用-零停机[自主中断] K8S高可用-零停机[探针] 集成 K8S 应用迁移至K8S K8s 集成Springcloud 虚拟机和容器中的内核参数 kernel Kubernetes 升级upgrade PaaS">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="ref">
+<title>Summary | Cloud Native</title>
+<link rel="icon" href="/www6vCloudNative/favicon.png" >
+<link rel="manifest" href="/www6vCloudNative/manifest.json">
+<link rel="canonical" href="http://localhost:1313/www6vCloudNative/ref/SUMMARY/">
+<link rel="stylesheet" href="/www6vCloudNative/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
+  <script defer src="/www6vCloudNative/fuse.min.js"></script>
+  <script defer src="/www6vCloudNative/en.search.min.88487f5c85e0fcac35ab03d645c71fb463adc540323a90bc857ae85b847c6bfa.js" integrity="sha256-iEh/XIXg/Kw1qwPWRccftGOtxUAyOpC8hXroW4R8a/o=" crossorigin="anonymous"></script>
+
+  
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/www6vCloudNative/"><span>Cloud Native</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>编排原理</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sStatefulSet/" class="">Kubernetes StatefulSet原理和源码</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sResouceModel/" class="">Kubenetes资源模型</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/www6vCloudNative/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Summary</h3>
+
+  <label for="toc-control">
+    
+    <img src="/www6vCloudNative/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#part-i">Part I</a></li>
+    <li><a href="#part-ii">Part II</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="part-i">
+  Part I
+  <a class="anchor" href="#part-i">#</a>
+</h1>
+<ul>
+<li><a href="README.md">云原生  序</a></li>
+</ul>
+<h1 id="part-ii">
+  Part II
+  <a class="anchor" href="#part-ii">#</a>
+</h1>
+<ul>
+<li>
+<p><a href="">编排原理</a></p>
+<ul>
+<li><a href="/cloudNative/k8sDeployment.md">Kubernetes Deployment</a></li>
+<li><a href="/cloudNative/k8sResource.md">Kubernetes Workload</a></li>
+<li><a href="/cloudNative/k8sStatefulSet.md">Kubernetes StatefulSet原理和源码</a></li>
+<li><a href="/cloudNative/k8sResouceModel.md">Kubenetes 资源模型</a></li>
+<li><a href="/cloudNative/k8sPLEG.md">kubelet和PLEG</a></li>
+</ul>
+</li>
+<li>
+<p><a href="">Operator &amp;&amp; Controller</a></p>
+<ul>
+<li><a href="/cloudNative/k8s-operator.md">Kubernetes Operator-kubebuilder </a></li>
+<li><a href="/cloudNative/k8sOperator.md">Kubernetes Operator-Etcd</a></li>
+<li><a href="/cloudNative/k8sDeclarativeAPI.md">Kubernetes声明式API</a></li>
+<li><a href="/cloudNative/k8sOperator-redis.md">Kubernetes Operator-Redis</a></li>
+<li><a href="/cloudNative/k8sAdmissionWebhook.md">K8s AdmissionWebhook</a></li>
+</ul>
+</li>
+<li>
+<p><a href="">Container Runtime</a></p>
+<ul>
+<li><a href="/cloudNative/k8sRuntime.md">Kubernetes Runtime</a></li>
+<li><a href="/cloudNative/k8sAbandonDocker.md">K8S 弃用Docker</a></li>
+</ul>
+</li>
+<li>
+<p><a href="">网络</a></p>
+<ul>
+<li><a href="/cloudNative/k8sNetwork.md">Kubernetes网络</a></li>
+<li><a href="/cloudNative/k8sCalico.md">Calico</a></li>
+<li><a href="/cloudNative/k8sCalico1.md">Calico</a></li>
+</ul>
+</li>
+<li>
+<p><a href="">服务和DNS</a></p>
+<ul>
+<li><a href="/cloudNative/k8sService.md">Kubernetes服务</a></li>
+<li><a href="/cloudNative/k8sDNS.md">Kubernetes CoreDNS</a></li>
+<li><a href="/cloudNative/k8sIngressNginx.md">Kubernetes Nginx Ingress</a></li>
+</ul>
+</li>
+<li>
+<p><a href="">存储</a></p>
+<ul>
+<li><a href="/cloudNative/k8sStorage.md">Kubernetes存储</a></li>
+<li><a href="/cloudNative/k8sRook.md">Kubernetes Rook</a></li>
+<li><a href="/cloudNative/ceph.md">Ceph 总结</a></li>
+<li><a href="/cloudNative/etcd.md">etcd 总结</a></li>
+</ul>
+</li>
+<li>
+<p><a href="">调度</a></p>
+<ul>
+<li><a href="/cloudNative/k8sScheduler.md">Kubernetes调度器</a></li>
+<li><a href="/cloudNative/k8sAdvancedScheduling.md">Kubernetes 高级调度</a></li>
+</ul>
+</li>
+<li>
+<p><a href="">监控和AutoScale</a></p>
+<ul>
+<li><a href="/cloudNative/k8sAutoScale.md">Kubernetes自动伸缩和HPA</a></li>
+<li><a href="/cloudNative/observabilityPrometheus.md">可观测性-Prometheus</a></li>
+<li><a href="/cloudNative/observabilityPrometheusHA.md">可观测性-Prometheus HA </a></li>
+<li><a href="/cloudNative/k8sObservability.md">可观测性-Kubernetes</a></li>
+</ul>
+</li>
+<li>
+<p><a href="">生产化</a></p>
+<ul>
+<li><a href="">Available</a>
+<ul>
+<li><a href="/cloudNative/k8sHA.md">K8S高可用-控制面</a></li>
+<li><a href="/cloudNative/k8sAvailable.md">K8S高可用-零停机[自主中断]</a></li>
+<li><a href="/cloudNative/k8sAvailableHealth.md">K8S高可用-零停机[探针]</a></li>
+</ul>
+</li>
+<li><a href="">集成</a>
+<ul>
+<li><a href="/cloudNative/k8sAppMigrate.md">K8S 应用迁移至K8S</a></li>
+<li><a href="/cloudNative/k8sSpringcloud.md">K8s 集成Springcloud</a></li>
+</ul>
+</li>
+<li><a href="/cloudNative/linuxKernelParam.md">虚拟机和容器中的内核参数 kernel</a></li>
+<li><a href="/cloudNative/k8sUpgrade.md">Kubernetes 升级upgrade</a></li>
+</ul>
+</li>
+<li>
+<p><a href="">PaaS</a></p>
+<ul>
+<li><a href="/cloudNative/k8sPaaS.md">Kubernetes PaaS平台</a></li>
+<li><a href="/cloudNative/k8sOpenShift.md">Kubernetes OpenShift</a></li>
+<li><a href="/cloudNative/k8sMultiTenancy.md">Kubernetes 多租户</a></li>
+<li><a href="/cloudNative/k8sRBAC.md">Kubenetes RBAC </a></li>
+<li><a href="/cloudNative/k8sMultiCluster.md">Kubernetes 多集群管理</a></li>
+<li><a href="/cloudNative/k8sVM.md">Kubernetes和VM</a></li>
+</ul>
+</li>
+<li>
+<p><a href="">安全</a></p>
+<ul>
+<li><a href="/cloudNative/k8sSecurity.md">Kubernetes安全-Security</a></li>
+<li><a href="/cloudNative/k8sCKS.md">Kubernetes CKS</a></li>
+<li><a href="/cloudNative/k8sSecurityPractice.md">Kubernetes 安全实践</a></li>
+</ul>
+</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#part-i">Part I</a></li>
+    <li><a href="#part-ii">Part II</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

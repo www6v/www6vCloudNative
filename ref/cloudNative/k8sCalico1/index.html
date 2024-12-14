@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/www6vCloudNative/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=www6vCloudNative/livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Best Practice # At a high-level, the key recommendations are: # Use the Kubernetes datastore. 使用K8S datastore Install Typha to ensure datastore scalability. 安装Typha Use no encapsulation for single subnet clusters. 在单一子网的集群中，不要封装 Use IP-in-IP in CrossSubnet mode for multi-subnet clusters. 在多子网集群中，使用IP-in-IP的跨子网模式 Configure Calico MTU based on the network MTU and the chosen routing mode. MTU Add global route reflectors for clusters capable of growing above 50 nodes. 50个nodes以上使用RR(route reflectors) Use GlobalNetworkPolicy for cluster-wide ingress and egress rules.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sCalico1/">
+  <meta property="og:site_name" content="Cloud Native">
+  <meta property="og:title" content="Calico">
+  <meta property="og:description" content="Best Practice # At a high-level, the key recommendations are: # Use the Kubernetes datastore. 使用K8S datastore Install Typha to ensure datastore scalability. 安装Typha Use no encapsulation for single subnet clusters. 在单一子网的集群中，不要封装 Use IP-in-IP in CrossSubnet mode for multi-subnet clusters. 在多子网集群中，使用IP-in-IP的跨子网模式 Configure Calico MTU based on the network MTU and the chosen routing mode. MTU Add global route reflectors for clusters capable of growing above 50 nodes. 50个nodes以上使用RR(route reflectors) Use GlobalNetworkPolicy for cluster-wide ingress and egress rules.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="ref">
+    <meta property="article:published_time" content="2022-08-12T11:55:44+00:00">
+    <meta property="article:modified_time" content="2022-08-12T11:55:44+00:00">
+    <meta property="article:tag" content="Kubernetes">
+<title>Calico | Cloud Native</title>
+<link rel="icon" href="/www6vCloudNative/favicon.png" >
+<link rel="manifest" href="/www6vCloudNative/manifest.json">
+<link rel="canonical" href="http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sCalico1/">
+<link rel="stylesheet" href="/www6vCloudNative/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
+  <script defer src="/www6vCloudNative/fuse.min.js"></script>
+  <script defer src="/www6vCloudNative/en.search.min.88487f5c85e0fcac35ab03d645c71fb463adc540323a90bc857ae85b847c6bfa.js" integrity="sha256-iEh/XIXg/Kw1qwPWRccftGOtxUAyOpC8hXroW4R8a/o=" crossorigin="anonymous"></script>
+
+  
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/www6vCloudNative/"><span>Cloud Native</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>编排原理</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sStatefulSet/" class="">Kubernetes StatefulSet原理和源码</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sResouceModel/" class="">Kubenetes资源模型</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/www6vCloudNative/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Calico</h3>
+
+  <label for="toc-control">
+    
+    <img src="/www6vCloudNative/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#best-practice">Best Practice</a>
+          <ul>
+            <li></li>
+          </ul>
+        </li>
+        <li><a href="#calico-component-overview">Calico Component Overview</a>
+          <ul>
+            <li></li>
+          </ul>
+        </li>
+        <li><a href="#calico-datastore">Calico Datastore</a></li>
+        <li><a href="#routing-configuration">Routing Configuration</a>
+          <ul>
+            <li></li>
+          </ul>
+        </li>
+        <li><a href="#route-distribution">Route Distribution</a></li>
+        <li><a href="#参考">参考</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p></p>
+<!-- more -->
+<h2 id="best-practice">
+  Best Practice
+  <a class="anchor" href="#best-practice">#</a>
+</h2>
+<h5 id="at-a-high-level-the-key-recommendations-are">
+  At a high-level, the key recommendations are:
+  <a class="anchor" href="#at-a-high-level-the-key-recommendations-are">#</a>
+</h5>
+<ul>
+<li>Use the Kubernetes datastore.
+使用K8S datastore</li>
+<li>Install Typha to ensure datastore scalability.
+安装Typha</li>
+<li>Use no encapsulation for single subnet clusters.
+在单一子网的集群中，不要封装</li>
+<li>Use IP-in-IP in CrossSubnet mode for multi-subnet clusters.
+在多子网集群中，使用IP-in-IP的跨子网模式</li>
+<li>Configure Calico MTU based on the network MTU and the chosen routing mode.
+MTU</li>
+<li>Add global route reflectors for clusters capable of growing above 50 nodes.
+50个nodes以上使用RR(route reflectors)</li>
+<li>Use GlobalNetworkPolicy for cluster-wide ingress and egress rules. Modify the policy by adding namespace-scoped NetworkPolicy.</li>
+</ul>
+<h2 id="calico-component-overview">
+  Calico Component Overview
+  <a class="anchor" href="#calico-component-overview">#</a>
+</h2>
+<p><img src=".%5ck8sCalico1%5ccalico-components.png" alt="Calico Component Overview" /></p>
+<h5 id="calico-node">
+  calico-node
+  <a class="anchor" href="#calico-node">#</a>
+</h5>
+<ul>
+<li>Route programming: Based on known routes to pods in the Kubernetes cluster, configure the Linux host to facilitate routing accordingly.   [路由配置  Flex]</li>
+<li>Route sharing: Based on pods running on this host, provide a mechanism to share known routes with other hosts. Typically accomplished with (BGP) Border Gateway Protocol.  [路由共享  BIRD]</li>
+</ul>
+<h5 id="calico-kube-controller">
+  calico-kube-controller
+  <a class="anchor" href="#calico-kube-controller">#</a>
+</h5>
+<ul>
+<li>The calico-kube-controller is responsible for recognizing changes in Kubernetes objects that impact routing.<br>
+识别影响路由变化。且包含多个控制器</li>
+<li>multiple controllers
+<ul>
+<li>policy-controller</li>
+<li>ns-controller</li>
+<li>sa-controller</li>
+<li>pod-controller</li>
+<li>node-controller</li>
+</ul>
+</li>
+</ul>
+<h5 id="typha">
+  Typha
+  <a class="anchor" href="#typha">#</a>
+</h5>
+<h2 id="calico-datastore">
+  Calico Datastore
+  <a class="anchor" href="#calico-datastore">#</a>
+</h2>
+<ul>
+<li>Calico supports 2 datastore modes, Kubernetes and etcd.
+<ul>
+<li>Kubernetes Datastore Mode (Recommended)</li>
+<li>etcd Datastore Mode</li>
+</ul>
+</li>
+</ul>
+<h2 id="routing-configuration">
+  Routing Configuration
+  <a class="anchor" href="#routing-configuration">#</a>
+</h2>
+<h5 id="routing-methods">
+  Routing Methods
+  <a class="anchor" href="#routing-methods">#</a>
+</h5>
+<ul>
+<li>
+<p>3 routing modes</p>
+<ul>
+<li>Native: Packets routed as-is, no encapsulation.</li>
+<li>IP-in-IP: Minimal encapsulation; outer header includes host source/destination IPs and inner header includes pod source/destination.
+[tunl]</li>
+<li>VXLAN: Robust encapsulation using UDP over IP; outer header includes host source/destination IP addresses and inner header includes pod source/destination IP addresses as well as Ethernet headers.
+[on udp, ]</li>
+</ul>
+</li>
+<li>
+<p>1.注意VxLAN模式不需要BGP协议参与！！！但是IPIP模式是需要的。
+Calico supports two types of encapsulation: VXLAN and IP in IP. VXLAN is supported in some environments where IP in IP is not (for example, Azure). VXLAN has a slightly higher per-packet overhead because the header is larger, but unless you are running very network intensive workloads the difference is not something you would typically notice. The other small difference between the two types of encapsulation is that Calico’s VXLAN implementation does not use BGP, whereas Calico’s IP in IP implementation uses BGP between Calico nodes.   # From Calico Docs</p>
+</li>
+</ul>
+<h5 id="single-subnet-configuration">
+  Single Subnet Configuration
+  <a class="anchor" href="#single-subnet-configuration">#</a>
+</h5>
+<p><img src=".%5ck8sCalico1%5ccalico-single-subnet.png" alt="calico-single-subnet" /></p>
+<h5 id="multi-subnet-configuration">
+  Multi-Subnet Configuration
+  <a class="anchor" href="#multi-subnet-configuration">#</a>
+</h5>
+<p><img src=".%5ck8sCalico1%5ccalico-multi-subnet.png" alt="calico-multi-subnet" /></p>
+<h2 id="route-distribution">
+  Route Distribution
+  <a class="anchor" href="#route-distribution">#</a>
+</h2>
+<ul>
+<li>BGP Full Mesh
+node-to-node mesh</li>
+<li>Global Route Reflection(RR)</li>
+<li>Node-Specific Route Reflection
+Peering can be configured for <strong>BGP-capable hardware</strong> in a datacenter’s network. Most commonly setup with <strong>top of rack (ToR)</strong> switches.</li>
+</ul>
+<h2 id="参考">
+  参考
+  <a class="anchor" href="#%e5%8f%82%e8%80%83">#</a>
+</h2>
+<ol>
+<li><a href="https://tanzu.vmware.com/developer/guides/container-networking-calico-refarch/">Calico Reference Architecture</a></li>
+<li><a href="https://www.yuque.com/wei.luo/cni/agyl5i">20210808-Calico IPIP Mode</a></li>
+</ol>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#best-practice">Best Practice</a>
+          <ul>
+            <li></li>
+          </ul>
+        </li>
+        <li><a href="#calico-component-overview">Calico Component Overview</a>
+          <ul>
+            <li></li>
+          </ul>
+        </li>
+        <li><a href="#calico-datastore">Calico Datastore</a></li>
+        <li><a href="#routing-configuration">Routing Configuration</a>
+          <ul>
+            <li></li>
+          </ul>
+        </li>
+        <li><a href="#route-distribution">Route Distribution</a></li>
+        <li><a href="#参考">参考</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

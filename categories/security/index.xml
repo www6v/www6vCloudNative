@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Security on Cloud Native</title>
+    <link>http://localhost:1313/www6vCloudNative/categories/security/</link>
+    <description>Recent content in Security on Cloud Native</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 22 May 2022 12:24:37 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/www6vCloudNative/categories/security/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kubernetes安全-Security</title>
+      <link>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sSecurity/</link>
+      <pubDate>Sun, 22 May 2022 12:24:37 +0000</pubDate>
+      <guid>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sSecurity/</guid>
+      <description>K8S安全加固建议 [2] # Kubernetes Pod 安全&#xA;使用构建的容器，以非 root 用户身份运行应用程序 在可能的情况下，用不可变的文件系统运行容器 扫描容器镜像，以发现可能存在的漏洞或错误配置 使用 Pod 安全政策来执行最低水平的安全，包括: 防止有特权的容器&#xA;拒绝经常被利用来突破的容器功能，如 hostPID、hostIPC、hostNetwork、allowedHostPath 等&#xA;拒绝以 root 用户身份执行或允许提升为根用户的容器&#xA;使用安全服务，如 SELinux®、AppArmor® 和 seccomp，加固应用程序，防止被利用。 @ 网络隔离和加固&#xA;使用防火墙和基于角色的访问控制（RBAC）锁定对控制平面节点的访问 进一步限制对 Kubernetes etcd 服务器的访问 配置控制平面组件，使用传输层安全（TLS）证书进行认证、加密通信 设置网络策略来隔离资源。不同命名空间的 Pod 和服务仍然可以相互通信，除非执行额外的隔离，如网络策略 @ 将所有凭证和敏感信息放在 Kubernetes Secret 中，而不是配置文件中。使用强大的加密方法对 Secret 进行加密 认证和授权&#xA;禁用匿名登录（默认启用） 使用强大的用户认证 创建 RBAC 策略以限制管理员、用户和服务账户活动 @ 日志审计&#xA;启用审计记录（默认为禁用） 在节点、Pod 或容器级故障的情况下，持续保存日志以确保可用性 配置一个 metric logger 升级和应用安全实践&#xA;立即应用安全补丁和更新 定期进行漏洞扫描和渗透测试 当组件不再需要时，将其从环境中移除 K8S安全加固最佳实践 [1] # Kubernetes 安全机制 [6] # K8S API 安全 @限制访问Kubernetes API # 所有API交互使用TLS API 认证 Kubernetes支持的请求认证方式 Basic 认证（不建议） X509 证书认证 Bearer Tokens(JSON Web Tokens)</description>
+    </item>
+    <item>
+      <title>Kubernetes 安全实践</title>
+      <link>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sSecurityPractice/</link>
+      <pubDate>Sun, 16 Jan 2022 14:09:26 +0000</pubDate>
+      <guid>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sSecurityPractice/</guid>
+      <description>Microsoft的Kubernetes attack matrix [1] # Kubernetes attack matrix-enhancement [2] # 初始访问 # ● API Server 未授权访问 [5]&#xA;API Server 作为 K8s 集群的管理入口，通常使用 8080 和 6443 端口，其中 8080 端口无需认证，6443端口需要认证且有 TLS 保护。如果开发者使用 8080 端口，并将其暴露在公网上，攻击者就可以通过该端口的 API，直接对集群下发指令。&#xA;另一种场景是运维人员配置不当，将&amp;quot;system:anonymous&amp;quot;用户绑定到&amp;quot;cluster-admin&amp;quot;用户组，从而使6443端口允许匿名用户以管理员权限向集群内部下发指令。&#xA;● kubelet 未授权访问 [5]&#xA;● Docker Daemon 公网暴露&#xA;● K8s configfile 泄露&#xA;K8s configfile 作为 K8s 集群的管理凭证，其中包含有关 K8s 集群的详细信息（API Server、登录凭证）。 如果攻击者能够访问到此文件(如办公网员工机器入侵、泄露到 Github的代码等)，就可以直接通过 API Server 接管 K8s 集群，带来风险隐患。 拿到K8s configfile完整利用流程&#xA;K8s configfile &amp;ndash;&amp;gt; 创建后门Pod/挂载主机路径 &amp;ndash;&amp;gt; 通过Kubectl 进入容器 &amp;ndash;&amp;gt; 利用挂载目录逃逸。 执行 # ● 利用Service Account 容器内部默认携带 K8s Service Account的认证凭据,路径为：/run/secrets/kubernetes.</description>
+    </item>
+    <item>
+      <title>Kubernetes CKS</title>
+      <link>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sCKS/</link>
+      <pubDate>Sat, 15 Jan 2022 23:06:15 +0000</pubDate>
+      <guid>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sCKS/</guid>
+      <description>Cluster Setup - 10% # Securing a Cluster # 使用网络安全策略来限制集群级别的访问 Use Network security policies to restrict cluster level access 使用CIS基准检查Kubernetes组件(etcd, kubelet, kubedns, kubeapi)的安全配置 Use CIS benchmark to review the security configuration of Kubernetes components (etcd, kubelet, kubedns, kubeapi) Kube-bench - Checks whether Kubernetes is deployed securely by running the checks documented ain the CIS Kubernetes Benchmark. 正确设置带有安全控制的Ingress对象 Properly set up Ingress objects with security control 保护节点元数据和端点 Protect node metadata and endpoints Using Kubernetes network policy to restrict pods access to cloud metadata This example assumes AWS cloud, and metadata IP address is 169.</description>
+    </item>
+  </channel>
+</rss>

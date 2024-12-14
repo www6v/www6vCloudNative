@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><script src="/www6vCloudNative/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=www6vCloudNative/livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/www6vCloudNative/tags/Kubernetes/">
+  <meta property="og:site_name" content="Cloud Native">
+  <meta property="og:title" content="Kubernetes">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+<title>Kubernetes | Cloud Native</title>
+<link rel="icon" href="/www6vCloudNative/favicon.png" >
+<link rel="manifest" href="/www6vCloudNative/manifest.json">
+<link rel="canonical" href="http://localhost:1313/www6vCloudNative/tags/Kubernetes/">
+<link rel="stylesheet" href="/www6vCloudNative/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
+  <script defer src="/www6vCloudNative/fuse.min.js"></script>
+  <script defer src="/www6vCloudNative/en.search.min.88487f5c85e0fcac35ab03d645c71fb463adc540323a90bc857ae85b847c6bfa.js" integrity="sha256-iEh/XIXg/Kw1qwPWRccftGOtxUAyOpC8hXroW4R8a/o=" crossorigin="anonymous"></script>
+
+  
+
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/www6vCloudNative/tags/Kubernetes/index.xml" title="Cloud Native" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/www6vCloudNative/"><span>Cloud Native</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>编排原理</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sStatefulSet/" class="">Kubernetes StatefulSet原理和源码</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sResouceModel/" class="">Kubenetes资源模型</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/www6vCloudNative/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Kubernetes</h3>
+
+  <label for="toc-control">
+    
+    <img src="/www6vCloudNative/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  <nav>
+  <ul>
+  
+    
+    <li class="book-section-flat">
+      <strong>Categories</strong>
+      <ul>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/Kubernetes/">Kubernetes</a>
+          <span>38</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>
+          <span>39</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/security/">Security</a>
+          <span>3</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/metric/">Metric</a>
+          <span>2</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/">可观测性</a>
+          <span>3</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/etcd/">Etcd</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/KV/">KV</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/ceph/">Ceph</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/">云计算</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E5%AD%98%E5%82%A8/">存储</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/kernel/">Kernel</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/linux/">Linux</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E5%8F%82%E6%95%B0/">参数</a>
+          <span>1</span>
+        </li>
+      
+      </ul>
+    </li>
+    
+  
+    
+    <li class="book-section-flat">
+      <strong>Tags</strong>
+      <ul>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/Kubernetes/">Kubernetes</a>
+          <span>38</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/prometheus/">Prometheus</a>
+          <span>2</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/etcd/">Etcd</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/">可观测性</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/%E5%AD%98%E5%82%A8/">存储</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/linux/">Linux</a>
+          <span>1</span>
+        </li>
+      
+      </ul>
+    </li>
+    
+  
+  </ul>
+</nav>
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/www6vCloudNative/docs/orchestrate/k8sDeployment/">Kubernetes Deployment</a>
+    </h2>
+    
+  <div class="flex align-center text-small book-post-date">
+    <img src="/www6vCloudNative/svg/calendar.svg" class="book-icon " alt="" />
+    <span>February 16, 2022</span>
+  </div>
+
+
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>, 
+      <a href="/www6vCloudNative/categories/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/tags/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+
+    <p>
+Deployment # Pod-template-hash label Rolling Update Deployment Max Surge Max Unavailable Argo Rollouts [5] # Argo Rollouts 是一个 Kubernetes 控制器，它提供了在应用程序部署过程中执行渐进式发布和蓝绿部署等高级部署策略的能力。它是基于 Kubernetes 原生的 Deployment 资源构建的，通过引入新的 Rollout 资源来扩展和增强部署控制。
+参考 # Deployment D
+如何在 Kubernetes 中对无状态应用进行分批发布 阿里 孙齐（代序） 第6 章 ： 应用编排与管理： Deployment 阿里 kubernetes 最佳实践：优雅热更新 陈鹏 Deployment jimmysong Argo Rollouts 中文文档 jimmysong 
+    </p>
+  </article>
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/www6vCloudNative/docs/orchestrate/k8sResource/">Kubernetes Workload</a>
+    </h2>
+    
+  <div class="flex align-center text-small book-post-date">
+    <img src="/www6vCloudNative/svg/calendar.svg" class="book-icon " alt="" />
+    <span>June 9, 2019</span>
+  </div>
+
+
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>, 
+      <a href="/www6vCloudNative/categories/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/tags/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+
+    <p>Workload # Basic # Node Namespace Pod [8] ServiceAccount Config # ConfigMap Secret 类型 用途 使用方式 安全 ConfigMap 普通配置 环境变量 文件挂载（卷 Volume）[7] 纯文本 Secret 敏感数据 环境变量 文件挂载 Base64 Core # StatefulSet + Deployment + ReplicaSet CronJob Job DaemonSet CustomResourceDefinition Service # Ingress Service + Volume # LocalVolume PersistentVolume Volume limit 限制 # NetworkPolicy 网络隔离与互通 Resource Quota 资源限制 SecurityContext 安全策略 other # Autoscaling (HPA) PodPreset 参考 # 《Kubenetes in Action》 七牛容器云团队 资源对象 feisky *** 面向 Kubernetes 编程： Kubernetes 是下一代操作系统 *** 第4 章 ： 理解 Pod 和容器设计模式 阿里 第3 章 ： Kubernetes 核心概念 阿里 第5 章 ： 应用编排与管理：核心原理 阿里 K8s 中 ConfigMap 使用介绍 详解 Kubernetes Pod 的实现原理 未 %accordion%附: ConfigMap 使用%accordion%
+        <a href="/www6vCloudNative/docs/orchestrate/k8sResource/">...</a>
+      
+    </p>
+  </article>
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/www6vCloudNative/docs/orchestrate/k8sStatefulSet/">Kubernetes StatefulSet原理和源码</a>
+    </h2>
+    
+  <div class="flex align-center text-small book-post-date">
+    <img src="/www6vCloudNative/svg/calendar.svg" class="book-icon " alt="" />
+    <span>November 11, 2019</span>
+  </div>
+
+
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>, 
+      <a href="/www6vCloudNative/categories/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/tags/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+
+    <p>源码分析 # 1. StatefulSet资源定义 # 1.1 StatefulSet定义 # staging/src/k8s.io/api/apps/v1beta2/types.gotype StatefulSet struct {metal.TypeMetametal.ObjectMetaSpec StatefulSetspec #1Status StatefulSetStatus #2} 1.2 StatefulSetspec定义 # #1staging/src/k8s.io/api/apps/v1beta2/types.gotype StatefulSetspec struct {/// Pod副本数控制	Replicas *int32/// Pod创建或者删除Selector *metav1.LabelSelectorTemplate v1.PodTemplateSpecVolumeClaimTemplates []v1.PersistentVolumeClaim # 存储状态【2】ServiceName stringPodManagementPolicy PodManagementPolicyType # 2.2节 /// Pod升级和回滚UpdateStrategy StatefulSetUpdateStrategy # 2.4节RevisionHistoryLimit *int32} 1.3 StatefulSetStatus定义 # #2staging/src/k8s.io/api/apps/v1beta2/types.gotype StatefulSetStatus struct {ObservedGeneration *int64Replicas int32 # 所有属于该 StatefulSet的Pod数量ReadyReplicas int32 # 所有属于该 Statefulset的Pod且状态为ready的数量CurrentReplicas int32 # 所有属于该 StatefulSet当前版本的Pod数量(升级完成时会等于UpdatedReplicas)UpdatedReplicas int32 # 所有属于该 StatefulSet升级版本的Pod数量CurrentRevision string # Statefulset当前版本的 set.
+        <a href="/www6vCloudNative/docs/orchestrate/k8sStatefulSet/">...</a>
+      
+    </p>
+  </article>
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/www6vCloudNative/docs/orchestrate/k8sResouceModel/">Kubenetes资源模型</a>
+    </h2>
+    
+  <div class="flex align-center text-small book-post-date">
+    <img src="/www6vCloudNative/svg/calendar.svg" class="book-icon " alt="" />
+    <span>November 14, 2019</span>
+  </div>
+
+
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>, 
+      <a href="/www6vCloudNative/categories/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/tags/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+
+    <p>关键词 # 资源模型, 资源管理
+资源模型 # requests limits # CPU资源被称作 “可压缩资源”: Pod 只会“饥饿”，但不会退出. 内存资源被称作“不可压缩资源”: Pod 会因为 OOM（Out-Of-Memory）被内核杀掉。
+Kubernetes 这种对 CPU 和内存资源限额的设计，实际上参考了 Borg 论文中对**“动态资源边 界”**的定义，既：容器化作业在提交时所设置的资源边界，并不一定是调度系统所必须严格遵守 的，这是因为在实际场景中，大多数作业使用到的资源其实远小于它所请求的资源限额。
+而 Kubernetes 的 requests+limits 的做法，其实就是上述思路的一个简化版：用户在提交 Pod 时，可以声明一个相对较小的 requests 值供调度器使用，而 Kubernetes 真正设置给容器 Cgroups 的，则是相对较大的 limits 值。不难看到，这跟 Borg 的思路相通的。
+limits: 而在真正设置 Cgroups 限制的时候，kubelet 则会按照 limits 的值来进行设置 requests: 在调度的时候，kube-scheduler 只会按照 requests 的值进行计算
+QoS # Guaranteed: requests == limits Burstable: 至少有一个 Container 设置了 requests BestEffort: 没有设置 requests，也没有设置 limits
+        <a href="/www6vCloudNative/docs/orchestrate/k8sResouceModel/">...</a>
+      
+    </p>
+  </article>
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/www6vCloudNative/docs/orchestrate/k8sPLEG/">kubelet和PLEG</a>
+    </h2>
+    
+  <div class="flex align-center text-small book-post-date">
+    <img src="/www6vCloudNative/svg/calendar.svg" class="book-icon " alt="" />
+    <span>April 3, 2022</span>
+  </div>
+
+
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>, 
+      <a href="/www6vCloudNative/categories/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/tags/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+
+    <p>
+kubelet管理Pod的核心流程 # Pod启动流程 [2][3] # PLEG # relist操作
+参考：
+kubelet 原理解析二：pleg 《模块七：Kubernetes控制平面组件》 从架构层面了解Kubernetes 
+    </p>
+  </article>
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/www6vCloudNative/ref/cloudNative/k8sAdmissionWebhook/">K8s  AdmissionWebhook</a>
+    </h2>
+    
+  <div class="flex align-center text-small book-post-date">
+    <img src="/www6vCloudNative/svg/calendar.svg" class="book-icon " alt="" />
+    <span>October 16, 2023</span>
+  </div>
+
+
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>, 
+      <a href="/www6vCloudNative/categories/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/tags/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+
+    <p>MutatingAdmissionWebhook 是如何工作的[1][chat] # MutatingAdmissionWebhook拦截与MutatingWebhookConfiguration中定义的规则匹配的请求，然后将其发送到Webhook服务器进行处理，然后再持久化到etcd 中。 MutatingAdmissionWebhook通过向Webhook服务器发送admission请求来执行变更。Webhook服务器只是遵循Kubernetes的API 的普通HTTP服务器。
+以下图示了MutatingAdmissionWebhook的工作原理:
+MutatingAdmissionWebhook需要三个对象才能正常工作:
+MutatingWebhookConfiguration
+MutatingAdmissionWebhook需要在apiserver中注册，提供MutatingWebhookConfiguration。在注册过程中，MutatingAdmissionWebhook说明以下内容:
+如何连接到Webhook Admission服务器 如何验证Webhook Admission服务器 Webhook Admission服务器的URL路径 定义了哪些资源和操作它处理的规则 如何处理来自Webhook Admission服务器的无法识别的错误 apiVersion: admissionregistration.k8s.io/v1beta1kind: MutatingWebhookConfigurationmetadata:name: sidecar-injector-webhook-cfglabels:app: sidecar-injectorwebhooks:- name: sidecar-injector.morven.meclientConfig:service:name: sidecar-injector-webhook-svc #2namespace: defaultpath: &#34;/mutate&#34;caBundle: ${CA_BUNDLE}rules:- operations: [ &#34;CREATE&#34; ]apiGroups: [&#34;&#34;]apiVersions: [&#34;v1&#34;]resources: [&#34;pods&#34;]namespaceSelector:matchLabels:sidecar-injector: enabled MutatingAdmissionWebhook本身
+MutatingAdmissionWebhook是一种插件式的Admission控制器，可以配置到apiserver中。MutatingAdmissionWebhook插件从MutatingWebhookConfiguration中获取感兴趣的Admission Webhooks列表。然后，MutatingAdmissionWebhook观察到对apiserver的请求，并拦截与admission webhook规则匹配的请求，并并行地调用它们。
+Webhook Admission Server
+Webhook Admission服务器只是一个符合Kubernetes API的普通HTTP服务器。对于每个API server的请求，MutatingAdmissionWebhook将admissionReview（用于参考的API）发送到相关的webhook admission服务器。webhook admission服务器会从admissionReview中收集信息，如object，oldobject和userInfo，然后返回一个admissionReview响应，其中包括填充了admission决策和可选的Patch以改变资源的AdmissionResponse。
+        <a href="/www6vCloudNative/ref/cloudNative/k8sAdmissionWebhook/">...</a>
+      
+    </p>
+  </article>
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/www6vCloudNative/ref/cloudNative/k8sSpringcloud/">K8s 集成Springcloud</a>
+    </h2>
+    
+  <div class="flex align-center text-small book-post-date">
+    <img src="/www6vCloudNative/svg/calendar.svg" class="book-icon " alt="" />
+    <span>April 15, 2023</span>
+  </div>
+
+
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>, 
+      <a href="/www6vCloudNative/categories/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/tags/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+
+    <p>Case1[2] # 架构 nginx 结合 springcloud gateway erueka + 本地配置 Case2[1] # 架构 k8s ingress 结合spring gateway spring-admin做服务注册, ConfigMap做服务配置 Case3[3] # 架构
+k8s ingress 结合 zuul Eureka做服务注册， ConfigServer做服务配置 网关 候选
+zuul 需要使用 Ingress中配置路由很麻烦 服务配置 候选
+环境变量 Service mysql-svc ConfigMap apollo 服务注册
+老项目 改动Eureka会有风险，建议保留 Eureka 新项目 [4] 用istio envoy side 做 服务发现 候选 Service 基于CoreDNS的服务发现 Env 基于环境变量的服务发现 参考 # 云原生Java架构师的第一课K8s+Docker+KubeSphere+DevOps 166 V 项目Repo git
+SpringCloud微服务电商系统在Kubernetes集群中上线详细教程 用的都是Deployment ，需要部署成StatefulSet
+kubernetes架构师课程 P195-P200 V
+        <a href="/www6vCloudNative/ref/cloudNative/k8sSpringcloud/">...</a>
+      
+    </p>
+  </article>
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/www6vCloudNative/ref/cloudNative/k8sAvailableHealth/">K8S高可用-零停机[探针]</a>
+    </h2>
+    
+  <div class="flex align-center text-small book-post-date">
+    <img src="/www6vCloudNative/svg/calendar.svg" class="book-icon " alt="" />
+    <span>October 22, 2022</span>
+  </div>
+
+
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>, 
+      <a href="/www6vCloudNative/categories/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/tags/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+
+    <p>健康检查 # Liveness Probe [2] # 确定何时重启容器. 例如，当应用程序处于运行状态但无法做进一步操作，liveness探针将捕获到deadlock，重启处于该状态下的容器，使应用程序在存在bug的情况下依然能够继续运行下去。
+liveness的初始值为成功。
+Readiness Probe [2] # 确定容器是否已经就绪可以接受流量. 该信号的作用是控制哪些Pod应该作为service的后端。如果Pod处于非就绪状态，那么它们将会被从service的load balancer中移除。
+readiness的初始值为失败。
+startupProbe [4] # 启动检查, 使用启动探针检测容器应用程序是否已经启动
+对于较新的（≥v1.16）Kubernetes 集群，如果是具有不可预测或可变启动时间的应用程序应使用 startup 探针。
+只运行一次。
+探针类型
+httpGet: 指定端口和路径执行 HTTP GET 请求
+tcpSocket: 对容器的 IP 地址上的指定端口执行 TCP 检查
+命令,exec: 在容器内执行指定命令 优雅终止 [5] # 系统底层默认会向主进程发送 SIGTERM 信号，而对剩余子进程发送 SIGKILL 信号。系统这样做的大概原因是因为大家在设计主进程脚本的时候都不会进行信号的捕获和传递，这会导致容器关闭时，多个子进程无法被正常终止，所以系统使用 SIGKILL 这个不可屏蔽信号，而是为了能够在没有任何前提条件的情况下，能够把容器中所有的进程关掉。
+也就是说如果主进程自身不是服务本身，可能会导致是被强制Kill的，解决的方法也很简单，也就是在主进程中对收到的信号做个转发，发送到容器中的其他子进程，这样容器中的所有进程在停止时，都会收到 SIGTERM，而不是 SIGKILL 信号了。
+代码 [6] # Probe apiVersion: v1 kind: Pod metadata: name: nginx namespace: default spec: containers: - name: nginx image: nginx # 存活检测 livenessProbe: failureThreshold: 3 initialDelaySeconds: 30 periodSeconds: 30 successThreshold: 1 tcpSocket: port: 5084 timeoutSeconds: 1 # 就绪检测 readinessProbe: failureThreshold: 3 initialDelaySeconds: 30 periodSeconds: 30 successThreshold: 1 tcpSocket: port: 5084 timeoutSeconds: 1 # 优雅退出 lifecycle: preStop: exec: command: - sleep - 30 terminationGracePeriodSeconds: 60 Service
+        <a href="/www6vCloudNative/ref/cloudNative/k8sAvailableHealth/">...</a>
+      
+    </p>
+  </article>
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/www6vCloudNative/ref/cloudNative/k8sCalico1/">Calico</a>
+    </h2>
+    
+  <div class="flex align-center text-small book-post-date">
+    <img src="/www6vCloudNative/svg/calendar.svg" class="book-icon " alt="" />
+    <span>August 12, 2022</span>
+  </div>
+
+
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>, 
+      <a href="/www6vCloudNative/categories/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/tags/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+
+    <p>Best Practice # At a high-level, the key recommendations are: # Use the Kubernetes datastore. 使用K8S datastore Install Typha to ensure datastore scalability. 安装Typha Use no encapsulation for single subnet clusters. 在单一子网的集群中，不要封装 Use IP-in-IP in CrossSubnet mode for multi-subnet clusters. 在多子网集群中，使用IP-in-IP的跨子网模式 Configure Calico MTU based on the network MTU and the chosen routing mode. MTU Add global route reflectors for clusters capable of growing above 50 nodes. 50个nodes以上使用RR(route reflectors) Use GlobalNetworkPolicy for cluster-wide ingress and egress rules.
+        <a href="/www6vCloudNative/ref/cloudNative/k8sCalico1/">...</a>
+      
+    </p>
+  </article>
+  
+  <article class="markdown book-post">
+    <h2>
+      <a href="/www6vCloudNative/ref/cloudNative/k8sVM/">Kubernetes和VM</a>
+    </h2>
+    
+  <div class="flex align-center text-small book-post-date">
+    <img src="/www6vCloudNative/svg/calendar.svg" class="book-icon " alt="" />
+    <span>June 3, 2022</span>
+  </div>
+
+
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>, 
+      <a href="/www6vCloudNative/categories/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+  
+  <div class="text-small">
+    
+      <a href="/www6vCloudNative/tags/Kubernetes/">Kubernetes</a>
+  </div>
+  
+
+
+    <p>参考 # kubevirt在360的探索之路（k8s接管虚拟化）
+后Kubernetes时代的虚拟机管理技术之kubevirt篇
+    </p>
+  </article>
+  
+
+  
+    <ul class="pagination pagination-default">
+      <li class="page-item disabled">
+        <a aria-disabled="true" aria-label="First" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;&laquo;</span></a>
+      </li>
+      <li class="page-item disabled">
+        <a aria-disabled="true" aria-label="Previous" class="page-link" role="button" tabindex="-1"><span aria-hidden="true">&laquo;</span></a>
+      </li>
+      <li class="page-item active">
+        <a aria-current="page" aria-label="Page 1" class="page-link" role="button">1</a>
+      </li>
+      <li class="page-item">
+        <a href="/www6vCloudNative/tags/Kubernetes/page/2/" aria-label="Page 2" class="page-link" role="button">2</a>
+      </li>
+      <li class="page-item">
+        <a href="/www6vCloudNative/tags/Kubernetes/page/3/" aria-label="Page 3" class="page-link" role="button">3</a>
+      </li>
+      <li class="page-item">
+        <a href="/www6vCloudNative/tags/Kubernetes/page/4/" aria-label="Page 4" class="page-link" role="button">4</a>
+      </li>
+      <li class="page-item">
+        <a href="/www6vCloudNative/tags/Kubernetes/page/2/" aria-label="Next" class="page-link" role="button"><span aria-hidden="true">&raquo;</span></a>
+      </li>
+      <li class="page-item">
+        <a href="/www6vCloudNative/tags/Kubernetes/page/4/" aria-label="Last" class="page-link" role="button"><span aria-hidden="true">&raquo;&raquo;</span></a>
+      </li>
+    </ul>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  <nav>
+  <ul>
+  
+    
+    <li class="book-section-flat">
+      <strong>Categories</strong>
+      <ul>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/Kubernetes/">Kubernetes</a>
+          <span>38</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>
+          <span>39</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/security/">Security</a>
+          <span>3</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/metric/">Metric</a>
+          <span>2</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/">可观测性</a>
+          <span>3</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/etcd/">Etcd</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/KV/">KV</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/ceph/">Ceph</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/">云计算</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E5%AD%98%E5%82%A8/">存储</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/kernel/">Kernel</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/linux/">Linux</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/categories/%E5%8F%82%E6%95%B0/">参数</a>
+          <span>1</span>
+        </li>
+      
+      </ul>
+    </li>
+    
+  
+    
+    <li class="book-section-flat">
+      <strong>Tags</strong>
+      <ul>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/Kubernetes/">Kubernetes</a>
+          <span>38</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/prometheus/">Prometheus</a>
+          <span>2</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/etcd/">Etcd</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/">可观测性</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/%E5%AD%98%E5%82%A8/">存储</a>
+          <span>1</span>
+        </li>
+      
+        <li class="flex justify-between">
+          <a href="/www6vCloudNative/tags/linux/">Linux</a>
+          <span>1</span>
+        </li>
+      
+      </ul>
+    </li>
+    
+  
+  </ul>
+</nav>
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
