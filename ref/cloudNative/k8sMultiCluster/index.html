@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<head><script src="/www6vCloudNative/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=www6vCloudNative/livereload" data-no-instant defer></script>
+<head><script src="/www6vKubernetes/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=www6vKubernetes/livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="
@@ -19,7 +19,7 @@ cluster-api [4]
 参考： # k8s多集群的思考 混合云下的 Kubernetes 多集群管理与应用部署 未 【PingCAP Infra Meetup】No.141 Kubernetes 开发设计模式在 TiDB Cloud 中的应用 基于 ClusterAPI 的集群管理 Karmada: 开源的云原生多云容器编排引擎 华为 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sMultiCluster/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sMultiCluster/">
   <meta property="og:site_name" content="Cloud Native">
   <meta property="og:title" content="Kubernetes 多集群管理">
   <meta property="og:description" content="
@@ -43,12 +43,12 @@ cluster-api [4]
     <meta property="article:modified_time" content="2022-05-08T22:14:17+00:00">
     <meta property="article:tag" content="Kubernetes">
 <title>Kubernetes 多集群管理 | Cloud Native</title>
-<link rel="icon" href="/www6vCloudNative/favicon.png" >
-<link rel="manifest" href="/www6vCloudNative/manifest.json">
-<link rel="canonical" href="http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sMultiCluster/">
-<link rel="stylesheet" href="/www6vCloudNative/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
-  <script defer src="/www6vCloudNative/fuse.min.js"></script>
-  <script defer src="/www6vCloudNative/en.search.min.88487f5c85e0fcac35ab03d645c71fb463adc540323a90bc857ae85b847c6bfa.js" integrity="sha256-iEh/XIXg/Kw1qwPWRccftGOtxUAyOpC8hXroW4R8a/o=" crossorigin="anonymous"></script>
+<link rel="icon" href="/www6vKubernetes/favicon.png" >
+<link rel="manifest" href="/www6vKubernetes/manifest.json">
+<link rel="canonical" href="http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sMultiCluster/">
+<link rel="stylesheet" href="/www6vKubernetes/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
+  <script defer src="/www6vKubernetes/fuse.min.js"></script>
+  <script defer src="/www6vKubernetes/en.search.min.d2a919048d8b73cb72750d28ea6985ef9731ebdb275275aa436109a17bd7abb8.js" integrity="sha256-0qkZBI2Lc8tydQ0o6mmF75cx69snUnWqQ2EJoXvXq7g=" crossorigin="anonymous"></script>
 
   
 
@@ -67,7 +67,7 @@ https://github.com/alex-shpak/hugo-book
         
   <nav>
 <h2 class="book-brand">
-  <a class="flex align-center" href="/www6vCloudNative/"><span>Cloud Native</span>
+  <a class="flex align-center" href="/www6vKubernetes/"><span>Cloud Native</span>
   </a>
 </h2>
 
@@ -116,7 +116,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vCloudNative/docs/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
+    <a href="/www6vKubernetes/docs/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
   
 
           
@@ -134,7 +134,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vCloudNative/docs/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
+    <a href="/www6vKubernetes/docs/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
   
 
           
@@ -152,7 +152,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vCloudNative/docs/orchestrate/k8sStatefulSet/" class="">Kubernetes StatefulSet原理和源码</a>
+    <a href="/www6vKubernetes/docs/orchestrate/k8sStatefulSet/" class="">Kubernetes StatefulSet原理和源码</a>
   
 
           
@@ -170,7 +170,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vCloudNative/docs/orchestrate/k8sResouceModel/" class="">Kubenetes资源模型</a>
+    <a href="/www6vKubernetes/docs/orchestrate/k8sResouceModel/" class="">Kubenetes资源模型</a>
   
 
           
@@ -188,7 +188,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vCloudNative/docs/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
+    <a href="/www6vKubernetes/docs/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
   
 
           
@@ -236,14 +236,14 @@ https://github.com/alex-shpak/hugo-book
         
   <div class="flex align-center justify-between">
   <label for="menu-control">
-    <img src="/www6vCloudNative/svg/menu.svg" class="book-icon" alt="Menu" />
+    <img src="/www6vKubernetes/svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
   <h3>Kubernetes 多集群管理</h3>
 
   <label for="toc-control">
     
-    <img src="/www6vCloudNative/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    <img src="/www6vKubernetes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
     
   </label>
 </div>

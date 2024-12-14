@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<head><script src="/www6vCloudNative/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=www6vCloudNative/livereload" data-no-instant defer></script>
+<head><script src="/www6vKubernetes/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=www6vKubernetes/livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="一. 容器和容器之间的网络 # 使用Docker的一种网络模型：–net=container 每个Pod容器有有一个pause容器 Pause容器 例子 Kubernetes之Pause容器 Kubernetes之“暂停”容器 二. Pod与Pod之间的网络 # 2.0 Overview # 2.1 同节点pod通信 # 基础: 网桥 bridge
@@ -11,7 +11,7 @@
 flannel-vxlan模式(两层虚拟网络) VXLAN 的覆盖网络的设计思想是：在现有的三层网络之上，“覆盖”一层虚拟的、由内核 VXLAN 模块负责维护的二层网络，使得连接在这个 VXLAN 二层网络上的“主机”（虚拟机或者容器都可 以）之间，可以像在同一个局域网（LAN）里那样自由通信 组件： VTEP（VXLAN Tunnel End Point）设备; fannel.1; 组成一个虚拟的两层网络 优势： 进行封装和解封装的对象，是二层数据帧（Ethernet frame）; 而且这个工作的执行流程，全部是在内核里完成的（因为VXLAN本身就是内核中的一个模块）; 主流的网络容器方案。 图5. flannel-vxlan模式">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sNetwork/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sNetwork/">
   <meta property="og:site_name" content="Cloud Native">
   <meta property="og:title" content="Kubernetes网络">
   <meta property="og:description" content="一. 容器和容器之间的网络 # 使用Docker的一种网络模型：–net=container 每个Pod容器有有一个pause容器 Pause容器 例子 Kubernetes之Pause容器 Kubernetes之“暂停”容器 二. Pod与Pod之间的网络 # 2.0 Overview # 2.1 同节点pod通信 # 基础: 网桥 bridge
@@ -27,12 +27,12 @@ flannel-vxlan模式(两层虚拟网络) VXLAN 的覆盖网络的设计思想是�
     <meta property="article:modified_time" content="2019-08-23T19:04:40+00:00">
     <meta property="article:tag" content="Kubernetes">
 <title>Kubernetes网络 | Cloud Native</title>
-<link rel="icon" href="/www6vCloudNative/favicon.png" >
-<link rel="manifest" href="/www6vCloudNative/manifest.json">
-<link rel="canonical" href="http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sNetwork/">
-<link rel="stylesheet" href="/www6vCloudNative/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
-  <script defer src="/www6vCloudNative/fuse.min.js"></script>
-  <script defer src="/www6vCloudNative/en.search.min.88487f5c85e0fcac35ab03d645c71fb463adc540323a90bc857ae85b847c6bfa.js" integrity="sha256-iEh/XIXg/Kw1qwPWRccftGOtxUAyOpC8hXroW4R8a/o=" crossorigin="anonymous"></script>
+<link rel="icon" href="/www6vKubernetes/favicon.png" >
+<link rel="manifest" href="/www6vKubernetes/manifest.json">
+<link rel="canonical" href="http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sNetwork/">
+<link rel="stylesheet" href="/www6vKubernetes/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
+  <script defer src="/www6vKubernetes/fuse.min.js"></script>
+  <script defer src="/www6vKubernetes/en.search.min.d2a919048d8b73cb72750d28ea6985ef9731ebdb275275aa436109a17bd7abb8.js" integrity="sha256-0qkZBI2Lc8tydQ0o6mmF75cx69snUnWqQ2EJoXvXq7g=" crossorigin="anonymous"></script>
 
   
 
@@ -51,7 +51,7 @@ https://github.com/alex-shpak/hugo-book
         
   <nav>
 <h2 class="book-brand">
-  <a class="flex align-center" href="/www6vCloudNative/"><span>Cloud Native</span>
+  <a class="flex align-center" href="/www6vKubernetes/"><span>Cloud Native</span>
   </a>
 </h2>
 
@@ -100,7 +100,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vCloudNative/docs/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
+    <a href="/www6vKubernetes/docs/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
   
 
           
@@ -118,7 +118,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vCloudNative/docs/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
+    <a href="/www6vKubernetes/docs/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
   
 
           
@@ -136,7 +136,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vCloudNative/docs/orchestrate/k8sStatefulSet/" class="">Kubernetes StatefulSet原理和源码</a>
+    <a href="/www6vKubernetes/docs/orchestrate/k8sStatefulSet/" class="">Kubernetes StatefulSet原理和源码</a>
   
 
           
@@ -154,7 +154,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vCloudNative/docs/orchestrate/k8sResouceModel/" class="">Kubenetes资源模型</a>
+    <a href="/www6vKubernetes/docs/orchestrate/k8sResouceModel/" class="">Kubenetes资源模型</a>
   
 
           
@@ -172,7 +172,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vCloudNative/docs/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
+    <a href="/www6vKubernetes/docs/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
   
 
           
@@ -220,14 +220,14 @@ https://github.com/alex-shpak/hugo-book
         
   <div class="flex align-center justify-between">
   <label for="menu-control">
-    <img src="/www6vCloudNative/svg/menu.svg" class="book-icon" alt="Menu" />
+    <img src="/www6vKubernetes/svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
   <h3>Kubernetes网络</h3>
 
   <label for="toc-control">
     
-    <img src="/www6vCloudNative/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    <img src="/www6vKubernetes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
     
   </label>
 </div>

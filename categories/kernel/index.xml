@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Kernel on Cloud Native</title>
-    <link>http://localhost:1313/www6vCloudNative/categories/kernel/</link>
+    <link>http://localhost:1313/www6vKubernetes/categories/kernel/</link>
     <description>Recent content in Kernel on Cloud Native</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Sun, 16 Aug 2020 12:27:46 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/www6vCloudNative/categories/kernel/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/www6vKubernetes/categories/kernel/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>虚拟机和容器中的内核参数 kernel</title>
-      <link>http://localhost:1313/www6vCloudNative/ref/cloudNative/linuxKernelParam/</link>
+      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/linuxKernelParam/</link>
       <pubDate>Sun, 16 Aug 2020 12:27:46 +0000</pubDate>
-      <guid>http://localhost:1313/www6vCloudNative/ref/cloudNative/linuxKernelParam/</guid>
+      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/linuxKernelParam/</guid>
       <description>重要的内核参数 # ##内存与交换分区&#xD;vm.swappiness&#xD;# 内存分配 ## OOM&#xD;vm.overcommit_memory=2: 过量使用. 0, 1, 2&#xD;RAM, swap&#xD;vm.overcommit_ratio=50&#xD;比如：&#xD;swap: 2G ，RAM: 8G&#xD;则 memory = swap + RAM * ratio = 2G + 8G * 50% = 6G&#xD;如何充分使用内存：&#xD;1. swap跟RAM一样大； swappiness=0&#xD;2. vm.overcommit_memory=2， vm.overcommit_ratio=100， swappiness=0 (生产中)&#xD;memory = swap + RAM * ratio ## 网络&#xD;net.ipv4.ip_forward # ipv4的路由转发功能&#xD;net.ipv4.tcp_tw_reuse = 1 #开启重用，允许将TIME_WAIT socket用于新的TCP连接。默认为0，表示关闭。&#xD;net.ipv4.tcp_tw_recycle = 1 #开启TCP连接中TIME_WAIT socket的快速回收。默认值为0，表示关闭&#xD;。&#xD;net.</description>
     </item>
   </channel>

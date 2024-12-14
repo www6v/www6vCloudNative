@@ -2,108 +2,108 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Cloud Native</title>
-    <link>http://localhost:1313/www6vCloudNative/categories/</link>
+    <link>http://localhost:1313/www6vKubernetes/categories/</link>
     <description>Recent content in Categories on Cloud Native</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Mon, 16 Oct 2023 16:07:04 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/www6vCloudNative/categories/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/www6vKubernetes/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kubernetes</title>
-      <link>http://localhost:1313/www6vCloudNative/categories/Kubernetes/</link>
+      <link>http://localhost:1313/www6vKubernetes/categories/Kubernetes/</link>
       <pubDate>Mon, 16 Oct 2023 16:07:04 +0000</pubDate>
-      <guid>http://localhost:1313/www6vCloudNative/categories/Kubernetes/</guid>
+      <guid>http://localhost:1313/www6vKubernetes/categories/Kubernetes/</guid>
       <description></description>
     </item>
     <item>
       <title>云原生</title>
-      <link>http://localhost:1313/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/</link>
+      <link>http://localhost:1313/www6vKubernetes/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/</link>
       <pubDate>Mon, 16 Oct 2023 16:07:04 +0000</pubDate>
-      <guid>http://localhost:1313/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/</guid>
+      <guid>http://localhost:1313/www6vKubernetes/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/</guid>
       <description></description>
     </item>
     <item>
       <title>Security</title>
-      <link>http://localhost:1313/www6vCloudNative/categories/security/</link>
+      <link>http://localhost:1313/www6vKubernetes/categories/security/</link>
       <pubDate>Sun, 22 May 2022 12:24:37 +0000</pubDate>
-      <guid>http://localhost:1313/www6vCloudNative/categories/security/</guid>
+      <guid>http://localhost:1313/www6vKubernetes/categories/security/</guid>
       <description></description>
     </item>
     <item>
       <title>Metric</title>
-      <link>http://localhost:1313/www6vCloudNative/categories/metric/</link>
+      <link>http://localhost:1313/www6vKubernetes/categories/metric/</link>
       <pubDate>Sun, 10 Apr 2022 21:58:17 +0000</pubDate>
-      <guid>http://localhost:1313/www6vCloudNative/categories/metric/</guid>
+      <guid>http://localhost:1313/www6vKubernetes/categories/metric/</guid>
       <description></description>
     </item>
     <item>
       <title>可观测性</title>
-      <link>http://localhost:1313/www6vCloudNative/categories/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/</link>
+      <link>http://localhost:1313/www6vKubernetes/categories/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/</link>
       <pubDate>Sun, 10 Apr 2022 21:58:17 +0000</pubDate>
-      <guid>http://localhost:1313/www6vCloudNative/categories/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/</guid>
+      <guid>http://localhost:1313/www6vKubernetes/categories/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/</guid>
       <description></description>
     </item>
     <item>
       <title>Etcd</title>
-      <link>http://localhost:1313/www6vCloudNative/categories/etcd/</link>
+      <link>http://localhost:1313/www6vKubernetes/categories/etcd/</link>
       <pubDate>Wed, 06 Apr 2022 21:19:30 +0000</pubDate>
-      <guid>http://localhost:1313/www6vCloudNative/categories/etcd/</guid>
+      <guid>http://localhost:1313/www6vKubernetes/categories/etcd/</guid>
       <description></description>
     </item>
     <item>
       <title>KV</title>
-      <link>http://localhost:1313/www6vCloudNative/categories/KV/</link>
+      <link>http://localhost:1313/www6vKubernetes/categories/KV/</link>
       <pubDate>Wed, 06 Apr 2022 21:19:30 +0000</pubDate>
-      <guid>http://localhost:1313/www6vCloudNative/categories/KV/</guid>
+      <guid>http://localhost:1313/www6vKubernetes/categories/KV/</guid>
       <description></description>
     </item>
     <item>
       <title>数据库</title>
-      <link>http://localhost:1313/www6vCloudNative/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+      <link>http://localhost:1313/www6vKubernetes/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
       <pubDate>Wed, 06 Apr 2022 21:19:30 +0000</pubDate>
-      <guid>http://localhost:1313/www6vCloudNative/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</guid>
+      <guid>http://localhost:1313/www6vKubernetes/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</guid>
       <description></description>
     </item>
     <item>
       <title>Ceph</title>
-      <link>http://localhost:1313/www6vCloudNative/categories/ceph/</link>
+      <link>http://localhost:1313/www6vKubernetes/categories/ceph/</link>
       <pubDate>Sat, 08 Jan 2022 21:50:33 +0000</pubDate>
-      <guid>http://localhost:1313/www6vCloudNative/categories/ceph/</guid>
+      <guid>http://localhost:1313/www6vKubernetes/categories/ceph/</guid>
       <description></description>
     </item>
     <item>
       <title>云计算</title>
-      <link>http://localhost:1313/www6vCloudNative/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/</link>
+      <link>http://localhost:1313/www6vKubernetes/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/</link>
       <pubDate>Sat, 08 Jan 2022 21:50:33 +0000</pubDate>
-      <guid>http://localhost:1313/www6vCloudNative/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/</guid>
+      <guid>http://localhost:1313/www6vKubernetes/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/</guid>
       <description></description>
     </item>
     <item>
       <title>存储</title>
-      <link>http://localhost:1313/www6vCloudNative/categories/%E5%AD%98%E5%82%A8/</link>
+      <link>http://localhost:1313/www6vKubernetes/categories/%E5%AD%98%E5%82%A8/</link>
       <pubDate>Sat, 08 Jan 2022 21:50:33 +0000</pubDate>
-      <guid>http://localhost:1313/www6vCloudNative/categories/%E5%AD%98%E5%82%A8/</guid>
+      <guid>http://localhost:1313/www6vKubernetes/categories/%E5%AD%98%E5%82%A8/</guid>
       <description></description>
     </item>
     <item>
       <title>Kernel</title>
-      <link>http://localhost:1313/www6vCloudNative/categories/kernel/</link>
+      <link>http://localhost:1313/www6vKubernetes/categories/kernel/</link>
       <pubDate>Sun, 16 Aug 2020 12:27:46 +0000</pubDate>
-      <guid>http://localhost:1313/www6vCloudNative/categories/kernel/</guid>
+      <guid>http://localhost:1313/www6vKubernetes/categories/kernel/</guid>
       <description></description>
     </item>
     <item>
       <title>Linux</title>
-      <link>http://localhost:1313/www6vCloudNative/categories/linux/</link>
+      <link>http://localhost:1313/www6vKubernetes/categories/linux/</link>
       <pubDate>Sun, 16 Aug 2020 12:27:46 +0000</pubDate>
-      <guid>http://localhost:1313/www6vCloudNative/categories/linux/</guid>
+      <guid>http://localhost:1313/www6vKubernetes/categories/linux/</guid>
       <description></description>
     </item>
     <item>
       <title>参数</title>
-      <link>http://localhost:1313/www6vCloudNative/categories/%E5%8F%82%E6%95%B0/</link>
+      <link>http://localhost:1313/www6vKubernetes/categories/%E5%8F%82%E6%95%B0/</link>
       <pubDate>Sun, 16 Aug 2020 12:27:46 +0000</pubDate>
-      <guid>http://localhost:1313/www6vCloudNative/categories/%E5%8F%82%E6%95%B0/</guid>
+      <guid>http://localhost:1313/www6vKubernetes/categories/%E5%8F%82%E6%95%B0/</guid>
       <description></description>
     </item>
   </channel>

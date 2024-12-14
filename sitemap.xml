@@ -2,216 +2,216 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/www6vCloudNative/docs/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/docs/</loc>
     <lastmod>2022-04-03T21:40:02+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/docs/orchestrate/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/docs/orchestrate/</loc>
     <lastmod>2022-04-03T21:40:02+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/docs/orchestrate/k8sDeployment/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/docs/orchestrate/k8sDeployment/</loc>
     <lastmod>2022-02-16T19:56:27+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/docs/orchestrate/k8sResource/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/docs/orchestrate/k8sResource/</loc>
     <lastmod>2019-06-09T22:13:52+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/docs/orchestrate/k8sStatefulSet/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/docs/orchestrate/k8sStatefulSet/</loc>
     <lastmod>2019-11-11T15:20:39+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/docs/orchestrate/k8sResouceModel/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/docs/orchestrate/k8sResouceModel/</loc>
     <lastmod>2019-11-14T10:23:19+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/docs/orchestrate/k8sPLEG/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/docs/orchestrate/k8sPLEG/</loc>
     <lastmod>2022-04-03T21:40:02+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/categories/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/categories/</loc>
     <lastmod>2023-10-16T16:07:04+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/</loc>
     <lastmod>2023-10-16T16:07:04+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sAdmissionWebhook/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAdmissionWebhook/</loc>
     <lastmod>2023-10-16T16:07:04+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/tags/Kubernetes/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/tags/Kubernetes/</loc>
     <lastmod>2023-10-16T16:07:04+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/categories/Kubernetes/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/categories/Kubernetes/</loc>
     <lastmod>2023-10-16T16:07:04+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/</loc>
     <lastmod>2023-10-16T16:07:04+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/tags/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/tags/</loc>
     <lastmod>2023-10-16T16:07:04+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/</loc>
     <lastmod>2023-10-16T16:07:04+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sSpringcloud/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sSpringcloud/</loc>
     <lastmod>2023-04-15T10:42:05+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sAvailableHealth/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAvailableHealth/</loc>
     <lastmod>2022-10-22T09:33:27+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sCalico1/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sCalico1/</loc>
     <lastmod>2022-08-12T11:55:44+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sVM/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sVM/</loc>
     <lastmod>2022-06-03T17:36:53+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sAdvancedScheduling/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAdvancedScheduling/</loc>
     <lastmod>2022-05-27T18:39:20+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sSecurity/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sSecurity/</loc>
     <lastmod>2022-05-22T12:24:37+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/categories/security/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/categories/security/</loc>
     <lastmod>2022-05-22T12:24:37+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sMultiCluster/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sMultiCluster/</loc>
     <lastmod>2022-05-08T22:14:17+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sCalico/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sCalico/</loc>
     <lastmod>2022-05-03T10:15:18+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/categories/metric/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/categories/metric/</loc>
     <lastmod>2022-04-10T21:58:17+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/tags/prometheus/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/tags/prometheus/</loc>
     <lastmod>2022-04-10T21:58:17+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/categories/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/categories/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/</loc>
     <lastmod>2022-04-10T21:58:17+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/observabilityPrometheus/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/observabilityPrometheus/</loc>
     <lastmod>2022-04-10T21:58:17+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/tags/etcd/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/tags/etcd/</loc>
     <lastmod>2022-04-06T21:19:30+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/categories/etcd/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/categories/etcd/</loc>
     <lastmod>2022-04-06T21:19:30+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/etcd/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/etcd/</loc>
     <lastmod>2022-04-06T21:19:30+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/categories/KV/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/categories/KV/</loc>
     <lastmod>2022-04-06T21:19:30+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
     <lastmod>2022-04-06T21:19:30+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sAvailable/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAvailable/</loc>
     <lastmod>2022-04-05T15:09:31+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sOperator-redis/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sOperator-redis/</loc>
     <lastmod>2022-02-17T22:25:07+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/observabilityPrometheusHA/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/observabilityPrometheusHA/</loc>
     <lastmod>2022-02-11T00:03:55+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sIngressNginx/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sIngressNginx/</loc>
     <lastmod>2022-02-10T22:41:32+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sAppMigrate/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAppMigrate/</loc>
     <lastmod>2022-02-02T22:16:54+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/tags/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/tags/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/</loc>
     <lastmod>2022-01-30T22:24:11+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sObservability/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sObservability/</loc>
     <lastmod>2022-01-30T22:24:11+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sUpgrade/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sUpgrade/</loc>
     <lastmod>2022-01-16T23:15:30+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sSecurityPractice/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sSecurityPractice/</loc>
     <lastmod>2022-01-16T14:09:26+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sCKS/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sCKS/</loc>
     <lastmod>2022-01-15T23:06:15+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sRook/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sRook/</loc>
     <lastmod>2022-01-12T22:43:17+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sDNS/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sDNS/</loc>
     <lastmod>2022-01-12T15:26:32+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sPaaS/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sPaaS/</loc>
     <lastmod>2022-01-12T11:07:23+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/categories/ceph/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/categories/ceph/</loc>
     <lastmod>2022-01-08T21:50:33+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/ceph/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/ceph/</loc>
     <lastmod>2022-01-08T21:50:33+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
     <lastmod>2022-01-08T21:50:33+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/tags/%E5%AD%98%E5%82%A8/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/tags/%E5%AD%98%E5%82%A8/</loc>
     <lastmod>2022-01-08T21:50:33+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/categories/%E5%AD%98%E5%82%A8/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/categories/%E5%AD%98%E5%82%A8/</loc>
     <lastmod>2022-01-08T21:50:33+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sOpenShift/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sOpenShift/</loc>
     <lastmod>2022-01-05T21:45:05+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sHA/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sHA/</loc>
     <lastmod>2022-01-02T22:09:31+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8s-operator/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8s-operator/</loc>
     <lastmod>2021-12-30T20:42:36+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sMultiTenancy/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sMultiTenancy/</loc>
     <lastmod>2021-10-18T21:51:13+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sAbandonDocker/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAbandonDocker/</loc>
     <lastmod>2021-06-01T21:57:51+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/categories/kernel/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/categories/kernel/</loc>
     <lastmod>2020-08-16T12:27:46+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/tags/linux/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/tags/linux/</loc>
     <lastmod>2020-08-16T12:27:46+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/categories/linux/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/categories/linux/</loc>
     <lastmod>2020-08-16T12:27:46+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/categories/%E5%8F%82%E6%95%B0/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/categories/%E5%8F%82%E6%95%B0/</loc>
     <lastmod>2020-08-16T12:27:46+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/linuxKernelParam/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/linuxKernelParam/</loc>
     <lastmod>2020-08-16T12:27:46+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sRuntime/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sRuntime/</loc>
     <lastmod>2019-11-19T15:21:19+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sOperator/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sOperator/</loc>
     <lastmod>2019-11-19T10:59:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sAutoScale/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAutoScale/</loc>
     <lastmod>2019-11-16T11:55:37+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sRBAC/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sRBAC/</loc>
     <lastmod>2019-11-14T17:16:13+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sService/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sService/</loc>
     <lastmod>2019-11-04T11:56:32+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sStorage/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sStorage/</loc>
     <lastmod>2019-09-01T17:39:12+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sDeclarativeAPI/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sDeclarativeAPI/</loc>
     <lastmod>2019-08-29T18:15:25+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sNetwork/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sNetwork/</loc>
     <lastmod>2019-08-23T19:04:40+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/cloudNative/k8sScheduler/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sScheduler/</loc>
     <lastmod>2019-06-09T12:27:44+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/www6vCloudNative/ref/SUMMARY/</loc>
+    <loc>http://localhost:1313/www6vKubernetes/ref/SUMMARY/</loc>
   </url>
 </urlset>

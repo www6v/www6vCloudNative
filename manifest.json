@@ -1,14 +1,14 @@
 {
   "name": "Cloud Native",
   "short_name": "Cloud Native",
-  "start_url": "/www6vCloudNative/",
-  "scope": "/www6vCloudNative/",
+  "start_url": "/www6vKubernetes/",
+  "scope": "/www6vKubernetes/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
   "icons": [
     {
-      "src": "/www6vCloudNative/favicon.svg",
+      "src": "/www6vKubernetes/favicon.svg",
       "sizes": "512x512"
     }
   ]
