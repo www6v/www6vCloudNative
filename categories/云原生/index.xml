@@ -55,7 +55,7 @@
       <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Container-Runtime/k8sRuntime/</link>
       <pubDate>Tue, 19 Nov 2019 15:21:19 +0000</pubDate>
       <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Container-Runtime/k8sRuntime/</guid>
-      <description>&#xA;一. 虚拟化技术 # runc： OSContainerRuntime（基于进程隔离技术） kvm: HyperRuntime（基于Hypervisor技术） runv： UnikernelRuntime（基于unikernel） 二. CRI架构 # CRI架构&#xA;docker调用的链路：dockershim =&amp;gt; dockerd =&amp;gt; Containerd =&amp;gt; runc&#xA;Containerd调用的链路：Containerd &amp;ndash;&amp;gt; shim v2 &amp;ndash;&amp;gt; runtimes&#xA;Docker 作为 K8S 容器运行时，调用关系如下： kubelet &amp;ndash;&amp;gt; docker shim （在 kubelet 进程中） &amp;ndash;&amp;gt; dockerd &amp;ndash;&amp;gt; containerd&#xA;Containerd 作为 K8S 容器运行时，调用关系如下： kubelet &amp;ndash;&amp;gt; cri plugin（在 containerd 进程中） &amp;ndash;&amp;gt; containerd&#xA;high level运行时： Dockershim， containerd， CRI-O&#xA;low level运行时：&#xA;runc， kata， gVisor runc：运行可信容器（弱隔离但性能好）; runv: 运行不可信容器（强隔离安全性好）; 参考: # CRI - Container Runtime Interface（容器运行时接口） 为Kubernetes选择合适的容器运行时 模块七 腾讯云 </description>
+      <description>&#xA;一. 虚拟化技术 # runc： OSContainerRuntime（基于进程隔离技术） kvm: HyperRuntime（基于Hypervisor技术） runv： UnikernelRuntime（基于unikernel） 二. CRI架构 # CRI架构&#xA;docker调用的链路：dockershim =&amp;gt; dockerd =&amp;gt; Containerd =&amp;gt; runc&#xA;Containerd调用的链路：Containerd &amp;ndash;&amp;gt; shim v2 &amp;ndash;&amp;gt; runtimes&#xA;Docker 作为 K8S 容器运行时，调用关系如下： kubelet &amp;ndash;&amp;gt; docker shim （在 kubelet 进程中） &amp;ndash;&amp;gt; dockerd &amp;ndash;&amp;gt; containerd&#xA;Containerd 作为 K8S 容器运行时，调用关系如下： kubelet &amp;ndash;&amp;gt; cri plugin（在 containerd 进程中） &amp;ndash;&amp;gt; containerd&#xA;high level运行时： Dockershim， containerd， CRI-O&#xA;low level运行时：&#xA;runc， kata， gVisor runc：运行可信容器（弱隔离但性能好）; runv: 运行不可信容器（强隔离安全性好）; 参考 # CRI - Container Runtime Interface（容器运行时接口） 为Kubernetes选择合适的容器运行时 模块七 腾讯云 </description>
     </item>
     <item>
       <title>Kubernetes自动伸缩和HPA</title>
@@ -153,7 +153,7 @@
       <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Container-Runtime/k8sAbandonDocker/</link>
       <pubDate>Tue, 01 Jun 2021 21:57:51 +0000</pubDate>
       <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Container-Runtime/k8sAbandonDocker/</guid>
-      <description>&#xA;1. # 如果以 kubelet 调用 CRI 为起点，OCI 的 runC 调用为终点，三种模式经历的可执行程序分别是：&#xA;dockershim 模式：dockershim(*)-&amp;gt;dockd-&amp;gt;containerd-&amp;gt;containerd-shim&#xA;cri-containerd 模式：cri-containerd(*)-&amp;gt; containerd-&amp;gt;containerd-shim&#xA;cri-o 模式：cri-o&#xA;K8S弃用Docker是指弃用Docker daemon&#xA;RedHat 推崇的 cri-o → Podman&#xA;2. # 容器引擎可选的替代方案大概有以下几种：&#xA;containerd CRI-O → Podman, Red Hat gVisor → “guest 内核”层 kata-containers → 安全 Nabla 参考： # https://www.infoq.cn/article/VasFWOChD6JoL5avhfAz https://www.zhihu.com/question/433184969 </description>
+      <description>&#xA;1. # 如果以 kubelet 调用 CRI 为起点，OCI 的 runC 调用为终点，三种模式经历的可执行程序分别是：&#xA;dockershim 模式：dockershim(*)-&amp;gt;dockd-&amp;gt;containerd-&amp;gt;containerd-shim&#xA;cri-containerd 模式：cri-containerd(*)-&amp;gt; containerd-&amp;gt;containerd-shim&#xA;cri-o 模式：cri-o&#xA;K8S弃用Docker是指弃用Docker daemon&#xA;RedHat 推崇的 cri-o → Podman&#xA;2. # 容器引擎可选的替代方案大概有以下几种：&#xA;containerd CRI-O → Podman, Red Hat gVisor → “guest 内核”层 kata-containers → 安全 Nabla 参考 # https://www.infoq.cn/article/VasFWOChD6JoL5avhfAz https://www.zhihu.com/question/433184969 </description>
     </item>
     <item>
       <title>Kubernetes Operator-Etcd</title>
