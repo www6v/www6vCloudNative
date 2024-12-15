@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="关键词 # 资源模型, 资源管理
+资源模型 # requests limits # CPU资源被称作 “可压缩资源”: Pod 只会“饥饿”，但不会退出. 内存资源被称作“不可压缩资源”: Pod 会因为 OOM（Out-Of-Memory）被内核杀掉。
+Kubernetes 这种对 CPU 和内存资源限额的设计，实际上参考了 Borg 论文中对**“动态资源边 界”**的定义，既：容器化作业在提交时所设置的资源边界，并不一定是调度系统所必须严格遵守 的，这是因为在实际场景中，大多数作业使用到的资源其实远小于它所请求的资源限额。
+而 Kubernetes 的 requests&#43;limits 的做法，其实就是上述思路的一个简化版：用户在提交 Pod 时，可以声明一个相对较小的 requests 值供调度器使用，而 Kubernetes 真正设置给容器 Cgroups 的，则是相对较大的 limits 值。不难看到，这跟 Borg 的思路相通的。
+limits: 而在真正设置 Cgroups 限制的时候，kubelet 则会按照 limits 的值来进行设置 requests: 在调度的时候，kube-scheduler 只会按照 requests 的值进行计算
+QoS # Guaranteed: requests == limits Burstable: 至少有一个 Container 设置了 requests BestEffort: 没有设置 requests，也没有设置 limits">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://www6v.github.io/www6vKubernetes/docs/Kubernetes/orchestrate/k8sResouceModel/">
+  <meta property="og:site_name" content="Cloud Native">
+  <meta property="og:title" content="Kubenetes资源模型">
+  <meta property="og:description" content="关键词 # 资源模型, 资源管理
+资源模型 # requests limits # CPU资源被称作 “可压缩资源”: Pod 只会“饥饿”，但不会退出. 内存资源被称作“不可压缩资源”: Pod 会因为 OOM（Out-Of-Memory）被内核杀掉。
+Kubernetes 这种对 CPU 和内存资源限额的设计，实际上参考了 Borg 论文中对**“动态资源边 界”**的定义，既：容器化作业在提交时所设置的资源边界，并不一定是调度系统所必须严格遵守 的，这是因为在实际场景中，大多数作业使用到的资源其实远小于它所请求的资源限额。
+而 Kubernetes 的 requests&#43;limits 的做法，其实就是上述思路的一个简化版：用户在提交 Pod 时，可以声明一个相对较小的 requests 值供调度器使用，而 Kubernetes 真正设置给容器 Cgroups 的，则是相对较大的 limits 值。不难看到，这跟 Borg 的思路相通的。
+limits: 而在真正设置 Cgroups 限制的时候，kubelet 则会按照 limits 的值来进行设置 requests: 在调度的时候，kube-scheduler 只会按照 requests 的值进行计算
+QoS # Guaranteed: requests == limits Burstable: 至少有一个 Container 设置了 requests BestEffort: 没有设置 requests，也没有设置 limits">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+<title>Kubenetes资源模型 | Cloud Native</title>
+<link rel="icon" href="/www6vKubernetes/favicon.png" >
+<link rel="manifest" href="/www6vKubernetes/manifest.json">
+<link rel="canonical" href="https://www6v.github.io/www6vKubernetes/docs/Kubernetes/orchestrate/k8sResouceModel/">
+<link rel="stylesheet" href="/www6vKubernetes/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
+  <script defer src="/www6vKubernetes/fuse.min.js"></script>
+  <script defer src="/www6vKubernetes/en.search.min.e641438d24d6dff84e5b305052bcc620ab71d6b6948ca121472191dfd9b40597.js" integrity="sha256-5kFDjSTW3/hOWzBQUrzGIKtx1raUjKEhRyGR39m0BZc=" crossorigin="anonymous"></script>
+
+  
+
+<link rel="alternate" type="application/rss+xml" href="https://www6v.github.io/www6vKubernetes/docs/Kubernetes/orchestrate/k8sResouceModel/index.xml" title="Cloud Native" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/www6vKubernetes/"><span>Cloud Native</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Kubernetes</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>编排原理</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sStatefulSet/" class="">Kubernetes StatefulSet原理和源码</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sResouceModel/" class="active">Kubenetes资源模型</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Operator &amp; Controller</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8s-operator/" class="">Kubernetes Operator-kubebuilder</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sOperator/" class="">Kubernetes Operator-Etcd</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sDeclarativeAPI/" class="">Kubernetes声明式API</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sOperator-redis/" class="">Kubernetes Operator-Redis</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sAdmissionWebhook/" class="">K8s  AdmissionWebhook</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Container Runtime</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Container-Runtime/k8sRuntime/" class="">Kubernetes Runtime</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Container-Runtime/k8sAbandonDocker/" class="">K8S 弃用Docker</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>网络</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Network/k8sNetwork/" class="">Kubernetes网络</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Network/k8sCalico/" class="">Calico</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Network/k8sCalico1/" class="">Calico</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>服务和DNS</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sService/" class="">Kubernetes服务</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sDNS/" class="">Kubernetes CoreDNS</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sIngressNginx/" class="">Kubernetes Nginx Ingress</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>存储</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Storage/k8sStorage/" class="">Kubernetes存储</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Storage/k8sRook/" class="">Kubernetes Rook</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Storage/ceph/" class="">Ceph 总结</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Storage/etcd/" class="">etcd 总结</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>调度</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Schedule/k8sScheduler/" class="">Kubernetes调度器</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Schedule/k8sAdvancedScheduling/" class="">Kubernetes 高级调度</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>监控和AutoScale</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/k8sAutoScale/" class="">Kubernetes自动伸缩和HPA</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/observabilityPrometheus/" class="">可观测性-Prometheus</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/observabilityPrometheusHA/" class="">可观测性-Prometheus  HA</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/k8sObservability/" class="">可观测性-Kubernetes</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>生产化</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Available</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Available/k8sHA/" class="">K8S高可用-控制面</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Available/k8sAvailable/" class="">K8S高可用-零停机[自主中断]</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Available/k8sAvailableHealth/" class="">K8S高可用-零停机[探针]</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>集成</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Integration/k8sAppMigrate/" class="">K8S 应用迁移至K8S</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Integration/k8sSpringcloud/" class="">K8s 集成Springcloud</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/linuxKernelParam/" class="">虚拟机和容器中的内核参数 kernel</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/k8sUpgrade/" class="">Kubernetes 升级upgrade</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>PaaS</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sPaaS/" class="">Kubernetes PaaS平台</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sOpenShift/" class="">Kubernetes OpenShift</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sMultiTenancy/" class="">Kubernetes 多租户</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sRBAC/" class="">Kubenetes RBAC</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sMultiCluster/" class="">Kubernetes 多集群管理</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sVM/" class="">Kubernetes和VM</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>安全</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Security/k8sSecurity/" class="">Kubernetes安全-Security</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Security/k8sCKS/" class="">Kubernetes CKS</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Security/k8sSecurityPractice/" class="">Kubernetes 安全实践</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/www6vKubernetes/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Kubenetes资源模型</h3>
+
+  <label for="toc-control">
+    
+    <img src="/www6vKubernetes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#关键词">关键词</a></li>
+        <li><a href="#资源模型">资源模型</a>
+          <ul>
+            <li><a href="#requests-limits">requests limits</a></li>
+            <li><a href="#qos">QoS</a></li>
+            <li><a href="#cpu-cgroup配置">CPU CGroup配置</a></li>
+            <li><a href="#cgroup-v2">CGroup v2</a></li>
+          </ul>
+        </li>
+        <li><a href="#驱逐策略--oom-killer">驱逐策略 &amp;&amp; OOM Killer</a>
+          <ul>
+            <li><a href="#驱逐">驱逐</a></li>
+            <li><a href="#内存oom-killer行为">内存OOM Killer行为</a></li>
+          </ul>
+        </li>
+        <li><a href="#参考">参考</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p></p>
+<!-- more -->
+<h2 id="关键词">
+  关键词
+  <a class="anchor" href="#%e5%85%b3%e9%94%ae%e8%af%8d">#</a>
+</h2>
+<p>资源模型, 资源管理</p>
+<p><img src="./k8sResouceModel/k8sResouceModel.jpg" alt="Kubenetes资源模型" /></p>
+<h2 id="资源模型">
+  资源模型
+  <a class="anchor" href="#%e8%b5%84%e6%ba%90%e6%a8%a1%e5%9e%8b">#</a>
+</h2>
+<h3 id="requests-limits">
+  requests limits
+  <a class="anchor" href="#requests-limits">#</a>
+</h3>
+<p><strong>CPU资源</strong>被称作 “可压缩资源”: Pod 只会“饥饿”，但不会退出.
+<strong>内存资源</strong>被称作“不可压缩资源”: Pod 会因为 OOM（Out-Of-Memory）被内核杀掉。</p>
+<p>Kubernetes 这种对 CPU 和内存资源限额的设计，实际上参考了 Borg 论文中对**“动态资源边
+界”**的定义，既：容器化作业在提交时所设置的资源边界，并不一定是调度系统所必须严格遵守
+的，这是因为在实际场景中，大多数作业使用到的资源其实远小于它所请求的资源限额。</p>
+<p>而 Kubernetes 的 requests+limits 的做法，其实就是上述思路的一个简化版：用户在提交
+Pod 时，可以声明一个相对<strong>较小的 requests</strong> 值供调度器使用，而 Kubernetes 真正设置给容器
+Cgroups 的，则是相对<strong>较大的 limits 值</strong>。不难看到，这跟 Borg 的思路相通的。</p>
+<p><strong>limits</strong>: 而在真正设置 Cgroups 限制的时候，kubelet 则会按照 limits 的值来进行设置
+<strong>requests</strong>: 在调度的时候，kube-scheduler 只会按照 requests 的值进行计算</p>
+<h3 id="qos">
+  QoS
+  <a class="anchor" href="#qos">#</a>
+</h3>
+<p><strong>Guaranteed</strong>:  requests == limits
+<strong>Burstable</strong>:  至少有一个 Container 设置了 requests
+<strong>BestEffort</strong>:  没有设置 requests，也没有设置 limits</p>
+<p><strong>cpuset</strong>: 把容器绑定到某个 CPU 的核上，而不是像 cpushare 那样共享 CPU 的计算能力.</p>
+<ul>
+<li><strong>cpuset配置</strong>:</li>
+<li>Guaranteed</li>
+<li>CPU 资源的 requests == limits</li>
+</ul>
+<h3 id="cpu-cgroup配置">
+  CPU CGroup配置
+  <a class="anchor" href="#cpu-cgroup%e9%85%8d%e7%bd%ae">#</a>
+</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">CGroup类型</th>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">QoS</th>
+<th style="text-align:center">值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">容器的CGroup</td>
+<td style="text-align:center">cpu.shares</td>
+<td style="text-align:center">BestEffort <br> Burstable <br> Guaranteed</td>
+<td style="text-align:center">2  <br> requests.cpu * 1024 <br> requests.cpu * 1024</td>
+</tr>
+<tr>
+<td style="text-align:center">容器的CGroup</td>
+<td style="text-align:center">cpu.cfs_quota_us</td>
+<td style="text-align:center">BestEffort <br> Burstable <br> Guaranteed</td>
+<td style="text-align:center">-1 <br> limits.cpu * 100 <br> limits.cpu * 100</td>
+</tr>
+<tr>
+<td style="text-align:center">Pod的CGroup</td>
+<td style="text-align:center">cpu.shares</td>
+<td style="text-align:center">BestEffort <br> Burstable <br> Guaranteed</td>
+<td style="text-align:center">2 <br> Pod所有容器(requests.cpu * 1024)之和; <br> Pod所有容器(requests.cpu * 1024)之和;</td>
+</tr>
+<tr>
+<td style="text-align:center">Pod的CGroup</td>
+<td style="text-align:center">cpu.cfs_quota_us</td>
+<td style="text-align:center">BestEffort <br> Burstable <br> Guaranteed</td>
+<td style="text-align:center">-1 <br> Pod所有容器(limits.cpu * 100)之和; <br> Pod所有容器(limits.cpu * 100)之和;</td>
+</tr>
+</tbody>
+</table>
+<p>在cgroup中的设置</p>
+<h5 id="requestscpu">
+  requests.cpu
+  <a class="anchor" href="#requestscpu">#</a>
+</h5>
+<p>requests.cpu=250m
+cpu.shares = (250/1000)/1024
+cpu.shares 默认 则是 1024</p>
+<h5 id="limitscpu">
+  limits.cpu
+  <a class="anchor" href="#limitscpu">#</a>
+</h5>
+<p>limits.cpu=500m
+cpu.cfs_quota_us =  (500/1000)* 100ms
+cpu.cfs_period_us 的值始终是 100ms</p>
+<h3 id="cgroup-v2">
+  CGroup v2
+  <a class="anchor" href="#cgroup-v2">#</a>
+</h3>
+<h2 id="驱逐策略--oom-killer">
+  驱逐策略 &amp;&amp; OOM Killer
+  <a class="anchor" href="#%e9%a9%b1%e9%80%90%e7%ad%96%e7%95%a5--oom-killer">#</a>
+</h2>
+<h3 id="驱逐">
+  驱逐
+  <a class="anchor" href="#%e9%a9%b1%e9%80%90">#</a>
+</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">kubelet参数</th>
+<th style="text-align:center">分类</th>
+<th style="text-align:center">驱逐方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">evictionSoft</td>
+<td style="text-align:center">软驱逐</td>
+<td style="text-align:center">有宽限期， pod优雅终止， 不会影响应用。</td>
+</tr>
+<tr>
+<td style="text-align:center">evictionHard</td>
+<td style="text-align:center">硬驱逐</td>
+<td style="text-align:center">没有宽限期， 可能影响应用。</td>
+</tr>
+</tbody>
+</table>
+<h5 id="基于内存压力的驱逐">
+  基于内存压力的驱逐
+  <a class="anchor" href="#%e5%9f%ba%e4%ba%8e%e5%86%85%e5%ad%98%e5%8e%8b%e5%8a%9b%e7%9a%84%e9%a9%b1%e9%80%90">#</a>
+</h5>
+<pre><code>MemoryPressure = true
+驱逐规则
+</code></pre>
+<h5 id="基于磁盘压力的驱逐">
+  基于磁盘压力的驱逐
+  <a class="anchor" href="#%e5%9f%ba%e4%ba%8e%e7%a3%81%e7%9b%98%e5%8e%8b%e5%8a%9b%e7%9a%84%e9%a9%b1%e9%80%90">#</a>
+</h5>
+<pre><code>DiskPressure = true
+驱逐规则
+</code></pre>
+<p><strong>Eviction</strong> 在 Kubernetes 里其实分为 Soft 和 Hard 两种模式。
+<strong>Soft Eviction模式</strong>： 允许你为 Eviction 过程设置一段“优雅时间”；
+<strong>Hard Eviction模式</strong>： Eviction 过程就会在阈值达到之后立刻开始；</p>
+<p><strong>Eviction时机</strong>：
+BestEffort &gt; Burstable &gt; Guaranteed</p>
+<h3 id="内存oom-killer行为">
+  内存OOM Killer行为
+  <a class="anchor" href="#%e5%86%85%e5%ad%98oom-killer%e8%a1%8c%e4%b8%ba">#</a>
+</h3>
+<p>按进程的oom_score来进行优先级排序，选择待终止的进程，oom_score越高， 越容器被终止。</p>
+<p>oom_score = (内存占总内存的比例值) * 10 + oom_score_adj</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Pod QoS类型</th>
+<th style="text-align:center">oom_score_adj</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Guaranteed</td>
+<td style="text-align:center">-998 (不会被kill)</td>
+</tr>
+<tr>
+<td style="text-align:center">BestEffort</td>
+<td style="text-align:center">1000 (优先被kill)</td>
+</tr>
+<tr>
+<td style="text-align:center">Burstable</td>
+<td style="text-align:center">min(max(2,1000 - (1000 * memoryRequestsBytes)/machineMemoryCapacityBytes), 999)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="参考">
+  参考
+  <a class="anchor" href="#%e5%8f%82%e8%80%83">#</a>
+</h2>
+<ol>
+<li><a href="http://product.dangdang.com/26439199.html?ref=book-65152-9168_1-529800-3">《Kubenetes in Action》</a>  七牛容器云团队</li>
+<li><a href="">深入剖析Kubernetes - 40  Kubernetes的资源模型与资源管理</a> 张磊</li>
+<li>&laquo;模块九-生产化集群的管理&raquo; 孟凡杰</li>
+</ol>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#关键词">关键词</a></li>
+        <li><a href="#资源模型">资源模型</a>
+          <ul>
+            <li><a href="#requests-limits">requests limits</a></li>
+            <li><a href="#qos">QoS</a></li>
+            <li><a href="#cpu-cgroup配置">CPU CGroup配置</a></li>
+            <li><a href="#cgroup-v2">CGroup v2</a></li>
+          </ul>
+        </li>
+        <li><a href="#驱逐策略--oom-killer">驱逐策略 &amp;&amp; OOM Killer</a>
+          <ul>
+            <li><a href="#驱逐">驱逐</a></li>
+            <li><a href="#内存oom-killer行为">内存OOM Killer行为</a></li>
+          </ul>
+        </li>
+        <li><a href="#参考">参考</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

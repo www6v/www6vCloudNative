@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一. Kubenetes服务 # Kubernetes服务发现架构
+ClusterIP 模式的 Service: 稳定的 IP 地址，即 VIP. ClusterIP是VIP, 虚拟IP. Headless Service: 稳定的 DNS 名字, 名字是通过 Pod 名字和 Service 名字拼接出来. 1.1 服务对外暴露方式 # NodePort 四层 一定要对流出的包做 SNAT操作[2][6] client\ ^\ \v \node 1 &lt;--- node 2| ^ SNAT| | ---&gt;v |endpoint 获取真实客户端IP, 设置Service 的 spec.externalTrafficPolicy 字段设置为 local，[2][6] client^ / \/ / \/ v Xnode 1 node 2^ || || vendpoint Service LoadBalancer 四层 LoadBalancer类型的Service被提交后，Kubernetes就会调用CloudProvider[5]在公有云上为你创建一个负载均衡服务，并且把被代理的 Pod 的 IP地址配置给负载均衡服务做后端.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://www6v.github.io/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sService/">
+  <meta property="og:site_name" content="Cloud Native">
+  <meta property="og:title" content="Kubernetes服务">
+  <meta property="og:description" content="一. Kubenetes服务 # Kubernetes服务发现架构
+ClusterIP 模式的 Service: 稳定的 IP 地址，即 VIP. ClusterIP是VIP, 虚拟IP. Headless Service: 稳定的 DNS 名字, 名字是通过 Pod 名字和 Service 名字拼接出来. 1.1 服务对外暴露方式 # NodePort 四层 一定要对流出的包做 SNAT操作[2][6] client\ ^\ \v \node 1 &lt;--- node 2| ^ SNAT| | ---&gt;v |endpoint 获取真实客户端IP, 设置Service 的 spec.externalTrafficPolicy 字段设置为 local，[2][6] client^ / \/ / \/ v Xnode 1 node 2^ || || vendpoint Service LoadBalancer 四层 LoadBalancer类型的Service被提交后，Kubernetes就会调用CloudProvider[5]在公有云上为你创建一个负载均衡服务，并且把被代理的 Pod 的 IP地址配置给负载均衡服务做后端.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+<title>Kubernetes服务 | Cloud Native</title>
+<link rel="icon" href="/www6vKubernetes/favicon.png" >
+<link rel="manifest" href="/www6vKubernetes/manifest.json">
+<link rel="canonical" href="https://www6v.github.io/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sService/">
+<link rel="stylesheet" href="/www6vKubernetes/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
+  <script defer src="/www6vKubernetes/fuse.min.js"></script>
+  <script defer src="/www6vKubernetes/en.search.min.e641438d24d6dff84e5b305052bcc620ab71d6b6948ca121472191dfd9b40597.js" integrity="sha256-5kFDjSTW3/hOWzBQUrzGIKtx1raUjKEhRyGR39m0BZc=" crossorigin="anonymous"></script>
+
+  
+
+<link rel="alternate" type="application/rss+xml" href="https://www6v.github.io/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sService/index.xml" title="Cloud Native" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/www6vKubernetes/"><span>Cloud Native</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Kubernetes</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>编排原理</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sStatefulSet/" class="">Kubernetes StatefulSet原理和源码</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sResouceModel/" class="">Kubenetes资源模型</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Operator &amp; Controller</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8s-operator/" class="">Kubernetes Operator-kubebuilder</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sOperator/" class="">Kubernetes Operator-Etcd</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sDeclarativeAPI/" class="">Kubernetes声明式API</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sOperator-redis/" class="">Kubernetes Operator-Redis</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sAdmissionWebhook/" class="">K8s  AdmissionWebhook</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Container Runtime</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Container-Runtime/k8sRuntime/" class="">Kubernetes Runtime</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Container-Runtime/k8sAbandonDocker/" class="">K8S 弃用Docker</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>网络</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Network/k8sNetwork/" class="">Kubernetes网络</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Network/k8sCalico/" class="">Calico</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Network/k8sCalico1/" class="">Calico</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>服务和DNS</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sService/" class="active">Kubernetes服务</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sDNS/" class="">Kubernetes CoreDNS</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sIngressNginx/" class="">Kubernetes Nginx Ingress</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>存储</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Storage/k8sStorage/" class="">Kubernetes存储</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Storage/k8sRook/" class="">Kubernetes Rook</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Storage/ceph/" class="">Ceph 总结</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Storage/etcd/" class="">etcd 总结</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>调度</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Schedule/k8sScheduler/" class="">Kubernetes调度器</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Schedule/k8sAdvancedScheduling/" class="">Kubernetes 高级调度</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>监控和AutoScale</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/k8sAutoScale/" class="">Kubernetes自动伸缩和HPA</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/observabilityPrometheus/" class="">可观测性-Prometheus</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/observabilityPrometheusHA/" class="">可观测性-Prometheus  HA</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/k8sObservability/" class="">可观测性-Kubernetes</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>生产化</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Available</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Available/k8sHA/" class="">K8S高可用-控制面</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Available/k8sAvailable/" class="">K8S高可用-零停机[自主中断]</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Available/k8sAvailableHealth/" class="">K8S高可用-零停机[探针]</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>集成</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Integration/k8sAppMigrate/" class="">K8S 应用迁移至K8S</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Integration/k8sSpringcloud/" class="">K8s 集成Springcloud</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/linuxKernelParam/" class="">虚拟机和容器中的内核参数 kernel</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/k8sUpgrade/" class="">Kubernetes 升级upgrade</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>PaaS</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sPaaS/" class="">Kubernetes PaaS平台</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sOpenShift/" class="">Kubernetes OpenShift</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sMultiTenancy/" class="">Kubernetes 多租户</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sRBAC/" class="">Kubenetes RBAC</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sMultiCluster/" class="">Kubernetes 多集群管理</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sVM/" class="">Kubernetes和VM</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>安全</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Security/k8sSecurity/" class="">Kubernetes安全-Security</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Security/k8sCKS/" class="">Kubernetes CKS</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Security/k8sSecurityPractice/" class="">Kubernetes 安全实践</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/www6vKubernetes/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Kubernetes服务</h3>
+
+  <label for="toc-control">
+    
+    <img src="/www6vKubernetes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一-kubenetes服务">一. Kubenetes服务</a>
+          <ul>
+            <li><a href="#11--服务对外暴露方式">1.1  服务对外暴露方式</a></li>
+            <li><a href="#12-通过dns发现服务">1.2 通过DNS发现服务</a></li>
+            <li><a href="#13-clusterip模式的yaml配置">1.3 ClusterIP模式的yaml配置</a></li>
+          </ul>
+        </li>
+        <li><a href="#二-kubenetes服务工作原理">二. Kubenetes服务工作原理</a>
+          <ul>
+            <li></li>
+          </ul>
+        </li>
+        <li><a href="#参考">参考:</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p></p>
+<!-- more -->
+<h2 id="一-kubenetes服务">
+  一. Kubenetes服务
+  <a class="anchor" href="#%e4%b8%80-kubenetes%e6%9c%8d%e5%8a%a1">#</a>
+</h2>
+<p><img src="./k8sService/k8sService.jpg" alt="Kubernetes服务" /></p>
+<p><img src="https://user-images.githubusercontent.com/5608425/68105556-d4257280-ff19-11e9-9d19-f18f5c454f34.jpg" alt="Kubernetes服务发现架构" />
+Kubernetes服务发现架构</p>
+<ul>
+<li>ClusterIP 模式的 Service: <strong>稳定的 IP 地址</strong>，即 VIP.  ClusterIP是VIP, 虚拟IP.</li>
+<li>Headless Service: <strong>稳定的 DNS 名字</strong>, 名字是通过 Pod 名字和 Service 名字拼接出来.</li>
+</ul>
+<h3 id="11--服务对外暴露方式">
+  1.1  服务对外暴露方式
+  <a class="anchor" href="#11--%e6%9c%8d%e5%8a%a1%e5%af%b9%e5%a4%96%e6%9a%b4%e9%9c%b2%e6%96%b9%e5%bc%8f">#</a>
+</h3>
+<ol>
+<li>NodePort  四层
+<img src="https://user-images.githubusercontent.com/5608425/68234082-7d17be80-003b-11ea-891f-90a9e174bbc8.png" alt="node-port" /></li>
+</ol>
+<ul>
+<li>一定要对流出的包做 SNAT操作[2][6]</li>
+</ul>
+<pre tabindex="0"><code>           client
+             \ ^
+              \ \
+               v \
+   node 1 &lt;--- node 2
+   | ^    SNAT
+   | |    ---&gt;
+   v |
+ endpoint
+</code></pre><ul>
+<li>获取真实客户端IP, 设置Service 的 spec.externalTrafficPolicy 字段设置为 local，[2][6]</li>
+</ul>
+<pre tabindex="0"><code>    client
+    ^ / \
+   / /   \
+  / v     X
+node 1   node 2
+  ^ |
+  | |
+  | v
+endpoint
+</code></pre><ol start="2">
+<li>Service LoadBalancer  四层
+<img src="https://user-images.githubusercontent.com/5608425/68290997-e216f700-00c3-11ea-82d3-b5e3f4c565a1.jpg" alt="loadbalancer" /></li>
+</ol>
+<p><strong>LoadBalancer</strong>类型的Service被提交后，Kubernetes就会调用<strong>CloudProvider</strong>[5]在公有云上为你创建一个负载均衡服务，并且把被代理的 Pod 的 IP地址配置给负载均衡服务做后端.</p>
+<ol start="3">
+<li>
+<p>ExternalName
+ExternalName 类型的 Service，其实是在 kubedns里为你添加了一条 CNAME 记录.
+1.7 之后支持的一个新特性.</p>
+</li>
+<li>
+<p>Ingress Controller  七层
+<img src="https://user-images.githubusercontent.com/5608425/68234079-7c7f2800-003b-11ea-8ada-2c034db8b25a.png" alt="ingress-1" />
+<img src="https://user-images.githubusercontent.com/5608425/68234081-7c7f2800-003b-11ea-804c-1c5d87164d06.png" alt="ingress-2" /></p>
+</li>
+</ol>
+<ul>
+<li>Ingress 服务: 全局的、为了代理不同后端 Service 而设置的负载均衡服务.</li>
+<li>Ingress 对象，其实就是 Kubernetes 项目对“反向代理”的一种抽象。</li>
+<li>Ingress Controller: Nginx、HAProxy、Envoy、Traefik</li>
+</ul>
+<p><strong>Ingress controller</strong></p>
+<p>为了使 Ingress 正常工作，集群中必须运行 Ingress controller。 这与其他类型的控制器不同，其他类型的控制器通常作为 kube-controller-manager 二进制文件的一部分运行，在集群启动时自动启动。 你需要选择最适合自己集群的 Ingress controller 或者自己实现一个。</p>
+<ul>
+<li>Kubernetes 当前支持并维护 GCE 和 nginx 两种 controller</li>
+<li>F5（公司）支持并维护 F5 BIG-IP Controller for Kubernetes</li>
+<li>Kong 同时支持并维护 社区版 与 企业版 的 Kong Ingress Controller for Kubernetes</li>
+<li>Traefik 是功能齐全的 ingress controller（Let’s Encrypt, secrets, http2, websocket…）, Containous 也对其提供商业支持。</li>
+<li>Istio 使用 CRD Gateway 来 控制 Ingress 流量。</li>
+</ul>
+<h3 id="12-通过dns发现服务">
+  1.2 通过DNS发现服务
+  <a class="anchor" href="#12-%e9%80%9a%e8%bf%87dns%e5%8f%91%e7%8e%b0%e6%9c%8d%e5%8a%a1">#</a>
+</h3>
+<blockquote>
+<p>每个Service对象相关的DNS记录有两个：
+{SVCNAME}.{NAMESPACE}.{CLUSTER_DOMAIN}
+{SVCNAME}.{NAMESPACE}.svc.{CLUSTER_DOMAIN}</p>
+</blockquote>
+<pre tabindex="0"><code>root@kubia-9nvx7:/# cat /etc/resolv.conf
+nameserver 172.17.0.2
+search default.svc.cluster.local svc.cluster.local cluster.local
+options ndots:5
+</code></pre><pre tabindex="0"><code>（1）拥有ClusterIP的Service资源，要具有以下类型的资源记录
+A记录：&lt;service&gt;.&lt;ns&gt;.svc.&lt;zone&gt;. &lt;ttl&gt;  IN  A  &lt;cluster-ip&gt;
+
+（2）Headless类型的Service资源，要具有以下类型的资源记录
+A记录：&lt;service&gt;.&lt;ns&gt;.svc.&lt;zone&gt;. &lt;ttl&gt; IN A &lt;endpoint-ip&gt;
+
+（3）ExternalName类型的Service资源，要具有CNAME类型的资源记录
+CNAME记录：&lt;service&gt;.&lt;ns&gt;.svc.&lt;zone&gt;. &lt;ttl&gt; IN CNAME &lt;extname&gt;.
+</code></pre><h3 id="13-clusterip模式的yaml配置">
+  1.3 ClusterIP模式的yaml配置
+  <a class="anchor" href="#13-clusterip%e6%a8%a1%e5%bc%8f%e7%9a%84yaml%e9%85%8d%e7%bd%ae">#</a>
+</h3>
+<p>Service（接口声明） + Deployment（ endpoint 接口实现）</p>
+<h2 id="二-kubenetes服务工作原理">
+  二. Kubenetes服务工作原理
+  <a class="anchor" href="#%e4%ba%8c-kubenetes%e6%9c%8d%e5%8a%a1%e5%b7%a5%e4%bd%9c%e5%8e%9f%e7%90%86">#</a>
+</h2>
+<ul>
+<li>Service是由<strong>kube-proxy</strong>组件，加上<strong>iptables</strong>来共同实现的。</li>
+<li>kube-proxy的作用: 网络配置</li>
+</ul>
+<h5 id="21-kube-proxy">
+  2.1 kube-proxy
+  <a class="anchor" href="#21-kube-proxy">#</a>
+</h5>
+<h5 id="userspace-代理模式">
+  userspace 代理模式
+  <a class="anchor" href="#userspace-%e4%bb%a3%e7%90%86%e6%a8%a1%e5%bc%8f">#</a>
+</h5>
+<div style="text-align: center;">
+<img width="450" alt="user-space-proxy" src="https://user-images.githubusercontent.com/5608425/68077955-2b3b2280-fe08-11e9-8672-3210219a7372.png">
+userspace 代理模式
+</div>
+<h5 id="iptables-proxy-mode">
+  iptables Proxy Mode
+  <a class="anchor" href="#iptables-proxy-mode">#</a>
+</h5>
+<div style="text-align: center;">
+<img width="450" alt="iptables-proxy" src="https://user-images.githubusercontent.com/5608425/68077954-2b3b2280-fe08-11e9-8231-cb9bc177ba21.png">
+ Iptables Proxy Mode
+</div>
+<pre tabindex="0"><code>-A OUTPUT -m comment --comment &#34;kubernetes service portals&#34; -j KUBE-SERVICES
+
+# 访问10.107.54.95后跳转到KUBE-SVC-4N57TFCL4MD7ZTDA链
+-A KUBE-SERVICES -d 10.107.54.95/32 -p tcp -m comment --comment &#34;default/nginx: cluster IP&#34; -m tcp --dport 80 -j KUBE-SVC-4N57TFCL4MD7ZTDA
+
+# 随机转发的目的地，分别是 KUBE-SEP-UZXILYFQQ2IZUWN5 和 KUBE-SEP-43IWXJI557JKCKCF
+-N KUBE-SVC-4N57TFCL4MD7ZTDA
+-A KUBE-SVC-4N57TFCL4MD7ZTDA -m statistic --mode random --probability 0.50000000000 -j KUBE-SEP-UZXILYFQQ2IZUWN5
+-A KUBE-SVC-4N57TFCL4MD7ZTDA -j KUBE-SEP-43IWXJI557JKCKCF
+
+## DNAT到pod的ip和端口
+-A KUBE-SEP-UZXILYFQQ2IZUWN5 -p tcp -m tcp -j DNAT --to-destination 172.17.0.4:80
+-A KUBE-SEP-43IWXJI557JKCKCF -p tcp -m tcp -j DNAT --to-destination 172.17.0.5:80
+</code></pre><h5 id="ipvs-proxy-mode">
+  IPVS proxy mode
+  <a class="anchor" href="#ipvs-proxy-mode">#</a>
+</h5>
+<blockquote>
+<p>IPVS是LVS一个组件，提供高性能、高可靠性的四层负载均衡器。IPVS 是IP Virtual Server的简写。IPVS构建在netfilter上，作为Linux 内核的一部分，从传输层实现了负载均衡。</p>
+</blockquote>
+<p>与iptables类似，ipvs基于netfilter 的 hook 功能，但使用哈希表作为底层数据结构并在内核空间中工作。这意味着ipvs可以更快地重定向流量，并且在同步代理规则时具有更好的性能。此外，ipvs为负载均衡算法提供了更多选项，例如：</p>
+<pre><code>rr：轮询调度
+lc：最小连接数
+dh：目标哈希
+sh：源哈希
+sed：最短期望延迟
+nq： 不排队调度
+</code></pre>
+<h2 id="参考">
+  参考:
+  <a class="anchor" href="#%e5%8f%82%e8%80%83">#</a>
+</h2>
+<ol>
+<li><a href="https://www.kubernetes.org.cn/5992.html">深入理解 Kubernetes之：Service</a> good</li>
+<li><a href="https://edu.aliyun.com/lesson_1651_17064#_17064">第14 章 ： Kubernetes Services</a>  阿里</li>
+<li><a href="http://product.dangdang.com/26439199.html?ref=book-65152-9168_1-529800-3">《Kubenetes in Action》</a>  七牛容器云团队</li>
+<li><a href="https://mp.weixin.qq.com/s/3THiWFt52tZckFGxg3Cx-g">Kubernetes中的服务发现机制与方式</a> 马永亮</li>
+<li><a href="https://mp.weixin.qq.com/s/a_540yJ1EGVroJ9TpvYtPw">从 K8S 的 Cloud Provider 到 CCM 的演进之路</a>  毛宏斌 百度</li>
+<li><a href="https://docs.ucloud.cn/compute/uk8s/service/getresourceip">获取真实客户端IP</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzU1OTAzNzc5MQ==&amp;mid=2247485610&amp;idx=1&amp;sn=e092e55c848af62368835d530c57da15&amp;chksm=fc1c249acb6bad8c940c587e59e0dc63ba4863c7063f0a0e322dcbd6ad5f610cd2ad1b4ba87d&amp;scene=21#wechat_redirect">华为云在 K8S 大规模场景下的 Service 性能优化实践</a> 未</li>
+<li><a href="https://jimmysong.io/kubernetes-handbook/concepts/service.html">Service</a>  jimmysong</li>
+<li><a href="https://jimmysong.io/kubernetes-handbook/concepts/ingress.html">Ingress</a> jimmysong</li>
+</ol>
+<hr>
+<p>《深入剖析Kubernetes》  张磊</p>
+<ol>
+<li><a href="">《37  找到容器不容易：Service、DNS与服务发现》</a></li>
+<li><a href="">《38  从外界连通Service与Service调试“三板斧”》</a></li>
+<li><a href="">《39  谈谈Service与Ingress》</a></li>
+</ol>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一-kubenetes服务">一. Kubenetes服务</a>
+          <ul>
+            <li><a href="#11--服务对外暴露方式">1.1  服务对外暴露方式</a></li>
+            <li><a href="#12-通过dns发现服务">1.2 通过DNS发现服务</a></li>
+            <li><a href="#13-clusterip模式的yaml配置">1.3 ClusterIP模式的yaml配置</a></li>
+          </ul>
+        </li>
+        <li><a href="#二-kubenetes服务工作原理">二. Kubenetes服务工作原理</a>
+          <ul>
+            <li></li>
+          </ul>
+        </li>
+        <li><a href="#参考">参考:</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

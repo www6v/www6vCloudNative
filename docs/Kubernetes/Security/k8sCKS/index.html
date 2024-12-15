@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Cluster Setup - 10% # Securing a Cluster # 使用网络安全策略来限制集群级别的访问 Use Network security policies to restrict cluster level access 使用CIS基准检查Kubernetes组件(etcd, kubelet, kubedns, kubeapi)的安全配置 Use CIS benchmark to review the security configuration of Kubernetes components (etcd, kubelet, kubedns, kubeapi) Kube-bench - Checks whether Kubernetes is deployed securely by running the checks documented ain the CIS Kubernetes Benchmark. 正确设置带有安全控制的Ingress对象 Properly set up Ingress objects with security control 保护节点元数据和端点 Protect node metadata and endpoints Using Kubernetes network policy to restrict pods access to cloud metadata This example assumes AWS cloud, and metadata IP address is 169.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Security/k8sCKS/">
+  <meta property="og:site_name" content="Cloud Native">
+  <meta property="og:title" content="Kubernetes CKS">
+  <meta property="og:description" content="Cluster Setup - 10% # Securing a Cluster # 使用网络安全策略来限制集群级别的访问 Use Network security policies to restrict cluster level access 使用CIS基准检查Kubernetes组件(etcd, kubelet, kubedns, kubeapi)的安全配置 Use CIS benchmark to review the security configuration of Kubernetes components (etcd, kubelet, kubedns, kubeapi) Kube-bench - Checks whether Kubernetes is deployed securely by running the checks documented ain the CIS Kubernetes Benchmark. 正确设置带有安全控制的Ingress对象 Properly set up Ingress objects with security control 保护节点元数据和端点 Protect node metadata and endpoints Using Kubernetes network policy to restrict pods access to cloud metadata This example assumes AWS cloud, and metadata IP address is 169.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+<title>Kubernetes CKS | Cloud Native</title>
+<link rel="icon" href="/www6vKubernetes/favicon.png" >
+<link rel="manifest" href="/www6vKubernetes/manifest.json">
+<link rel="canonical" href="https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Security/k8sCKS/">
+<link rel="stylesheet" href="/www6vKubernetes/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
+  <script defer src="/www6vKubernetes/fuse.min.js"></script>
+  <script defer src="/www6vKubernetes/en.search.min.e641438d24d6dff84e5b305052bcc620ab71d6b6948ca121472191dfd9b40597.js" integrity="sha256-5kFDjSTW3/hOWzBQUrzGIKtx1raUjKEhRyGR39m0BZc=" crossorigin="anonymous"></script>
+
+  
+
+<link rel="alternate" type="application/rss+xml" href="https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Security/k8sCKS/index.xml" title="Cloud Native" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/www6vKubernetes/"><span>Cloud Native</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Kubernetes</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>编排原理</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sStatefulSet/" class="">Kubernetes StatefulSet原理和源码</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sResouceModel/" class="">Kubenetes资源模型</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Operator &amp; Controller</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8s-operator/" class="">Kubernetes Operator-kubebuilder</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sOperator/" class="">Kubernetes Operator-Etcd</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sDeclarativeAPI/" class="">Kubernetes声明式API</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sOperator-redis/" class="">Kubernetes Operator-Redis</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sAdmissionWebhook/" class="">K8s  AdmissionWebhook</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Container Runtime</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Container-Runtime/k8sRuntime/" class="">Kubernetes Runtime</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Container-Runtime/k8sAbandonDocker/" class="">K8S 弃用Docker</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>网络</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Network/k8sNetwork/" class="">Kubernetes网络</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Network/k8sCalico/" class="">Calico</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Network/k8sCalico1/" class="">Calico</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>服务和DNS</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sService/" class="">Kubernetes服务</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sDNS/" class="">Kubernetes CoreDNS</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sIngressNginx/" class="">Kubernetes Nginx Ingress</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>存储</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Storage/k8sStorage/" class="">Kubernetes存储</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Storage/k8sRook/" class="">Kubernetes Rook</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Storage/ceph/" class="">Ceph 总结</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Storage/etcd/" class="">etcd 总结</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>调度</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Schedule/k8sScheduler/" class="">Kubernetes调度器</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Schedule/k8sAdvancedScheduling/" class="">Kubernetes 高级调度</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>监控和AutoScale</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/k8sAutoScale/" class="">Kubernetes自动伸缩和HPA</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/observabilityPrometheus/" class="">可观测性-Prometheus</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/observabilityPrometheusHA/" class="">可观测性-Prometheus  HA</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/k8sObservability/" class="">可观测性-Kubernetes</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>生产化</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Available</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Available/k8sHA/" class="">K8S高可用-控制面</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Available/k8sAvailable/" class="">K8S高可用-零停机[自主中断]</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Available/k8sAvailableHealth/" class="">K8S高可用-零停机[探针]</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>集成</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Integration/k8sAppMigrate/" class="">K8S 应用迁移至K8S</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Integration/k8sSpringcloud/" class="">K8s 集成Springcloud</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/linuxKernelParam/" class="">虚拟机和容器中的内核参数 kernel</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/k8sUpgrade/" class="">Kubernetes 升级upgrade</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>PaaS</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sPaaS/" class="">Kubernetes PaaS平台</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sOpenShift/" class="">Kubernetes OpenShift</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sMultiTenancy/" class="">Kubernetes 多租户</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sRBAC/" class="">Kubenetes RBAC</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sMultiCluster/" class="">Kubernetes 多集群管理</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sVM/" class="">Kubernetes和VM</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>安全</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Security/k8sSecurity/" class="">Kubernetes安全-Security</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Security/k8sCKS/" class="active">Kubernetes CKS</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Security/k8sSecurityPractice/" class="">Kubernetes 安全实践</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/www6vKubernetes/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Kubernetes CKS</h3>
+
+  <label for="toc-control">
+    
+    <img src="/www6vKubernetes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#cluster-setup---10">Cluster Setup - 10%</a></li>
+            <li><a href="#cluster-hardening---15">Cluster Hardening - 15%</a></li>
+            <li><a href="#system-hardening---15">System Hardening - 15%</a></li>
+            <li><a href="#minimize-microservice-vulnerabilities---20">Minimize Microservice Vulnerabilities - 20%</a></li>
+            <li><a href="#supply-chain-security---20">Supply Chain Security - 20%</a></li>
+            <li><a href="#monitoring-logging-and-runtime-security---20">Monitoring, Logging and Runtime Security - 20%</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p></p>
+<!-- more -->
+<h3 id="cluster-setup---10">
+  Cluster Setup - 10%
+  <a class="anchor" href="#cluster-setup---10">#</a>
+</h3>
+<h5 id="securing-a-clusterhttpskubernetesiodocstasksadminister-clustersecuring-a-cluster">
+  <a href="https://kubernetes.io/docs/tasks/administer-cluster/securing-a-cluster/">Securing a Cluster</a>
+  <a class="anchor" href="#securing-a-clusterhttpskubernetesiodocstasksadminister-clustersecuring-a-cluster">#</a>
+</h5>
+<ol>
+<li>使用网络安全策略来限制集群级别的访问
+<a href="https://kubernetes.io/docs/concepts/services-networking/network-policies/">Use Network security policies to restrict cluster level access</a></li>
+<li>使用CIS基准检查Kubernetes组件(etcd, kubelet, kubedns, kubeapi)的安全配置
+<a href="https://www.cisecurity.org/benchmark/kubernetes/">Use CIS benchmark to review the security configuration of Kubernetes components</a>  (etcd, kubelet, kubedns, kubeapi)
+<ul>
+<li><a href="https://github.com/aquasecurity/kube-bench">Kube-bench</a> - Checks whether Kubernetes is deployed securely by running the checks documented ain the CIS Kubernetes Benchmark.</li>
+</ul>
+</li>
+<li>正确设置带有安全控制的Ingress对象
+Properly set up <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/#tls">Ingress objects with security control</a></li>
+<li>保护节点元数据和端点
+<a href="https://kubernetes.io/docs/tasks/administer-cluster/securing-a-cluster/#restricting-cloud-metadata-api-access">Protect node metadata and endpoints</a></li>
+</ol>
+<details><summary> Using Kubernetes network policy to restrict pods access to cloud metadata </summary>
+<ul>
+<li>This example assumes AWS cloud, and metadata IP address is 169.254.169.254 should be blocked while all other external addresses are not.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>     <span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">networking.k8s.io/v1</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">kind</span>: <span style="color:#ae81ff">NetworkPolicy</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">name</span>: <span style="color:#ae81ff">deny-only-cloud-metadata-access</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">podSelector</span>: {}
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">policyTypes</span>:
+</span></span><span style="display:flex;"><span>       - <span style="color:#ae81ff">Egress</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">egress</span>:
+</span></span><span style="display:flex;"><span>       - <span style="color:#f92672">to</span>:
+</span></span><span style="display:flex;"><span>         - <span style="color:#f92672">ipBlock</span>:
+</span></span><span style="display:flex;"><span>           <span style="color:#f92672">cidr</span>: <span style="color:#ae81ff">0.0.0.0</span><span style="color:#ae81ff">/0</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#f92672">except</span>:
+</span></span><span style="display:flex;"><span>           - <span style="color:#ae81ff">169.254.169.254</span><span style="color:#ae81ff">/32</span>
+</span></span></code></pre></div></details>
+<ol start="5">
+<li>
+<p>最小化GUI元素的使用和访问
+<a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/#accessing-the-dashboard-ui">Minimize use of, and access to, GUI elements</a></p>
+</li>
+<li>
+<p>在部署之前验证平台二进制文件
+<a href="https://github.com/kubernetes/kubernetes/releases">Verify platform binaries before deploying</a></p>
+</li>
+</ol>
+<details><summary> Kubernetes binaries can be verified by their digest **sha512 hash**  </summary>
+<ul>
+<li>Checking the Kubernetes release page for the specific release</li>
+<li>Checking the change log for the <a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.19.md#downloads-for-v1191">images and their digests</a></li>
+</ul>
+</details>
+<h3 id="cluster-hardening---15">
+  Cluster Hardening - 15%
+  <a class="anchor" href="#cluster-hardening---15">#</a>
+</h3>
+<ol>
+<li>限制访问Kubernetes API
+<a href="https://kubernetes.io/docs/reference/access-authn-authz/controlling-access/">Restrict access to Kubernetes API</a></li>
+</ol>
+<ul>
+<li><a href="https://kubernetes.io/docs/reference/access-authn-authz/authentication/#anonymous-requests">Control anonymous requests to Kube-apiserver</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/security/controlling-access/#api-server-ports-and-ips">Non secure access to the kube-apiserver</a></li>
+</ul>
+<ol start="2">
+<li>使用基于角色的访问控制来最小化暴露
+<a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/">Use Role-Based Access Controls to minimize exposure</a>
+<ul>
+<li><a href="https://rbac.dev/">Handy site collects together articles, tools and the official documentation all in one place</a></li>
+<li><a href="https://docs.bitnami.com/tutorials/simplify-kubernetes-resource-access-rbac-impersonation/">Simplify Kubernetes Resource Access Control using RBAC Impersonation</a></li>
+</ul>
+</li>
+<li>谨慎使用服务帐户，例如禁用默认设置，减少新创建帐户的权限
+Exercise caution in using service accounts e.g. <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#use-the-default-service-account-to-access-the-api-server">disable defaults</a>, minimize permissions on newly created ones</li>
+</ol>
+<details><summary> Opt out of automounting API credentials for a service account </summary>
+<h4 id="opt-out-at-service-account-scope">
+  Opt out at service account scope
+  <a class="anchor" href="#opt-out-at-service-account-scope">#</a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">ServiceAccount</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">build-robot</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">automountServiceAccountToken</span>: <span style="color:#66d9ef">false</span>
+</span></span></code></pre></div><h4 id="opt-out-at-pod-scope">
+  Opt out at pod scope
+  <a class="anchor" href="#opt-out-at-pod-scope">#</a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Pod</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">cks-pod</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">serviceAccountName</span>: <span style="color:#ae81ff">default</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">automountServiceAccountToken</span>: <span style="color:#66d9ef">false</span>
+</span></span></code></pre></div></details>
+<ol start="4">
+<li>经常更新Kubernetes
+<a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-upgrade/">Update Kubernetes frequently</a></li>
+</ol>
+<h3 id="system-hardening---15">
+  System Hardening - 15%
+  <a class="anchor" href="#system-hardening---15">#</a>
+</h3>
+<ol>
+<li>最小化主机操作系统的大小(减少攻击面)
+Minimize host OS footprint (reduce attack surface)</li>
+</ol>
+<details><summary>Reduce host attack surface </summary>
+<ul>
+<li><a href="https://kubernetes.io/docs/tutorials/clusters/seccomp/">seccomp which stands for secure computing was originally intended as a means of safely running untrusted compute-bound programs</a></li>
+<li><a href="https://kubernetes.io/docs/tutorials/clusters/apparmor/">AppArmor can be configured for any application to reduce its potential host attack surface and provide greater in-depth defense.</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/policy/pod-security-policy/">PSP enforces</a>
+PodSecurityPolicy is deprecated as of Kubernetes v1.21, and will be removed in v1.25. We recommend migrating to Pod Security Admission.</li>
+<li>Apply host updates</li>
+<li>Install minimal required OS fingerprint</li>
+<li>Identify and address open ports</li>
+<li>Remove unnecessary packages</li>
+<li>Protect access to data with permissions
+<ul>
+<li><a href="https://kubernetes.io/docs/concepts/policy/pod-security-policy/#volumes-and-file-systems">Restirct allowed hostpaths</a></li>
+</ul>
+</li>
+</ul>
+</details>
+<ol start="2">
+<li>最小化IAM角色
+Minimize IAM roles
+<ul>
+<li><a href="https://kubernetes.io/docs/reference/access-authn-authz/authentication/">Access authentication and authorization</a></li>
+</ul>
+</li>
+<li>最小化对网络的外部访问
+Minimize external access to the network</li>
+</ol>
+<details><summary>     if it means deny external traffic to outside the cluster?!! </summary>
+<ul>
+<li>not tested, however, the thinking is that all pods can talk to all pods in all name spaces but not to the outside of the cluster!!!</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">networking.k8s.io/v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span>: <span style="color:#ae81ff">NetworkPolicy</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">metadata</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">deny-external-egress</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">podSelector</span>: {}
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">policyTypes</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">Egress</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">egress</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">to</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">namespaceSelector</span>: {}
+</span></span></code></pre></div></details>
+<ol start="4">
+<li>适当使用内核强化工具，如AppArmor, seccomp
+Appropriately use kernel hardening tools such as AppArmor, seccomp
+<ul>
+<li><a href="https://kubernetes.io/docs/tutorials/clusters/apparmor/">AppArmor</a></li>
+<li><a href="https://kubernetes.io/docs/tutorials/clusters/seccomp/">Seccomp</a></li>
+</ul>
+</li>
+</ol>
+<h3 id="minimize-microservice-vulnerabilities---20">
+  Minimize Microservice Vulnerabilities - 20%
+  <a class="anchor" href="#minimize-microservice-vulnerabilities---20">#</a>
+</h3>
+<ol>
+<li>设置适当的OS级安全域，例如使用PSP, OPA，安全上下文
+Setup appropriate OS-level security domains e.g. using PSP, OPA, security contexts
+<ul>
+<li><a href="https://kubernetes.io/docs/concepts/policy/pod-security-policy/">Pod Security Policies</a></li>
+<li><a href="https://kubernetes.io/blog/2019/08/06/opa-gatekeeper-policy-and-governance-for-kubernetes/">Open Policy Agent</a></li>
+<li><a href="https://kubernetes.io/docs/tasks/configure-pod-container/security-context/">Security Contexts</a></li>
+</ul>
+</li>
+<li>管理Kubernetes机密
+<a href="https://kubernetes.io/docs/concepts/configuration/secret/">Manage kubernetes secrets</a></li>
+<li>在多租户环境中使用容器运行时 (例如gvisor, kata容器)
+Use <a href="https://kubernetes.io/docs/concepts/containers/runtime-class/">container runtime</a> sandboxes in multi-tenant environments (e.g. <a href="https://github.com/kubernetes/enhancements/blob/5dcf841b85f49aa8290529f1957ab8bc33f8b855/keps/sig-node/585-runtime-class/README.md#examples">gvisor, kata containers</a>)</li>
+<li>使用mTLS实现Pod对Pod加密
+<a href="https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/">Implement pod to pod encryption by use of mTLS</a></li>
+</ol>
+<ul>
+<li><input disabled="" type="checkbox"> check if service mesh is part of the CKS exam</li>
+</ul>
+<h3 id="supply-chain-security---20">
+  Supply Chain Security - 20%
+  <a class="anchor" href="#supply-chain-security---20">#</a>
+</h3>
+<ol>
+<li>
+<p>最小化基本镜像大小
+Minimize base image footprint</p>
+<details><summary>   Minimize base Image </summary>
+<ul>
+<li>Use distroless, UBI minimal, Alpine, or relavent to your app nodejs, python but the minimal build.</li>
+<li>Do not include uncessary software not required for container during runtime e.g build tools and utilities, troubleshooting and debug binaries.
+<ul>
+<li><a href="https://learnk8s.io/blog/smaller-docker-images">Learnk8s: 3 simple tricks for smaller Docker images</a></li>
+<li><a href="https://cloud.google.com/blog/products/gcp/7-best-practices-for-building-containers">GKE 7 best practices for building containers</a></li>
+</ul>
+</li>
+</ul>
+</details>
+</li>
+<li>
+<p>保护您的供应链：将允许的注册表列入白名单，对镜像进行签名和验证
+Secure your supply chain: <a href="https://kubernetes.io/blog/2019/03/21/a-guide-to-kubernetes-admission-controllers/#why-do-i-need-admission-controllers">whitelist allowed image registries</a>, sign and validate images</p>
+</li>
+</ol>
+<ul>
+<li>Using <a href="https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#imagepolicywebhook">ImagePolicyWebhook admission Controller</a></li>
+</ul>
+<ol start="4">
+<li>使用用户工作负载的静态分析(例如kubernetes资源，Docker文件)
+Use static analysis of user workloads (e.g. <a href="https://kubernetes.io/blog/2018/07/18/11-ways-not-to-get-hacked/#7-statically-analyse-yaml">kubernetes resources</a>, docker files)</li>
+<li>扫描镜像，找出已知的漏洞
+<a href="https://kubernetes.io/blog/2018/07/18/11-ways-not-to-get-hacked/#10-scan-images-and-run-ids">Scan images for known vulnerabilities</a>
+<ul>
+<li><a href="https://github.com/aquasecurity/trivy">Aqua security Trivy</a></li>
+<li><a href="https://github.com/anchore/anchore-cli#command-line-examples">Anchore command line scans</a></li>
+</ul>
+</li>
+</ol>
+<h3 id="monitoring-logging-and-runtime-security---20">
+  Monitoring, Logging and Runtime Security - 20%
+  <a class="anchor" href="#monitoring-logging-and-runtime-security---20">#</a>
+</h3>
+<ol>
+<li>
+<p>在主机和容器级别执行系统调用进程和文件活动的行为分析，以检测恶意活动
+Perform behavioural analytics of syscall process and file activities at the host and container level to detect malicious activities</p>
+<ul>
+<li><a href="https://falco.org/docs/">Falco installation guide</a></li>
+<li><a href="https://learn.sysdig.com/falco-101">Sysdig Falco 101</a></li>
+<li><a href="https://github.com/falcosecurity/charts/tree/master/falco">Falco Helm Chart</a></li>
+<li><a href="https://github.com/falcosecurity/charts">Falco Kubernetes helmchart</a></li>
+<li><a href="https://falco.org/blog/detect-cve-2020-8557/">Detect CVE-2020-8557 using Falco</a></li>
+</ul>
+</li>
+<li>
+<p>检测物理基础架构，应用程序，网络，数据，用户和工作负载中的威胁
+Detect threats within a physical infrastructure, apps, networks, data, users and workloads</p>
+</li>
+<li>
+<p>检测攻击的所有阶段，无论它发生在哪里，如何扩散
+Detect all phases of attack regardless where it occurs and how it spreads</p>
+<details><summary>    Attack Phases </summary>
+<ul>
+<li><a href="https://www.microsoft.com/security/blog/2020/04/02/attack-matrix-kubernetes/">Kubernetes attack martix Microsoft blog</a></li>
+<li><a href="https://sysdig.com/blog/mitre-attck-framework-for-container-runtime-security-with-sysdig-falco/">MITRE attack framwork using Falco</a></li>
+<li><a href="">Lightboard video: Kubernetes attack matrix - 3 steps to mitigating the MITRE ATT&amp;CK Techniques</a></li>
+<li><a href="https://www.cncf.io/webinars/mitigating-kubernetes-attacks/">CNCF Webinar: Mitigating Kubernetes attacks</a></li>
+</ul>
+</details>
+</li>
+<li>
+<p>对环境中的不良行为者进行深入的分析调查和识别
+Perform deep analytical investigation and identification of bad actors within the environment</p>
+<ul>
+<li><a href="https://docs.sysdig.com/">Sysdig documentation</a></li>
+<li><a href="https://kubernetes.io/blog/2015/11/monitoring-kubernetes-with-sysdig/">Monitoring Kubernetes with sysdig</a></li>
+<li><a href="https://youtu.be/VEFaGjfjfyc">CNCF Webinar: Getting started with container runtime security using Falco</a></li>
+</ul>
+</li>
+<li>
+<p>确保容器在运行时不变
+<a href="https://kubernetes.io/blog/2018/03/principles-of-container-app-design/">Ensure immutability of containers at runtime</a></p>
+</li>
+<li>
+<p>使用审计日志来监视访问
+<a href="https://kubernetes.io/docs/tasks/debug-application-cluster/audit/">Use Audit Logs to monitor access</a></p>
+</li>
+</ol>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#cluster-setup---10">Cluster Setup - 10%</a></li>
+            <li><a href="#cluster-hardening---15">Cluster Hardening - 15%</a></li>
+            <li><a href="#system-hardening---15">System Hardening - 15%</a></li>
+            <li><a href="#minimize-microservice-vulnerabilities---20">Minimize Microservice Vulnerabilities - 20%</a></li>
+            <li><a href="#supply-chain-security---20">Supply Chain Security - 20%</a></li>
+            <li><a href="#monitoring-logging-and-runtime-security---20">Monitoring, Logging and Runtime Security - 20%</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

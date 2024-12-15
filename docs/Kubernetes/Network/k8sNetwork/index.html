@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="一. 容器和容器之间的网络 # 使用Docker的一种网络模型：–net=container 每个Pod容器有有一个pause容器 Pause容器 例子 Kubernetes之Pause容器 Kubernetes之“暂停”容器 二. Pod与Pod之间的网络 # 2.0 Overview # 2.1 同节点pod通信 # 基础: 网桥 bridge
+通过网桥通信
+图2. 同节点pod通信
+2.2 不同节点中的Pod通信（跨主机网络通讯） # 2.2.1 Overlay (Flannel方案) # flannel-UDP模式(三层overlay) 原理： fannelId进程封装/解开虚拟网卡docker0,fannel0的数据; 三层的overlay网络; 组件： TUN设备是3层的虚拟网络设备 ; fannel0 劣势: 三次用户态和内核态切换 ; 性能差， 已弃用 图3. flannel-UDP模式
+图4. flannel-UDP模式
+flannel-vxlan模式(两层虚拟网络) VXLAN 的覆盖网络的设计思想是：在现有的三层网络之上，“覆盖”一层虚拟的、由内核 VXLAN 模块负责维护的二层网络，使得连接在这个 VXLAN 二层网络上的“主机”（虚拟机或者容器都可 以）之间，可以像在同一个局域网（LAN）里那样自由通信 组件： VTEP（VXLAN Tunnel End Point）设备; fannel.1; 组成一个虚拟的两层网络 优势： 进行封装和解封装的对象，是二层数据帧（Ethernet frame）; 而且这个工作的执行流程，全部是在内核里完成的（因为VXLAN本身就是内核中的一个模块）; 主流的网络容器方案。 图5. flannel-vxlan模式">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Network/k8sNetwork/">
+  <meta property="og:site_name" content="Cloud Native">
+  <meta property="og:title" content="Kubernetes网络">
+  <meta property="og:description" content="一. 容器和容器之间的网络 # 使用Docker的一种网络模型：–net=container 每个Pod容器有有一个pause容器 Pause容器 例子 Kubernetes之Pause容器 Kubernetes之“暂停”容器 二. Pod与Pod之间的网络 # 2.0 Overview # 2.1 同节点pod通信 # 基础: 网桥 bridge
+通过网桥通信
+图2. 同节点pod通信
+2.2 不同节点中的Pod通信（跨主机网络通讯） # 2.2.1 Overlay (Flannel方案) # flannel-UDP模式(三层overlay) 原理： fannelId进程封装/解开虚拟网卡docker0,fannel0的数据; 三层的overlay网络; 组件： TUN设备是3层的虚拟网络设备 ; fannel0 劣势: 三次用户态和内核态切换 ; 性能差， 已弃用 图3. flannel-UDP模式
+图4. flannel-UDP模式
+flannel-vxlan模式(两层虚拟网络) VXLAN 的覆盖网络的设计思想是：在现有的三层网络之上，“覆盖”一层虚拟的、由内核 VXLAN 模块负责维护的二层网络，使得连接在这个 VXLAN 二层网络上的“主机”（虚拟机或者容器都可 以）之间，可以像在同一个局域网（LAN）里那样自由通信 组件： VTEP（VXLAN Tunnel End Point）设备; fannel.1; 组成一个虚拟的两层网络 优势： 进行封装和解封装的对象，是二层数据帧（Ethernet frame）; 而且这个工作的执行流程，全部是在内核里完成的（因为VXLAN本身就是内核中的一个模块）; 主流的网络容器方案。 图5. flannel-vxlan模式">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+<title>Kubernetes网络 | Cloud Native</title>
+<link rel="icon" href="/www6vKubernetes/favicon.png" >
+<link rel="manifest" href="/www6vKubernetes/manifest.json">
+<link rel="canonical" href="https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Network/k8sNetwork/">
+<link rel="stylesheet" href="/www6vKubernetes/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
+  <script defer src="/www6vKubernetes/fuse.min.js"></script>
+  <script defer src="/www6vKubernetes/en.search.min.e641438d24d6dff84e5b305052bcc620ab71d6b6948ca121472191dfd9b40597.js" integrity="sha256-5kFDjSTW3/hOWzBQUrzGIKtx1raUjKEhRyGR39m0BZc=" crossorigin="anonymous"></script>
+
+  
+
+<link rel="alternate" type="application/rss+xml" href="https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Network/k8sNetwork/index.xml" title="Cloud Native" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/www6vKubernetes/"><span>Cloud Native</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Kubernetes</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>编排原理</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sStatefulSet/" class="">Kubernetes StatefulSet原理和源码</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sResouceModel/" class="">Kubenetes资源模型</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Operator &amp; Controller</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8s-operator/" class="">Kubernetes Operator-kubebuilder</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sOperator/" class="">Kubernetes Operator-Etcd</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sDeclarativeAPI/" class="">Kubernetes声明式API</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sOperator-redis/" class="">Kubernetes Operator-Redis</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sAdmissionWebhook/" class="">K8s  AdmissionWebhook</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Container Runtime</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Container-Runtime/k8sRuntime/" class="">Kubernetes Runtime</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Container-Runtime/k8sAbandonDocker/" class="">K8S 弃用Docker</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>网络</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Network/k8sNetwork/" class="active">Kubernetes网络</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Network/k8sCalico/" class="">Calico</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Network/k8sCalico1/" class="">Calico</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>服务和DNS</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sService/" class="">Kubernetes服务</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sDNS/" class="">Kubernetes CoreDNS</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sIngressNginx/" class="">Kubernetes Nginx Ingress</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>存储</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Storage/k8sStorage/" class="">Kubernetes存储</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Storage/k8sRook/" class="">Kubernetes Rook</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Storage/ceph/" class="">Ceph 总结</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Storage/etcd/" class="">etcd 总结</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>调度</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Schedule/k8sScheduler/" class="">Kubernetes调度器</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Schedule/k8sAdvancedScheduling/" class="">Kubernetes 高级调度</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>监控和AutoScale</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/k8sAutoScale/" class="">Kubernetes自动伸缩和HPA</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/observabilityPrometheus/" class="">可观测性-Prometheus</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/observabilityPrometheusHA/" class="">可观测性-Prometheus  HA</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/k8sObservability/" class="">可观测性-Kubernetes</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>生产化</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Available</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Available/k8sHA/" class="">K8S高可用-控制面</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Available/k8sAvailable/" class="">K8S高可用-零停机[自主中断]</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Available/k8sAvailableHealth/" class="">K8S高可用-零停机[探针]</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>集成</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Integration/k8sAppMigrate/" class="">K8S 应用迁移至K8S</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/Integration/k8sSpringcloud/" class="">K8s 集成Springcloud</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/linuxKernelParam/" class="">虚拟机和容器中的内核参数 kernel</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Production/k8sUpgrade/" class="">Kubernetes 升级upgrade</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>PaaS</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sPaaS/" class="">Kubernetes PaaS平台</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sOpenShift/" class="">Kubernetes OpenShift</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sMultiTenancy/" class="">Kubernetes 多租户</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sRBAC/" class="">Kubenetes RBAC</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sMultiCluster/" class="">Kubernetes 多集群管理</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sVM/" class="">Kubernetes和VM</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>安全</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Security/k8sSecurity/" class="">Kubernetes安全-Security</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Security/k8sCKS/" class="">Kubernetes CKS</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vKubernetes/docs/Kubernetes/Security/k8sSecurityPractice/" class="">Kubernetes 安全实践</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/www6vKubernetes/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Kubernetes网络</h3>
+
+  <label for="toc-control">
+    
+    <img src="/www6vKubernetes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一-容器和容器之间的网络">一. 容器和容器之间的网络</a></li>
+    <li><a href="#二--pod与pod之间的网络">二.  Pod与Pod之间的网络</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#20---overview">2.0   Overview</a></li>
+            <li><a href="#21--同节点pod通信">2.1  同节点pod通信</a></li>
+            <li><a href="#22--不同节点中的pod通信跨主机网络通讯">2.2  不同节点中的Pod通信（跨主机网络通讯）</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#三-pod与service之间的网络">三. Pod与Service之间的网络</a></li>
+    <li><a href="#四-internet与service之间的网络">四. Internet与Service之间的网络</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#41-service到internet">4.1 Service到Internet</a></li>
+            <li><a href="#42-internet到service">4.2 Internet到Service</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#五-网络隔离-多租户">五. 网络隔离 多租户</a></li>
+    <li><a href="#六-访问公网99">六. 访问公网[99]</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#通过nat访问公网">通过NAT访问公网</a></li>
+          </ul>
+        </li>
+        <li><a href="#参考">参考:</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p></p>
+<!-- more -->
+<p><img src="./k8sNetwork/k8sNetwork.jpg" alt="图1.Kubenetes网络" /></p>
+<h1 id="一-容器和容器之间的网络">
+  一. 容器和容器之间的网络
+  <a class="anchor" href="#%e4%b8%80-%e5%ae%b9%e5%99%a8%e5%92%8c%e5%ae%b9%e5%99%a8%e4%b9%8b%e9%97%b4%e7%9a%84%e7%bd%91%e7%bb%9c">#</a>
+</h1>
+<ul>
+<li>使用Docker的一种网络模型：–net=container</li>
+<li>每个Pod容器有有一个pause容器
+<ul>
+<li><a href="https://jimmysong.io/kubernetes-handbook/concepts/pause-container.html">Pause容器</a> 例子</li>
+<li><a href="https://o-my-chenjian.com/2017/10/17/The-Pause-Container-Of-Kubernetes/">Kubernetes之Pause容器</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=Mzg5Mjc3MjIyMA==&amp;mid=2247542987&amp;idx=1&amp;sn=dad6c7723576cf1fb86486f2855b0efd&amp;source=41#wechat_redirect">Kubernetes之“暂停”容器</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="二--pod与pod之间的网络">
+  二.  Pod与Pod之间的网络
+  <a class="anchor" href="#%e4%ba%8c--pod%e4%b8%8epod%e4%b9%8b%e9%97%b4%e7%9a%84%e7%bd%91%e7%bb%9c">#</a>
+</h1>
+<h3 id="20---overview">
+  2.0   Overview
+  <a class="anchor" href="#20---overview">#</a>
+</h3>
+<p><img src="./k8sNetwork/k8sNetworkAll.png" alt="K8S 网络" /></p>
+<h3 id="21--同节点pod通信">
+  2.1  同节点pod通信
+  <a class="anchor" href="#21--%e5%90%8c%e8%8a%82%e7%82%b9pod%e9%80%9a%e4%bf%a1">#</a>
+</h3>
+<p>基础: 网桥 bridge<br>
+通过<strong>网桥</strong>通信</p>
+<div style="text-align: center; width:60%; height: 60%">
+<p><img src="https://user-images.githubusercontent.com/5608425/68114098-31c4b980-ff30-11e9-9dbd-163452ec51bc.jpg" alt="pod-to-pod-in-node" />
+图2. 同节点pod通信</p>
+</div>
+<h3 id="22--不同节点中的pod通信跨主机网络通讯">
+  2.2  不同节点中的Pod通信（跨主机网络通讯）
+  <a class="anchor" href="#22--%e4%b8%8d%e5%90%8c%e8%8a%82%e7%82%b9%e4%b8%ad%e7%9a%84pod%e9%80%9a%e4%bf%a1%e8%b7%a8%e4%b8%bb%e6%9c%ba%e7%bd%91%e7%bb%9c%e9%80%9a%e8%ae%af">#</a>
+</h3>
+<h5 id="221--overlay-flannel方案">
+  2.2.1  Overlay (Flannel方案)
+  <a class="anchor" href="#221--overlay-flannel%e6%96%b9%e6%a1%88">#</a>
+</h5>
+<ol>
+<li><strong>flannel-UDP模式(三层overlay)</strong></li>
+</ol>
+<ul>
+<li>原理：
+fannelId进程封装/解开虚拟网卡docker0,fannel0的数据;
+三层的overlay网络;</li>
+<li>组件： TUN设备是<strong>3层</strong>的虚拟网络设备 ; fannel0</li>
+<li>劣势:  三次用户态和内核态切换 ; 性能差， 已弃用</li>
+</ul>
+<div style="text-align: center;">
+<p><img src="https://user-images.githubusercontent.com/5608425/65022322-50acc380-d963-11e9-8476-5e5ab22c8b4c.JPG" alt="flannel-udp" />  图3. flannel-UDP模式</p>
+<p><img src="https://user-images.githubusercontent.com/5608425/68364150-16dc8a00-0168-11ea-8281-272b274fdfae.jpg" alt="flannel-udp" />  图4. flannel-UDP模式</p>
+</div>
+<ol start="2">
+<li><strong>flannel-vxlan模式(两层虚拟网络)</strong></li>
+</ol>
+<ul>
+<li>VXLAN 的覆盖网络的设计思想是：在现有的三层网络之上，“覆盖”一层虚拟的、由内核 VXLAN
+模块负责维护的二层网络，使得连接在这个 VXLAN 二层网络上的“主机”（虚拟机或者容器都可
+以）之间，可以像在同一个局域网（LAN）里那样自由通信</li>
+<li>组件：
+VTEP（VXLAN Tunnel End Point）设备; fannel.1;
+组成一个虚拟的<strong>两层</strong>网络</li>
+<li>优势：
+进行封装和解封装的对象，是二层数据帧（Ethernet frame）;
+而且这个工作的执行流程，全部是在内核里完成的（因为VXLAN本身就是内核中的一个模块）;
+主流的网络容器方案。</li>
+</ul>
+<div style="text-align: center;">
+<p><img src="https://user-images.githubusercontent.com/5608425/65022323-51455a00-d963-11e9-9442-d4f1b84ecce5.JPG" alt="flannel-vxlan" />   图5. flannel-vxlan模式</p>
+<p><img src="https://user-images.githubusercontent.com/5608425/68364151-16dc8a00-0168-11ea-8935-445ad9c6b456.jpg" alt="flannel-vxlan" /> 图6. flannel-vxlan模式</p>
+</div>
+<h5 id="222-纯3层网络方案">
+  2.2.2 纯3层网络方案
+  <a class="anchor" href="#222-%e7%ba%af3%e5%b1%82%e7%bd%91%e7%bb%9c%e6%96%b9%e6%a1%88">#</a>
+</h5>
+<p><strong>Flannel host-gw模式</strong></p>
+<p><img src="https://user-images.githubusercontent.com/5608425/68364149-1643f380-0168-11ea-80ef-c0b218278dec.jpg" alt="flannel-host-gw" /></p>
+<ul>
+<li>
+<p>host-gw 模式工作原理：
+其实就是将每个 Flannel 子网（Flannel Subnet，比如：10.244.1.0/24）的“下一跳”，设置成了该子网对应的宿主机的 IP 地址。
+也就是说，这台“主机”（Host）会充当这条容器通信路径里的“网关”（Gateway）。这也正是“host-gw”的含义。</p>
+</li>
+<li>
+<p>核心
+路由规则：
+&lt;目的容器 IP 地址段&gt; via &lt;网关的 IP 地址&gt; dev eth0</p>
+</li>
+</ul>
+<pre tabindex="0"><code>$ ip route
+...
+10.244.1.0/24 via 10.168.0.3 dev eth0
+</code></pre><ul>
+<li>优势：
+根据实际的测试，host-gw 的性能损失大约在 10% 左右，而其他所有基于 VXLAN“隧道”机制的网络方案，性能损失都在 20%~30% 左右。</li>
+</ul>
+<p><strong>Calico</strong></p>
+<ul>
+<li>
+<p>原理:</p>
+<ul>
+<li>基于iptable/linux kernel包转发;</li>
+<li>根据iptables规则进行路由转发;</li>
+<li>非overlay, Calico 没有使用 CNI 的网桥模式;</li>
+</ul>
+</li>
+<li>
+<p>核心</p>
+<ul>
+<li>路由规则：
+&lt;目的容器 IP 地址段&gt; via &lt;网关的 IP 地址&gt; dev eth0</li>
+</ul>
+</li>
+<li>
+<p>组件:</p>
+<ul>
+<li>路由规则; iptables的配置组件Felix;</li>
+<li>路由广播组件BGP Speaker;</li>
+</ul>
+</li>
+</ul>
+<p><strong>Host Network模式</strong></p>
+<ul>
+<li>容器的网络和宿主机的网络打平，在同一层;</li>
+<li>underlay方案;</li>
+</ul>
+<h5 id="223-总结">
+  2.2.3 总结:
+  <a class="anchor" href="#223-%e6%80%bb%e7%bb%93">#</a>
+</h5>
+<ul>
+<li>flannel-UDP模式和flannel-vxlan模式都可以称作&quot;隧道&quot;机制；都是是overlay的。</li>
+<li>普适性最强 flannel-VxLan (OpenShift使用)</li>
+<li>二层可直连可选用Calico / Flannel host-gw</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">/</th>
+<th style="text-align:center">overlay（隧道）</th>
+<th style="text-align:center">underlay（路由）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">L2</td>
+<td style="text-align:center">Vxlan(大二层 通讯双方在同一逻辑网段内)</td>
+<td style="text-align:center">IPvlan L2模式<br> Macvlan <a href="https://larioy.gst.monster/2021/09/06/k8s-ji-chong-cni-fang-an-jie-xi/macvlan-yu-ipvlan/macvlan-he-ipvlan-jie-shao/">9</a></td>
+</tr>
+<tr>
+<td style="text-align:center">L3</td>
+<td style="text-align:center">flannel-UDP（类似L2 overlay， 在节点上增加一个网关）</td>
+<td style="text-align:center">IPvlan L3模式<br> flannel host-gw（不能跨两层网络） <br> Calico BGP组网方式（大三层）</td>
+</tr>
+</tbody>
+</table>
+<h1 id="三-pod与service之间的网络">
+  三. Pod与Service之间的网络
+  <a class="anchor" href="#%e4%b8%89-pod%e4%b8%8eservice%e4%b9%8b%e9%97%b4%e7%9a%84%e7%bd%91%e7%bb%9c">#</a>
+</h1>
+<p><a href="../../../../2019/11/04/k8sService/">Kubernetes服务</a></p>
+<h1 id="四-internet与service之间的网络">
+  四. Internet与Service之间的网络
+  <a class="anchor" href="#%e5%9b%9b-internet%e4%b8%8eservice%e4%b9%8b%e9%97%b4%e7%9a%84%e7%bd%91%e7%bb%9c">#</a>
+</h1>
+<h3 id="41-service到internet">
+  4.1 Service到Internet
+  <a class="anchor" href="#41-service%e5%88%b0internet">#</a>
+</h3>
+<p>iptables执行源NAT( SNAT )</p>
+<h3 id="42-internet到service">
+  4.2 Internet到Service
+  <a class="anchor" href="#42-internet%e5%88%b0service">#</a>
+</h3>
+<p><a href="../../../../2019/11/04/k8sService/">Kubernetes服务</a></p>
+<h1 id="五-网络隔离-多租户">
+  五. 网络隔离 多租户
+  <a class="anchor" href="#%e4%ba%94-%e7%bd%91%e7%bb%9c%e9%9a%94%e7%a6%bb-%e5%a4%9a%e7%a7%9f%e6%88%b7">#</a>
+</h1>
+<p>NetworkPolicy</p>
+<h1 id="六-访问公网99">
+  六. 访问公网[99]
+  <a class="anchor" href="#%e5%85%ad-%e8%ae%bf%e9%97%ae%e5%85%ac%e7%bd%9199">#</a>
+</h1>
+<h3 id="通过nat访问公网">
+  通过NAT访问公网
+  <a class="anchor" href="#%e9%80%9a%e8%bf%87nat%e8%ae%bf%e9%97%ae%e5%85%ac%e7%bd%91">#</a>
+</h3>
+<p><img src="./k8sNetwork/internet-access.jpg" alt="通过NAT访问公网" /></p>
+<h2 id="参考">
+  参考:
+  <a class="anchor" href="#%e5%8f%82%e8%80%83">#</a>
+</h2>
+<ul>
+<li>
+<p>1.<a href="https://edu.aliyun.com/lesson_1651_13087#_13087">第13 章 ： Kubernetes网络概念及策略控制</a>  CNCF × Alibaba 云原生技术公开课</p>
+</li>
+<li>
+<p>2.<a href="https://blog.csdn.net/hxpjava1/article/details/79566192">calico网络原理及与flannel对比</a></p>
+</li>
+<li>
+<p>3.<a href="https://mp.weixin.qq.com/s/GQc8XPV4MaCWiTcN2wVzbw">Kubernetes CNI网络最强对比：Flannel、Calico、Canal和Weave</a></p>
+</li>
+<li>
+<p>8.<a href="https://mp.weixin.qq.com/s/spw8fHkIjiyf4kg5RQIL_w">K8s网络模型</a>  阿里 加多  ***</p>
+</li>
+<li>
+<p>9.<a href="https://larioy.gst.monster/2021/09/06/k8s-ji-chong-cni-fang-an-jie-xi/macvlan-yu-ipvlan/macvlan-he-ipvlan-jie-shao/">macvlan和ipvlan介绍及在k8s中的使用</a></p>
+</li>
+<li>
+<p>趣谈网络协议  刘超</p>
+<ul>
+<li>《30容器网络之Flannel：每人一亩三分地》</li>
+<li>《31容器网络之Calico：为高效说出善意的谎言》</li>
+</ul>
+</li>
+<li>
+<p>深入剖析Kubernetes  张磊</p>
+<ul>
+<li>《32  浅谈容器网络》</li>
+<li>《33  深入解析容器跨主机网络》</li>
+<li>《34  Kubernetes网络模型与CNI网络插件》</li>
+<li>《35  解读Kubernetes三层网络方案》</li>
+</ul>
+</li>
+<li>
+<ol start="99">
+<li><a href="https://www.aliyundrive.com/s/dXxngxjTkZE">K8S在UCloud内部的应用-高鹏</a></li>
+</ol>
+</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#一-容器和容器之间的网络">一. 容器和容器之间的网络</a></li>
+    <li><a href="#二--pod与pod之间的网络">二.  Pod与Pod之间的网络</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#20---overview">2.0   Overview</a></li>
+            <li><a href="#21--同节点pod通信">2.1  同节点pod通信</a></li>
+            <li><a href="#22--不同节点中的pod通信跨主机网络通讯">2.2  不同节点中的Pod通信（跨主机网络通讯）</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#三-pod与service之间的网络">三. Pod与Service之间的网络</a></li>
+    <li><a href="#四-internet与service之间的网络">四. Internet与Service之间的网络</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#41-service到internet">4.1 Service到Internet</a></li>
+            <li><a href="#42-internet到service">4.2 Internet到Service</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#五-网络隔离-多租户">五. 网络隔离 多租户</a></li>
+    <li><a href="#六-访问公网99">六. 访问公网[99]</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#通过nat访问公网">通过NAT访问公网</a></li>
+          </ul>
+        </li>
+        <li><a href="#参考">参考:</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

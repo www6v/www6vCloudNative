@@ -2,277 +2,277 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Kubernetes on Cloud Native</title>
-    <link>http://localhost:1313/www6vKubernetes/categories/Kubernetes/</link>
+    <link>https://www6v.github.io/www6vKubernetes/categories/Kubernetes/</link>
     <description>Recent content in Kubernetes on Cloud Native</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Mon, 16 Oct 2023 16:07:04 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/www6vKubernetes/categories/Kubernetes/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Kubernetes Deployment</title>
-      <link>http://localhost:1313/www6vKubernetes/docs/orchestrate/k8sDeployment/</link>
-      <pubDate>Wed, 16 Feb 2022 19:56:27 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/docs/orchestrate/k8sDeployment/</guid>
-      <description>&#xA;Deployment # Pod-template-hash label Rolling Update Deployment Max Surge Max Unavailable Argo Rollouts [5] # Argo Rollouts 是一个 Kubernetes 控制器，它提供了在应用程序部署过程中执行渐进式发布和蓝绿部署等高级部署策略的能力。它是基于 Kubernetes 原生的 Deployment 资源构建的，通过引入新的 Rollout 资源来扩展和增强部署控制。&#xA;参考 # Deployment D&#xA;如何在 Kubernetes 中对无状态应用进行分批发布 阿里 孙齐（代序） 第6 章 ： 应用编排与管理： Deployment 阿里 kubernetes 最佳实践：优雅热更新 陈鹏 Deployment jimmysong Argo Rollouts 中文文档 jimmysong </description>
-    </item>
-    <item>
-      <title>Kubernetes Workload</title>
-      <link>http://localhost:1313/www6vKubernetes/docs/orchestrate/k8sResource/</link>
-      <pubDate>Sun, 09 Jun 2019 22:13:52 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/docs/orchestrate/k8sResource/</guid>
-      <description>Workload # Basic # Node Namespace Pod [8] ServiceAccount Config # ConfigMap Secret 类型 用途 使用方式 安全 ConfigMap 普通配置 环境变量 文件挂载（卷 Volume）[7] 纯文本 Secret 敏感数据 环境变量 文件挂载 Base64 Core # StatefulSet + Deployment + ReplicaSet CronJob Job DaemonSet CustomResourceDefinition Service # Ingress Service + Volume # LocalVolume PersistentVolume Volume limit 限制 # NetworkPolicy 网络隔离与互通 Resource Quota 资源限制 SecurityContext 安全策略 other # Autoscaling (HPA) PodPreset 参考 # 《Kubenetes in Action》 七牛容器云团队 资源对象 feisky *** 面向 Kubernetes 编程： Kubernetes 是下一代操作系统 *** 第4 章 ： 理解 Pod 和容器设计模式 阿里 第3 章 ： Kubernetes 核心概念 阿里 第5 章 ： 应用编排与管理：核心原理 阿里 K8s 中 ConfigMap 使用介绍 详解 Kubernetes Pod 的实现原理 未 %accordion%附: ConfigMap 使用%accordion%</description>
-    </item>
-    <item>
-      <title>Kubernetes StatefulSet原理和源码</title>
-      <link>http://localhost:1313/www6vKubernetes/docs/orchestrate/k8sStatefulSet/</link>
-      <pubDate>Mon, 11 Nov 2019 15:20:39 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/docs/orchestrate/k8sStatefulSet/</guid>
-      <description>源码分析 # 1. StatefulSet资源定义 # 1.1 StatefulSet定义 # staging/src/k8s.io/api/apps/v1beta2/types.go&#xD;type StatefulSet struct {&#xD;metal.TypeMeta&#xD;metal.ObjectMeta&#xD;Spec StatefulSetspec #1&#xD;Status StatefulSetStatus #2&#xD;} 1.2 StatefulSetspec定义 # #1&#xD;staging/src/k8s.io/api/apps/v1beta2/types.go&#xD;type StatefulSetspec struct {&#xD;/// Pod副本数控制&#x9;Replicas *int32&#xD;/// Pod创建或者删除&#xD;Selector *metav1.LabelSelector&#xD;Template v1.PodTemplateSpec&#xD;VolumeClaimTemplates []v1.PersistentVolumeClaim # 存储状态【2】&#xD;ServiceName string&#xD;PodManagementPolicy PodManagementPolicyType # 2.2节 /// Pod升级和回滚&#xD;UpdateStrategy StatefulSetUpdateStrategy # 2.4节&#xD;RevisionHistoryLimit *int32&#xD;} 1.3 StatefulSetStatus定义 # #2&#xD;staging/src/k8s.io/api/apps/v1beta2/types.go&#xD;type StatefulSetStatus struct {&#xD;ObservedGeneration *int64&#xD;Replicas int32 # 所有属于该 StatefulSet的Pod数量&#xD;ReadyReplicas int32 # 所有属于该 Statefulset的Pod且状态为ready的数量&#xD;CurrentReplicas int32 # 所有属于该 StatefulSet当前版本的Pod数量(升级完成时会等于UpdatedReplicas)&#xD;UpdatedReplicas int32 # 所有属于该 StatefulSet升级版本的Pod数量&#xD;CurrentRevision string # Statefulset当前版本的 set.</description>
-    </item>
-    <item>
-      <title>Kubenetes资源模型</title>
-      <link>http://localhost:1313/www6vKubernetes/docs/orchestrate/k8sResouceModel/</link>
-      <pubDate>Thu, 14 Nov 2019 10:23:19 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/docs/orchestrate/k8sResouceModel/</guid>
-      <description>关键词 # 资源模型, 资源管理&#xA;资源模型 # requests limits # CPU资源被称作 “可压缩资源”: Pod 只会“饥饿”，但不会退出. 内存资源被称作“不可压缩资源”: Pod 会因为 OOM（Out-Of-Memory）被内核杀掉。&#xA;Kubernetes 这种对 CPU 和内存资源限额的设计，实际上参考了 Borg 论文中对**“动态资源边 界”**的定义，既：容器化作业在提交时所设置的资源边界，并不一定是调度系统所必须严格遵守 的，这是因为在实际场景中，大多数作业使用到的资源其实远小于它所请求的资源限额。&#xA;而 Kubernetes 的 requests+limits 的做法，其实就是上述思路的一个简化版：用户在提交 Pod 时，可以声明一个相对较小的 requests 值供调度器使用，而 Kubernetes 真正设置给容器 Cgroups 的，则是相对较大的 limits 值。不难看到，这跟 Borg 的思路相通的。&#xA;limits: 而在真正设置 Cgroups 限制的时候，kubelet 则会按照 limits 的值来进行设置 requests: 在调度的时候，kube-scheduler 只会按照 requests 的值进行计算&#xA;QoS # Guaranteed: requests == limits Burstable: 至少有一个 Container 设置了 requests BestEffort: 没有设置 requests，也没有设置 limits</description>
-    </item>
-    <item>
-      <title>kubelet和PLEG</title>
-      <link>http://localhost:1313/www6vKubernetes/docs/orchestrate/k8sPLEG/</link>
-      <pubDate>Sun, 03 Apr 2022 21:40:02 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/docs/orchestrate/k8sPLEG/</guid>
-      <description>&#xA;kubelet管理Pod的核心流程 # Pod启动流程 [2][3] # PLEG # relist操作&#xA;参考：&#xA;kubelet 原理解析二：pleg 《模块七：Kubernetes控制平面组件》 从架构层面了解Kubernetes </description>
-    </item>
-    <item>
-      <title>K8s  AdmissionWebhook</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAdmissionWebhook/</link>
-      <pubDate>Mon, 16 Oct 2023 16:07:04 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAdmissionWebhook/</guid>
-      <description>MutatingAdmissionWebhook 是如何工作的[1][chat] # MutatingAdmissionWebhook拦截与MutatingWebhookConfiguration中定义的规则匹配的请求，然后将其发送到Webhook服务器进行处理，然后再持久化到etcd 中。 MutatingAdmissionWebhook通过向Webhook服务器发送admission请求来执行变更。Webhook服务器只是遵循Kubernetes的API 的普通HTTP服务器。&#xA;以下图示了MutatingAdmissionWebhook的工作原理:&#xA;MutatingAdmissionWebhook需要三个对象才能正常工作:&#xA;MutatingWebhookConfiguration&#xA;MutatingAdmissionWebhook需要在apiserver中注册，提供MutatingWebhookConfiguration。在注册过程中，MutatingAdmissionWebhook说明以下内容:&#xA;如何连接到Webhook Admission服务器 如何验证Webhook Admission服务器 Webhook Admission服务器的URL路径 定义了哪些资源和操作它处理的规则 如何处理来自Webhook Admission服务器的无法识别的错误 apiVersion: admissionregistration.k8s.io/v1beta1&#xD;kind: MutatingWebhookConfiguration&#xD;metadata:&#xD;name: sidecar-injector-webhook-cfg&#xD;labels:&#xD;app: sidecar-injector&#xD;webhooks:&#xD;- name: sidecar-injector.morven.me&#xD;clientConfig:&#xD;service:&#xD;name: sidecar-injector-webhook-svc #2&#xD;namespace: default&#xD;path: &amp;#34;/mutate&amp;#34;&#xD;caBundle: ${CA_BUNDLE}&#xD;rules:&#xD;- operations: [ &amp;#34;CREATE&amp;#34; ]&#xD;apiGroups: [&amp;#34;&amp;#34;]&#xD;apiVersions: [&amp;#34;v1&amp;#34;]&#xD;resources: [&amp;#34;pods&amp;#34;]&#xD;namespaceSelector:&#xD;matchLabels:&#xD;sidecar-injector: enabled MutatingAdmissionWebhook本身&#xA;MutatingAdmissionWebhook是一种插件式的Admission控制器，可以配置到apiserver中。MutatingAdmissionWebhook插件从MutatingWebhookConfiguration中获取感兴趣的Admission Webhooks列表。然后，MutatingAdmissionWebhook观察到对apiserver的请求，并拦截与admission webhook规则匹配的请求，并并行地调用它们。&#xA;Webhook Admission Server&#xA;Webhook Admission服务器只是一个符合Kubernetes API的普通HTTP服务器。对于每个API server的请求，MutatingAdmissionWebhook将admissionReview（用于参考的API）发送到相关的webhook admission服务器。webhook admission服务器会从admissionReview中收集信息，如object，oldobject和userInfo，然后返回一个admissionReview响应，其中包括填充了admission决策和可选的Patch以改变资源的AdmissionResponse。</description>
-    </item>
-    <item>
-      <title>K8s 集成Springcloud</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sSpringcloud/</link>
-      <pubDate>Sat, 15 Apr 2023 10:42:05 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sSpringcloud/</guid>
-      <description>Case1[2] # 架构 nginx 结合 springcloud gateway erueka + 本地配置 Case2[1] # 架构 k8s ingress 结合spring gateway spring-admin做服务注册, ConfigMap做服务配置 Case3[3] # 架构&#xA;k8s ingress 结合 zuul Eureka做服务注册， ConfigServer做服务配置 网关 候选&#xA;zuul 需要使用 Ingress中配置路由很麻烦 服务配置 候选&#xA;环境变量 Service mysql-svc ConfigMap apollo 服务注册&#xA;老项目 改动Eureka会有风险，建议保留 Eureka 新项目 [4] 用istio envoy side 做 服务发现 候选 Service 基于CoreDNS的服务发现 Env 基于环境变量的服务发现 参考 # 云原生Java架构师的第一课K8s+Docker+KubeSphere+DevOps 166 V 项目Repo git&#xA;SpringCloud微服务电商系统在Kubernetes集群中上线详细教程 用的都是Deployment ，需要部署成StatefulSet&#xA;kubernetes架构师课程 P195-P200 V</description>
-    </item>
-    <item>
-      <title>K8S高可用-零停机[探针]</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAvailableHealth/</link>
-      <pubDate>Sat, 22 Oct 2022 09:33:27 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAvailableHealth/</guid>
-      <description>健康检查 # Liveness Probe [2] # 确定何时重启容器. 例如，当应用程序处于运行状态但无法做进一步操作，liveness探针将捕获到deadlock，重启处于该状态下的容器，使应用程序在存在bug的情况下依然能够继续运行下去。&#xA;liveness的初始值为成功。&#xA;Readiness Probe [2] # 确定容器是否已经就绪可以接受流量. 该信号的作用是控制哪些Pod应该作为service的后端。如果Pod处于非就绪状态，那么它们将会被从service的load balancer中移除。&#xA;readiness的初始值为失败。&#xA;startupProbe [4] # 启动检查, 使用启动探针检测容器应用程序是否已经启动&#xA;对于较新的（≥v1.16）Kubernetes 集群，如果是具有不可预测或可变启动时间的应用程序应使用 startup 探针。&#xA;只运行一次。&#xA;探针类型&#xA;httpGet: 指定端口和路径执行 HTTP GET 请求&#xA;tcpSocket: 对容器的 IP 地址上的指定端口执行 TCP 检查&#xA;命令,exec: 在容器内执行指定命令 优雅终止 [5] # 系统底层默认会向主进程发送 SIGTERM 信号，而对剩余子进程发送 SIGKILL 信号。系统这样做的大概原因是因为大家在设计主进程脚本的时候都不会进行信号的捕获和传递，这会导致容器关闭时，多个子进程无法被正常终止，所以系统使用 SIGKILL 这个不可屏蔽信号，而是为了能够在没有任何前提条件的情况下，能够把容器中所有的进程关掉。&#xA;也就是说如果主进程自身不是服务本身，可能会导致是被强制Kill的，解决的方法也很简单，也就是在主进程中对收到的信号做个转发，发送到容器中的其他子进程，这样容器中的所有进程在停止时，都会收到 SIGTERM，而不是 SIGKILL 信号了。&#xA;代码 [6] # Probe apiVersion: v1 kind: Pod metadata: name: nginx namespace: default spec: containers: - name: nginx image: nginx # 存活检测 livenessProbe: failureThreshold: 3 initialDelaySeconds: 30 periodSeconds: 30 successThreshold: 1 tcpSocket: port: 5084 timeoutSeconds: 1 # 就绪检测 readinessProbe: failureThreshold: 3 initialDelaySeconds: 30 periodSeconds: 30 successThreshold: 1 tcpSocket: port: 5084 timeoutSeconds: 1 # 优雅退出 lifecycle: preStop: exec: command: - sleep - 30 terminationGracePeriodSeconds: 60 Service</description>
-    </item>
-    <item>
-      <title>Calico</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sCalico1/</link>
-      <pubDate>Fri, 12 Aug 2022 11:55:44 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sCalico1/</guid>
-      <description>Best Practice # At a high-level, the key recommendations are: # Use the Kubernetes datastore. 使用K8S datastore Install Typha to ensure datastore scalability. 安装Typha Use no encapsulation for single subnet clusters. 在单一子网的集群中，不要封装 Use IP-in-IP in CrossSubnet mode for multi-subnet clusters. 在多子网集群中，使用IP-in-IP的跨子网模式 Configure Calico MTU based on the network MTU and the chosen routing mode. MTU Add global route reflectors for clusters capable of growing above 50 nodes. 50个nodes以上使用RR(route reflectors) Use GlobalNetworkPolicy for cluster-wide ingress and egress rules.</description>
-    </item>
-    <item>
-      <title>Kubernetes和VM</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sVM/</link>
-      <pubDate>Fri, 03 Jun 2022 17:36:53 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sVM/</guid>
-      <description>参考 # kubevirt在360的探索之路（k8s接管虚拟化）&#xA;后Kubernetes时代的虚拟机管理技术之kubevirt篇</description>
-    </item>
-    <item>
-      <title>Kubernetes 高级调度</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAdvancedScheduling/</link>
-      <pubDate>Fri, 27 May 2022 18:39:20 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAdvancedScheduling/</guid>
-      <description>高级调度 Overview [2] # Affinity vs. Taint [2] # 就污点而言,它的使用通常是负向的, 也就说, 污点常用在某Node不让大多数Pod调度只让少部分Pod调度时,又或者节点根本不参加工作负载时。比如:我们常见的master节点上不调度负载pod,保证master组件的稳定性；节点有特殊资源，大部分应用不需要而少部分应用需要,如GPU。&#xA;就Node Affinity来说,他的使用可以正向的,也就是说,我们想让某个应用的Pod部署在指定的一堆节点上。当然,也可以是负向的,比如说我们常说的Node 反亲和性,只需要把操作符设置为NotIn就能达成预期目标。&#xA;就污点而言，如果节点设置的污点效果是NoSchedule或者NoExecute,意味着没有设置污点容忍的Pod绝不可能调度到这些节点上。&#xA;就Node Affinity而言,如果节点设置了Label,但是Pod没有任何的Node Affinity设置,那么Pod是可以调度到这些节点上的。&#xA;特性 默认 优/劣势 taint 负向的 设置NoSchedule， 默认不可调度 不要改现有pod[2] 亲和，反亲和 正向的 设置了Label， 默认可调度 要改现有pod[2] 亲和性 # NodeAffinity配置[1]&#xA;NodeAffinity配置分类: requiredDuringSchedulingIgnoredDuringExecution (强亲和性) preferredDuringSchedulingIgnoredDuringExecution (首选亲和性) Topology [3] # topologyKey&#xA;参考 # Kubernetes高级调度- Taint和Toleration、Node Affinity分析 详解 K8S Pod 高级调度 kubernetes架构师课程 P97 P98 *** 【2023】云原生Kubernetes全栈架构师：基于世界500强的k8s实战课程 1xx. Kubernetes之Pod调度 未</description>
-    </item>
+    <atom:link href="https://www6v.github.io/www6vKubernetes/categories/Kubernetes/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kubernetes安全-Security</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sSecurity/</link>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Security/k8sSecurity/</link>
       <pubDate>Sun, 22 May 2022 12:24:37 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sSecurity/</guid>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Security/k8sSecurity/</guid>
       <description>K8S安全加固建议 [2] # Kubernetes Pod 安全&#xA;使用构建的容器，以非 root 用户身份运行应用程序 在可能的情况下，用不可变的文件系统运行容器 扫描容器镜像，以发现可能存在的漏洞或错误配置 使用 Pod 安全政策来执行最低水平的安全，包括: 防止有特权的容器&#xA;拒绝经常被利用来突破的容器功能，如 hostPID、hostIPC、hostNetwork、allowedHostPath 等&#xA;拒绝以 root 用户身份执行或允许提升为根用户的容器&#xA;使用安全服务，如 SELinux®、AppArmor® 和 seccomp，加固应用程序，防止被利用。 @ 网络隔离和加固&#xA;使用防火墙和基于角色的访问控制（RBAC）锁定对控制平面节点的访问 进一步限制对 Kubernetes etcd 服务器的访问 配置控制平面组件，使用传输层安全（TLS）证书进行认证、加密通信 设置网络策略来隔离资源。不同命名空间的 Pod 和服务仍然可以相互通信，除非执行额外的隔离，如网络策略 @ 将所有凭证和敏感信息放在 Kubernetes Secret 中，而不是配置文件中。使用强大的加密方法对 Secret 进行加密 认证和授权&#xA;禁用匿名登录（默认启用） 使用强大的用户认证 创建 RBAC 策略以限制管理员、用户和服务账户活动 @ 日志审计&#xA;启用审计记录（默认为禁用） 在节点、Pod 或容器级故障的情况下，持续保存日志以确保可用性 配置一个 metric logger 升级和应用安全实践&#xA;立即应用安全补丁和更新 定期进行漏洞扫描和渗透测试 当组件不再需要时，将其从环境中移除 K8S安全加固最佳实践 [1] # Kubernetes 安全机制 [6] # K8S API 安全 @限制访问Kubernetes API # 所有API交互使用TLS API 认证 Kubernetes支持的请求认证方式 Basic 认证（不建议） X509 证书认证 Bearer Tokens(JSON Web Tokens)</description>
     </item>
     <item>
-      <title>Kubernetes 多集群管理</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sMultiCluster/</link>
-      <pubDate>Sun, 08 May 2022 22:14:17 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sMultiCluster/</guid>
-      <description>&#xA;目标 # 让用户像使用单集群一样来使用多集群。&#xA;多集群部署需要解决哪些问题 # 而多集群管理需要解决以下问题：&#xA;多集群服务的分发部署（deployment、daemonset等）&#xA;跨集群自动迁移与调度（当某个集群异常，服务可以在其他集群自动部署）&#xA;多集群服务发现，网络通信及负载均衡（service，ingress等） 开源和解决方案 # KubeFed 或 Federation v2&#xA;kubefed 集群联邦（Cluster Federation） jimmysong virtual-kubelet Virtual Kubelet&#xA;阿里云virtual-kubelet-autoscaler实现ECI作为弹性补充 通过 virtual-kubelet-autoscaler 将Pod自动调度到虚拟节点 自建Kubernetes集群部署Virtual Kubelet（ECI） 未 简介：Virtual Kubelet video 2018 kubecon 未 深入了解：Virtual Kubelet video 2018 kubecon 未 Karmada（Kubernetes Armada）[5]&#xA;clusternet - 腾讯云&#xA;OCM(Open Cluster Management) - RedHat&#xA;Gardener [3]&#xA;Crossplane [3]&#xA;cluster-api [4]&#xA;参考： # k8s多集群的思考 混合云下的 Kubernetes 多集群管理与应用部署 未 【PingCAP Infra Meetup】No.141 Kubernetes 开发设计模式在 TiDB Cloud 中的应用 基于 ClusterAPI 的集群管理 Karmada: 开源的云原生多云容器编排引擎 华为 </description>
-    </item>
-    <item>
-      <title>Calico</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sCalico/</link>
-      <pubDate>Tue, 03 May 2022 10:15:18 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sCalico/</guid>
-      <description>一. 介绍和原理 # calico 是容器网络的又一种解决方案，和其他虚拟网络最大的不同是，它没有采用 overlay 网络做报文的转发，提供了纯 3 层的网络模型。三层通信模型表示每个容器都通过 IP 直接通信，中间通过路由转发找到对方。在这个过程中，容器所在的节点类似于传统的路由器，提供了路由查找的功能。&#xA;要想路由工作能够正常，每个虚拟路由器（容器所在的主机节点）必须有某种方法知道整个集群的路由信息，calico 采用的是 BGP 路由协议，全称是 Border Gateway Protocol。&#xA;BGP(Border Gateway Protocol 边界网关协议): 就是在大规模网络中实现节点路由信息共享的一种协议&#xA;BGP 协议传输的消息&#xD;+ 1 [BGP 消息]&#xD;+ 2 我是宿主机 192.168.1.3&#xD;+ 3 10.233.2.0/24 网段的容器都在我这里 + 4 这些容器的下一跳地址是我 二. 组件 # Calico 的 CNI 插件&#xA;Felix 它是一个 DaemonSet，负责在宿主机上插入路由规则(即:写入 Linux 内核的 FIB 转发信息库)，以及维护 Calico 所需的网络设备等工作。&#xA;路由规则(核心) &amp;lt;目的容器 IP 地址段&amp;gt; via &amp;lt;网关的 IP 地址&amp;gt; dev eth0 iptables的配置组件Felix; 基于iptable/linux kernel包转发; 根据iptables规则进行路由转发; BIRD， 路由广播组件BGP Speaker BIRD是 BGP 的客户端，专门负责在集群里分发路由规则信息。 三.</description>
-    </item>
-    <item>
-      <title>K8S高可用-零停机[自主中断]</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAvailable/</link>
-      <pubDate>Tue, 05 Apr 2022 15:09:31 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAvailable/</guid>
-      <description>&#xA;自主中断和非自主中断[4] # PodDisruptionBudged [4] # 无状态应用： maxUnavailable = 40% 单实例有状态应用: 多实例有状态应用： etcd N, maxUnavailable=1 或者 minAvailable=N 参考 # 模块十一： 将应用迁移至Kubernetes平台 使用 PDB 避免 Kubernetes 集群中断 未 </description>
-    </item>
-    <item>
-      <title>Kubernetes Operator-Redis</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sOperator-redis/</link>
-      <pubDate>Thu, 17 Feb 2022 22:25:07 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sOperator-redis/</guid>
-      <description>Deploy redis cluster operator # kubectl create -f deploy/crds/redis.kun_distributedredisclusters_crd.yaml&#xD;kubectl create -f deploy/crds/redis.kun_redisclusterbackups_crd.yaml&#xD;// cluster-scoped&#xD;$ kubectl create -f deploy/service_account.yaml&#xD;$ kubectl create -f deploy/cluster/cluster_role.yaml&#xD;$ kubectl create -f deploy/cluster/cluster_role_binding.yaml&#xD;$ kubectl create -f deploy/cluster/operator.yaml Deploy a sample Redis Cluster # ## Custom Resource&#xD;$ kubectl create -f deploy/example/custom-resources.yaml&#xD;## Persistent Volume&#xD;$ kubectl create -f deploy/example/persistent.yaml 参考 # redis-cluster-operator kubernetes架构师课程 129 V ***</description>
-    </item>
-    <item>
-      <title>Kubernetes Nginx Ingress</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sIngressNginx/</link>
-      <pubDate>Thu, 10 Feb 2022 22:41:32 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sIngressNginx/</guid>
-      <description>Kubernetes Nginx Ingress [0] # 版本1-K8s官方维护 [1][2] # There are three ways to customize NGINX: ConfigMap: using a Configmap to set global configurations in NGINX. [滚动更新后生效， 针对全局的配置] Annotations: use this if you want a specific configuration for a particular Ingress rule. [立即生效，针对某个域名location进行配置] Custom template: when more specific settings are required, like open_file_cache, adjust listen options as rcvbuf or when is not possible to change the configuration through the ConfigMap. 版本2-Nginx官方维护 [3][4] # 版本1 vs.</description>
+      <title>Kubernetes Deployment</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/orchestrate/k8sDeployment/</link>
+      <pubDate>Wed, 16 Feb 2022 19:56:27 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/orchestrate/k8sDeployment/</guid>
+      <description>&#xA;Deployment # Pod-template-hash label Rolling Update Deployment Max Surge Max Unavailable Argo Rollouts [5] # Argo Rollouts 是一个 Kubernetes 控制器，它提供了在应用程序部署过程中执行渐进式发布和蓝绿部署等高级部署策略的能力。它是基于 Kubernetes 原生的 Deployment 资源构建的，通过引入新的 Rollout 资源来扩展和增强部署控制。&#xA;参考 # Deployment D&#xA;如何在 Kubernetes 中对无状态应用进行分批发布 阿里 孙齐（代序） 第6 章 ： 应用编排与管理： Deployment 阿里 kubernetes 最佳实践：优雅热更新 陈鹏 Deployment jimmysong Argo Rollouts 中文文档 jimmysong </description>
     </item>
     <item>
       <title>K8S 应用迁移至K8S</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAppMigrate/</link>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Production/Integration/k8sAppMigrate/</link>
       <pubDate>Wed, 02 Feb 2022 22:16:54 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAppMigrate/</guid>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Production/Integration/k8sAppMigrate/</guid>
       <description>应用容器化 # 启动速度 # 健康检查 # 启动参数 # Dockerfile # 基础镜像，Utility Lib 主进程, Fork bomb 代码和配置分离&#xA;配置： 环境变量， 配置文件mount 分层控制 Entrypoint 日志 # Log Driver&#xA;Blocking mode&#xA;Non Blocking mode sideCar模式 Node 模式&#xA;容器日志采集利器Log-Pilot 共享kernel # 系统参数配置共享&#xA;虚拟机和容器中的内核参数 kernel&#xA;K8S 内核参数 进程数共享 - Fork bomb&#xA;https://github.com/krallin/tini fd数共享 容器可能用完主机所有的fd 主机磁盘共享&#xA;lvm， 强IO 容器化应用的资源监控 # 容器中看到的是主机资源&#xA;top&#xA;java runtime.GetAvailableProcess() - cpu数&#xA;cat /proc/cupinfo&#xA;cat /proc/meminfo&#xA;df -k 解决方案 查询/proc/1/cgroup是否包含kubepods关键字，表明运行在k8s之上。（参考1） 要得到单个容器的 CPU 使用率，我们可以从 CPU Cgroup 每个控制组里的统计文件 cpuacct.</description>
     </item>
     <item>
-      <title>Kubernetes 升级upgrade</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sUpgrade/</link>
-      <pubDate>Sun, 16 Jan 2022 23:15:30 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sUpgrade/</guid>
-      <description>宏观升级流程 # 1、升级主master节点&#xA;2、升级其他master节点&#xA;3、升级node节点&#xA;微观升级步骤 # 1、先升级kubeadm版本&#xA;2、升级第一个主控制平面节点Master组件&#xA;3、升级第一个主控制平面节点上的Kubelet和kubectl&#xA;4、升级其他控制平面节点&#xA;5、升级Node节点&#xA;6、验证集群&#xA;升级注意事项 # 确定升级前的的kubeadm集群版本。 kubeadm upgrade不会影响到工作负载，仅涉及k8s内部的组件，但是备份etcd数据库是最佳实践。 升级后，所有容器都会重启动，因为容器的hash值已更改。 由于版本的兼容性，只能从一个次要版本升级到另外一个次要版本，不能跳跃升级。 集群控制平面应使用静态Pod和etcd pod或外部etcd。 参考： # Kubernetes版本升级实践 Kubernetes升级：自己动手的权威指南</description>
-    </item>
-    <item>
-      <title>Kubernetes 安全实践</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sSecurityPractice/</link>
-      <pubDate>Sun, 16 Jan 2022 14:09:26 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sSecurityPractice/</guid>
-      <description>Microsoft的Kubernetes attack matrix [1] # Kubernetes attack matrix-enhancement [2] # 初始访问 # ● API Server 未授权访问 [5]&#xA;API Server 作为 K8s 集群的管理入口，通常使用 8080 和 6443 端口，其中 8080 端口无需认证，6443端口需要认证且有 TLS 保护。如果开发者使用 8080 端口，并将其暴露在公网上，攻击者就可以通过该端口的 API，直接对集群下发指令。&#xA;另一种场景是运维人员配置不当，将&amp;quot;system:anonymous&amp;quot;用户绑定到&amp;quot;cluster-admin&amp;quot;用户组，从而使6443端口允许匿名用户以管理员权限向集群内部下发指令。&#xA;● kubelet 未授权访问 [5]&#xA;● Docker Daemon 公网暴露&#xA;● K8s configfile 泄露&#xA;K8s configfile 作为 K8s 集群的管理凭证，其中包含有关 K8s 集群的详细信息（API Server、登录凭证）。 如果攻击者能够访问到此文件(如办公网员工机器入侵、泄露到 Github的代码等)，就可以直接通过 API Server 接管 K8s 集群，带来风险隐患。 拿到K8s configfile完整利用流程&#xA;K8s configfile &amp;ndash;&amp;gt; 创建后门Pod/挂载主机路径 &amp;ndash;&amp;gt; 通过Kubectl 进入容器 &amp;ndash;&amp;gt; 利用挂载目录逃逸。 执行 # ● 利用Service Account 容器内部默认携带 K8s Service Account的认证凭据,路径为：/run/secrets/kubernetes.</description>
-    </item>
-    <item>
-      <title>Kubernetes CKS</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sCKS/</link>
-      <pubDate>Sat, 15 Jan 2022 23:06:15 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sCKS/</guid>
-      <description>Cluster Setup - 10% # Securing a Cluster # 使用网络安全策略来限制集群级别的访问 Use Network security policies to restrict cluster level access 使用CIS基准检查Kubernetes组件(etcd, kubelet, kubedns, kubeapi)的安全配置 Use CIS benchmark to review the security configuration of Kubernetes components (etcd, kubelet, kubedns, kubeapi) Kube-bench - Checks whether Kubernetes is deployed securely by running the checks documented ain the CIS Kubernetes Benchmark. 正确设置带有安全控制的Ingress对象 Properly set up Ingress objects with security control 保护节点元数据和端点 Protect node metadata and endpoints Using Kubernetes network policy to restrict pods access to cloud metadata This example assumes AWS cloud, and metadata IP address is 169.</description>
-    </item>
-    <item>
-      <title>Kubernetes Rook</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sRook/</link>
-      <pubDate>Wed, 12 Jan 2022 22:43:17 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sRook/</guid>
-      <description>目录 # Rook for ceph # Rook建立Ceph集群流程[1] # rook的crd建立好之后，&#xA;Rook的operator会把rook的控制面建立出来&#xA;然后把storageclass和csi driver都注册好。&#xA;用户只要建立pvc，pvc里指定用哪个storageclass，然后csi driver会去工作。&#xA;Rook cluster installation [2][3] [I] # Ceph存储类型 # Block FileSystem Object Block Storage [4][5] [II] # install apiVersion: ceph.rook.io/v1 kind: CephBlockPool metadata: name: replicapool namespace: rook-ceph spec: failureDomain: host replicated: size: 3 --- apiVersion: storage.k8s.io/v1 kind: StorageClass metadata: name: rook-ceph-block # Change &amp;#34;rook-ceph&amp;#34; provisioner prefix to match the operator namespace if needed provisioner: rook-ceph.rbd.csi.ceph.com parameters: # clusterID is the namespace where the rook cluster is running clusterID: rook-ceph # Ceph pool into which the RBD image shall be created pool: replicapool .</description>
-    </item>
-    <item>
-      <title>Kubernetes CoreDNS</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sDNS/</link>
-      <pubDate>Wed, 12 Jan 2022 15:26:32 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sDNS/</guid>
-      <description>&#xA;CoreDNS插件架构 # github中&#xA;Kubernetes DNS # Kubernetes服务发现 自定义域名解析 # hosts: 存量代码域名调用 rewrite: 集群外服务调用 forward： 配置存根域 CoreDNS 部署架构 # kubesphere.local prod.kubesphere.local dev.kubesphere.local qa.kubesphere.local test.kubesphere.local reference: # 【Meetup 分享】使用 KubeSphere &amp;amp; CoreDNS 搭建云原生 DNS 详解 DNS 与 CoreDNS 的实现原理 未 </description>
-    </item>
-    <item>
       <title>Kubernetes PaaS平台</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sPaaS/</link>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/PaaS/k8sPaaS/</link>
       <pubDate>Wed, 12 Jan 2022 11:07:23 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sPaaS/</guid>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/PaaS/k8sPaaS/</guid>
       <description>/ OpenShift KubeSphere 网络 ovs(openshift SDN), flannel, calico calico, flannel, QinCloud CNI, Porter 存储 Ceph,NFS NeonSAN， QingCloud-csi，Ceph-csi CI/CD OCP Pipeline/Tekton&#xA;s2i Pipeline, Jenkins, sonarqube&#xA;s2i 微服务 istio istio ingress HA Proxy openELB infa(多云) kvm,openstack,aws,GCP,azure&#xA;marketplace OpenPitrix(aws, aliyun, openstack) Service Catelog operatorhub 无 serverless knative openfunction(基于knative) 多集群 solo、 kubefed(二开) 参考 # 青云官网</description>
     </item>
     <item>
-      <title>Kubernetes OpenShift</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sOpenShift/</link>
-      <pubDate>Wed, 05 Jan 2022 21:45:05 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sOpenShift/</guid>
-      <description>Interface # CNI&#xA;OpenFlow(OVS)(使用的， 更通用，场景适合的更多)&#xA;Calico CRI OpenShift3.0 用的&#xA;Docker（有守护进程，守护进程宕掉后，运行时会有问题）&#xA;Red Hat Enterprise Linux - 4G大小 OpenShift4.0 用的&#xA;CRI-O（没有守护进程）&#xA;Ret Hat CoreOS - 不到800M大小 CSI&#xA;CEPH(ROOK)&#xA;NFS 入口 ingress openshift 默认是haproxy的ingress（首选建议使用， dns解析， mTLS） 也可以装nginx ingress 也可以装istio ingress gateway（4层选， istio ingress gateway） PaaS # 角色 - RBAC&#xA;配置管理 - LimitRanage， Quota&#xA;联邦集群 - kubefed&#xA;对K8S的增强 # Operator Multus多个虚拟网卡（用的多）&#xA;一个pod有多个虚拟网卡， ovs管理网络 + macvlan网络（性能比较好） kube-virt 虚拟机管理 应用迁移 # 应用改造的难度比较大 多云 # 基于多云的CI/CD # 基于jenkins</description>
-    </item>
-    <item>
       <title>K8S高可用-控制面</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sHA/</link>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Production/Available/k8sHA/</link>
       <pubDate>Sun, 02 Jan 2022 22:09:31 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sHA/</guid>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Production/Available/k8sHA/</guid>
       <description>&#xA;控制面 高可用 # 控制平面组件划分单独节点； 控制平面所在节点，应该确保在不同机架上； 保证控制平面的每个组件有足够的CPU、内存和磁盘资源； 减少或消除外部依赖； Cloud Provider API 核心组件以普通Pod形式加载运行时， 可能会调度到任意工作节点。 控制面 高可用方案 # [1] [2]&#xA;架构图 # load balancer 虚ip&#xA;controller-manager： 用lease来实现controller-manager和scheduler的leader election&#xA;参考: # Options for Highly Available topology Creating Highly Available clusters with kubeadm </description>
     </item>
     <item>
       <title>Kubernetes Operator-kubebuilder</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8s-operator/</link>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/OperatorController/k8s-operator/</link>
       <pubDate>Thu, 30 Dec 2021 20:42:36 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8s-operator/</guid>
-      <description>目录 # 使用kubebuilder构建Operator的过程 # 自己定义DaemonSet Operator包括： 在每个node上启动一个Pod（CRD + Controller） webhook(证书 + mutation + validation) Step1: init project # Create a kubebuilder project, which requires an empty folder # kubebuilder init --domain cncamp.io Check project layout # cat PROJECT domain: cncamp.io layout: - go.kubebuilder.io/v3 projectName: mysts repo: github.com/www6v/demo-operator version: &amp;#34;3&amp;#34; Step2: Create CRD and Controller # Create API, create resource[Y], create controller[Y] # kubebuilder create api --group apps --version v1beta1 --kind MyDaemonset edit api/v1alpha1/simplestatefulset_types.</description>
-    </item>
-    <item>
-      <title>Kubernetes 多租户</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sMultiTenancy/</link>
-      <pubDate>Mon, 18 Oct 2021 21:51:13 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sMultiTenancy/</guid>
-      <description>一. 概念和原则 # 租户是指一组拥有访问特定软件资源权限的用户集合，在多租户环境中，它还包括共享的应用、服务、数据和各项配置等。 多租户集群必须将租户彼此隔离 集群须在租户之间公平的分配集群资源。 二. Overview # 软隔离：在这种情况下，我们有一个企业，不同的团队访问同一个集群，这需要较少的安全开销，因为用户可以相互信任。&#xA;硬隔离：当 Kubernetes 暴露给具有独立且完全不受信任的用户的多个企业时，这是必需的。&#xA;方案B 软隔离 - hierarchical-namespaces&#xA;https://github.com/kubernetes-sigs/hierarchical-namespaces Kubernetes 的层级命名空间介绍&#xA;方案C 硬隔离 - virtualcluster&#xA;https://github.com/kubernetes-sigs/cluster-api-provider-nested/tree/main/virtualcluster&#xA;三. 方案B 解决方案 # 1. 认证 # 识别访问的用户是谁 K8s可管理2类用户 ServiceAccount&#xA;是存在于K8s中的虚拟账户;&#xA;原生支持的动态认证; 用户认证&#xA;webhook是和企业认证平台集成的重要手段 2. 授权 # 3. 隔离 # 节点隔离&#xA;Taints和Toleration机制&#xA;[Kubernetes 调度 - 污点和容忍度详解] (https://mp.weixin.qq.com/s/rza4euQCLuMLTI5fHdj67Q)&#xA;Taint 和 Toleration（污点和容忍）&#xA;网路隔离 NetworkPolicy 网路策略 - 实质上也是iptables规则&#xA;网络策略通过网络插件来实现，所以必须使用一种支持 NetworkPolicy 的网络方案（如 calico）—— 非 Controller 创建的资源，是不起作用的。&#xA;容器隔离&#xA;5种隔离机制</description>
-    </item>
-    <item>
-      <title>K8S 弃用Docker</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAbandonDocker/</link>
-      <pubDate>Tue, 01 Jun 2021 21:57:51 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAbandonDocker/</guid>
-      <description>&#xA;1. # 如果以 kubelet 调用 CRI 为起点，OCI 的 runC 调用为终点，三种模式经历的可执行程序分别是：&#xA;dockershim 模式：dockershim(*)-&amp;gt;dockd-&amp;gt;containerd-&amp;gt;containerd-shim&#xA;cri-containerd 模式：cri-containerd(*)-&amp;gt; containerd-&amp;gt;containerd-shim&#xA;cri-o 模式：cri-o&#xA;K8S弃用Docker是指弃用Docker daemon&#xA;RedHat 推崇的 cri-o → Podman&#xA;2. # 容器引擎可选的替代方案大概有以下几种：&#xA;containerd CRI-O → Podman, Red Hat gVisor → “guest 内核”层 kata-containers → 安全 Nabla 参考： # https://www.infoq.cn/article/VasFWOChD6JoL5avhfAz https://www.zhihu.com/question/433184969 </description>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/OperatorController/k8s-operator/</guid>
+      <description>使用kubebuilder构建Operator的过程 # 自己定义DaemonSet Operator包括： 在每个node上启动一个Pod（CRD + Controller） webhook(证书 + mutation + validation) Step1: init project # Create a kubebuilder project, which requires an empty folder # kubebuilder init --domain cncamp.io Check project layout # cat PROJECT domain: cncamp.io layout: - go.kubebuilder.io/v3 projectName: mysts repo: github.com/www6v/demo-operator version: &amp;#34;3&amp;#34; Step2: Create CRD and Controller # Create API, create resource[Y], create controller[Y] # kubebuilder create api --group apps --version v1beta1 --kind MyDaemonset edit api/v1alpha1/simplestatefulset_types.</description>
     </item>
     <item>
       <title>Kubernetes Runtime</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sRuntime/</link>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Container-Runtime/k8sRuntime/</link>
       <pubDate>Tue, 19 Nov 2019 15:21:19 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sRuntime/</guid>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Container-Runtime/k8sRuntime/</guid>
       <description>&#xA;一. 虚拟化技术 # runc： OSContainerRuntime（基于进程隔离技术） kvm: HyperRuntime（基于Hypervisor技术） runv： UnikernelRuntime（基于unikernel） 二. CRI架构 # CRI架构&#xA;docker调用的链路：dockershim =&amp;gt; dockerd =&amp;gt; Containerd =&amp;gt; runc&#xA;Containerd调用的链路：Containerd &amp;ndash;&amp;gt; shim v2 &amp;ndash;&amp;gt; runtimes&#xA;Docker 作为 K8S 容器运行时，调用关系如下： kubelet &amp;ndash;&amp;gt; docker shim （在 kubelet 进程中） &amp;ndash;&amp;gt; dockerd &amp;ndash;&amp;gt; containerd&#xA;Containerd 作为 K8S 容器运行时，调用关系如下： kubelet &amp;ndash;&amp;gt; cri plugin（在 containerd 进程中） &amp;ndash;&amp;gt; containerd&#xA;high level运行时： Dockershim， containerd， CRI-O&#xA;low level运行时：&#xA;runc， kata， gVisor runc：运行可信容器（弱隔离但性能好）; runv: 运行不可信容器（强隔离安全性好）; 参考: # CRI - Container Runtime Interface（容器运行时接口） 为Kubernetes选择合适的容器运行时 模块七 腾讯云 </description>
     </item>
     <item>
-      <title>Kubernetes Operator-Etcd</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sOperator/</link>
-      <pubDate>Tue, 19 Nov 2019 10:59:00 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sOperator/</guid>
-      <description>Operator: &amp;ldquo;有状态应用&amp;rdquo;, 自动化运维工作。&#xA;Etcd Operator部署 # Controller + CRD etcd Controller Deployment etcd CRD API资源类型 kind: &amp;ldquo;EtcdCluster&amp;rdquo;&#xA;etcd高可靠： backup + restore&#xA;etcd backup etcd备份 etcd restore etcd恢复: 恢复备份的数据&#xA;普通运维方式etcd运维步骤: # 创建种子节点（集群）的阶段称为：Bootstrap 通过 Etcd 命令行添加一个新成员： $ etcdctl member add infra1 http://10.0.1.11:2380 为这个成员节点生成对应的启动参数，并启动它： etcd&#xD;--data-dir=/var/etcd/data&#xD;--name=infra1&#xD;--initial-advertise-peer-urls=http://10.0.1.11:2380&#xD;--listen-peer-urls=http://0.0.0.0:2380&#xD;--listen-client-urls=http://0.0.0.0:2379&#xD;--advertise-client-urls=http://10.0.1.11:2379&#xD;--initial-cluster=infra0=http://10.0.1.10:2380,infra1=http://10.0.1.11:2380&#xD;--initial-cluster-state=existing etcd Operator # 注: 一个etcd集群，一个controller。&#xA;当这个 YAML 文件第一次被提交到 Kubernetes 之后，Etcd Operator 的 Informer，就会立 刻“感知”到一个新的 EtcdCluster 对象被创建了出来。所以，EventHandler 里的“添加”事 件会被触发。&#xA;而这个 Handler 要做的操作也很简单，即：在 Etcd Operator 内部创建一个对应的 Cluster 对 象（cluster.</description>
-    </item>
-    <item>
       <title>Kubernetes自动伸缩和HPA</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAutoScale/</link>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/k8sAutoScale/</link>
       <pubDate>Sat, 16 Nov 2019 11:55:37 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sAutoScale/</guid>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/k8sAutoScale/</guid>
       <description>一. Core metrics(核心指标) # kubernetes的新监控体系中，metrics-server属于Core metrics(核心指标)，提供API metrics.k8s.io，仅提供Node和Pod的CPU和内存使用情况。而其他Custom Metrics(自定义指标)由Prometheus等组件来完成. 图14-3 14-5 14-6 基于Core metrics(核心指标)&#xA;kube-aggregator # 有了Metrics Server组件，也采集到了该有的数据，也暴露了api，但因为api要统一，如何将请求到api-server的/apis/metrics请求转发给Metrics Server呢，解决方案就是：kube-aggregator,在k8s的1.7中已经完成，之前Metrics Server一直没有面世，就是耽误在了kube-aggregator这一步。&#xA;kube-aggregator（聚合api）主要提供：&#xA;Provide an API for registering API servers.&#xA;Summarize discovery information from all the servers.&#xA;Proxy client requests to individual servers.&#xA;Metrics Server # metric-server是扩展的apiserver.&#xA;Metrics Server: metric-aggregator, 聚合metric。&#xA;Metrics Server 是集群级别的资源利用率数据的聚合器（ aggregator ）。Metrics Server 通过Kubernetes 聚合器（ kube-aggregator）注册到主API Server 之上，而后基于kubelet 的Summary API 收集每个节点上的指标数据，并将它们存储于内存中然后以指标API 格式提供。&#xA;metric api # metric api的使用：&#xA;Metrics API 只可以查询当前的度量数据，并不保存历史数据</description>
     </item>
     <item>
-      <title>Kubenetes RBAC</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sRBAC/</link>
-      <pubDate>Thu, 14 Nov 2019 17:16:13 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sRBAC/</guid>
-      <description>&#xA;参考 # 《深入剖析Kubernetes - 26 基于角色的权限控制：RBAC》 张磊 </description>
-    </item>
-    <item>
       <title>Kubernetes服务</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sService/</link>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sService/</link>
       <pubDate>Mon, 04 Nov 2019 11:56:32 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sService/</guid>
-      <description>一. Kubenetes服务 # Kubernetes服务发现架构&#xA;ClusterIP 模式的 Service: 稳定的 IP 地址，即 VIP. ClusterIP是VIP, 虚拟IP. Headless Service: 稳定的 DNS 名字, 名字是通过 Pod 名字和 Service 名字拼接出来. 1.1 服务对外暴露方式 # NodePort 四层 ![node-port](https://user-images.githubusercontent.com/5608425/68234082-7d17be80-003b-11ea-891f-90a9e174bbc8.png)&#xD;一定要对流出的包做 SNAT操作[2][6] client&#xD;\ ^&#xD;\ \&#xD;v \&#xD;node 1 &amp;lt;--- node 2&#xD;| ^ SNAT&#xD;| | ---&amp;gt;&#xD;v |&#xD;endpoint 获取真实客户端IP, 设置Service 的 spec.externalTrafficPolicy 字段设置为 local，[2][6] client&#xD;^ / \&#xD;/ / \&#xD;/ v X&#xD;node 1 node 2&#xD;^ |&#xD;| |&#xD;| v&#xD;endpoint Service LoadBalancer 四层 !</description>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sService/</guid>
+      <description>一. Kubenetes服务 # Kubernetes服务发现架构&#xA;ClusterIP 模式的 Service: 稳定的 IP 地址，即 VIP. ClusterIP是VIP, 虚拟IP. Headless Service: 稳定的 DNS 名字, 名字是通过 Pod 名字和 Service 名字拼接出来. 1.1 服务对外暴露方式 # NodePort 四层 一定要对流出的包做 SNAT操作[2][6] client&#xD;\ ^&#xD;\ \&#xD;v \&#xD;node 1 &amp;lt;--- node 2&#xD;| ^ SNAT&#xD;| | ---&amp;gt;&#xD;v |&#xD;endpoint 获取真实客户端IP, 设置Service 的 spec.externalTrafficPolicy 字段设置为 local，[2][6] client&#xD;^ / \&#xD;/ / \&#xD;/ v X&#xD;node 1 node 2&#xD;^ |&#xD;| |&#xD;| v&#xD;endpoint Service LoadBalancer 四层 LoadBalancer类型的Service被提交后，Kubernetes就会调用CloudProvider[5]在公有云上为你创建一个负载均衡服务，并且把被代理的 Pod 的 IP地址配置给负载均衡服务做后端.</description>
     </item>
     <item>
       <title>Kubernetes存储</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sStorage/</link>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Storage/k8sStorage/</link>
       <pubDate>Sun, 01 Sep 2019 17:39:12 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sStorage/</guid>
-      <description>&#xA;![Kubernetes存储](.\k8sStorage\k8sStorage.jpg)&#xD;一. Kubernetes 存储的绑定流程 # 1.1 # 三个阶段&#xA;第一个create阶段，主要是创建存储； 第二个attach阶段，就是将那块存储挂载到 node 上面(通常为将存储load到node的/dev下面)； 第三个mount阶段，将对应的存储进一步挂载到 pod 可以使用的路径。 二. Static Provisioning &amp;amp;&amp;amp; Dynamic Provisioning # 2.1 Static Provisioning # 2.2 Dynamic Provisioning # ![relationship](https://user-images.githubusercontent.com/5608425/64247540-aafc5c00-cf41-11e9-83af-64199e79ded7.JPG)&#xD;**Kubernetes pvc 动态绑定流程**&#xD;只有同属于一个 StorageClass 的PV 和 PVC，才可以绑定在一起&#xA;CSI driver动态创建pv ， CSI Driver 可以动态创建PV [5]&#xA;创建pvc之后，provisioner 会创建pv ，并做pvc和pv的绑定关系 本地存储[5] # emptyDir&#xA;不是overlayFS ，和写主机的性能是一样的&#xA;和容器的生命周期一致，如果容器销毁， emptyDir也被销毁。 hostPath&#xA;需要的注意点，不建议用 最佳实践[5] # 用户去查询集群中有哪些storageclass&#xA;可能有本地的hostpath，或者远程的nfs， ceph 等等 在storageClass中, provisioner很重要 pod中声明一个pvc&#xA;csi plugin把pv attach到对应的node，mount到对应的pod pvc和pv是一一对应的关系 参考: # 《Kubenetes in Action》七牛容器云团队 &amp;laquo;深入剖析Kubernetes - 28 PV、PVC、StorageClass，这些到底在说啥？&amp;raquo; 张磊 &amp;laquo;深入剖析Kubernetes - 29 PV、PVC体系是不是多此一举？从本地持久化卷谈起&amp;raquo; 张磊 第9 章 ： 应用存储和持久化数据卷：核心知识 云原生训练营 第0期-模块七 </description>
-    </item>
-    <item>
-      <title>Kubernetes声明式API</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sDeclarativeAPI/</link>
-      <pubDate>Thu, 29 Aug 2019 18:15:25 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sDeclarativeAPI/</guid>
-      <description>一. CRD # # CRD的定义和使用&#xD;$ tree&#xD;.&#xD;├── controller.go + 自定义控制器： 拿到“实际状态”，然后拿它去跟“期望状态”做对比，执行“业务逻辑”&#xD;├── crd&#xD;│ └── network.yaml + resource的定义【像类定义】&#xD;├── example&#xD;│ └── example-network.yaml + resource的使用【像类实例】&#xD;├── main.go&#xD;└── pkg&#xD;├── apis&#xD;│ └── samplecrd + group │ ├── constants.go&#xD;│ └── v1 + version&#xD;│ ├── doc.go + 代码生成，Global Tag │ ├── register.go + 注册类型（Type）到APIServer中，全局变量&#xD;│ ├── types.go + 类型有哪些字段&#xD;│ └── zz_generated.deepcopy.go 【codegenerated】&#xD;└── client +for自定义控制器【codegenerated】： 拿到“期望状态” ├── clientset&#xD;├── informers + 见下图&#xD;└── listers + 见下图 二.</description>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Storage/k8sStorage/</guid>
+      <description>&#xA;一. Kubernetes 存储的绑定流程 # 1.1 # 三个阶段&#xA;第一个create阶段，主要是创建存储； 第二个attach阶段，就是将那块存储挂载到 node 上面(通常为将存储load到node的/dev下面)； 第三个mount阶段，将对应的存储进一步挂载到 pod 可以使用的路径。 二. Static Provisioning &amp;amp;&amp;amp; Dynamic Provisioning # 2.1 Static Provisioning # 2.2 Dynamic Provisioning # Kubernetes pvc 动态绑定流程&#xA;只有同属于一个 StorageClass 的PV 和 PVC，才可以绑定在一起&#xA;CSI driver动态创建pv ， CSI Driver 可以动态创建PV [5]&#xA;创建pvc之后，provisioner 会创建pv ，并做pvc和pv的绑定关系 本地存储[5] # emptyDir&#xA;不是overlayFS ，和写主机的性能是一样的&#xA;和容器的生命周期一致，如果容器销毁， emptyDir也被销毁。 hostPath&#xA;需要的注意点，不建议用 最佳实践[5] # 用户去查询集群中有哪些storageclass&#xA;可能有本地的hostpath，或者远程的nfs， ceph 等等 在storageClass中, provisioner很重要 pod中声明一个pvc&#xA;csi plugin把pv attach到对应的node，mount到对应的pod pvc和pv是一一对应的关系 参考: # 《Kubenetes in Action》七牛容器云团队 &amp;laquo;深入剖析Kubernetes - 28 PV、PVC、StorageClass，这些到底在说啥？&amp;raquo; 张磊 &amp;laquo;深入剖析Kubernetes - 29 PV、PVC体系是不是多此一举？从本地持久化卷谈起&amp;raquo; 张磊 第9 章 ： 应用存储和持久化数据卷：核心知识 云原生训练营 第0期-模块七 </description>
     </item>
     <item>
       <title>Kubernetes网络</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sNetwork/</link>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Network/k8sNetwork/</link>
       <pubDate>Fri, 23 Aug 2019 19:04:40 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sNetwork/</guid>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Network/k8sNetwork/</guid>
       <description>一. 容器和容器之间的网络 # 使用Docker的一种网络模型：–net=container 每个Pod容器有有一个pause容器 Pause容器 例子 Kubernetes之Pause容器 Kubernetes之“暂停”容器 二. Pod与Pod之间的网络 # 2.0 Overview # 2.1 同节点pod通信 # 基础: 网桥 bridge&#xA;通过网桥通信&#xA;图2. 同节点pod通信&#xA;2.2 不同节点中的Pod通信（跨主机网络通讯） # 2.2.1 Overlay (Flannel方案) # flannel-UDP模式(三层overlay) 原理： fannelId进程封装/解开虚拟网卡docker0,fannel0的数据; 三层的overlay网络; 组件： TUN设备是3层的虚拟网络设备 ; fannel0 劣势: 三次用户态和内核态切换 ; 性能差， 已弃用 图3. flannel-UDP模式&#xA;图4. flannel-UDP模式&#xA;flannel-vxlan模式(两层虚拟网络) VXLAN 的覆盖网络的设计思想是：在现有的三层网络之上，“覆盖”一层虚拟的、由内核 VXLAN 模块负责维护的二层网络，使得连接在这个 VXLAN 二层网络上的“主机”（虚拟机或者容器都可 以）之间，可以像在同一个局域网（LAN）里那样自由通信 组件： VTEP（VXLAN Tunnel End Point）设备; fannel.1; 组成一个虚拟的两层网络 优势： 进行封装和解封装的对象，是二层数据帧（Ethernet frame）; 而且这个工作的执行流程，全部是在内核里完成的（因为VXLAN本身就是内核中的一个模块）; 主流的网络容器方案。 图5. flannel-vxlan模式</description>
     </item>
     <item>
       <title>Kubernetes调度器</title>
-      <link>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sScheduler/</link>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Schedule/k8sScheduler/</link>
       <pubDate>Sun, 09 Jun 2019 12:27:44 +0000</pubDate>
-      <guid>http://localhost:1313/www6vKubernetes/ref/cloudNative/k8sScheduler/</guid>
-      <description>资源调度泛型 [1] # ![调度系统泛型](https://user-images.githubusercontent.com/5608425/65023010-96b65700-d964-11e9-9acd-7cc8edbbde85.JPG)&#xD;调度系统泛型&#xD;类型 资源选择 排他性 分配粒度 集群策略 中央调度器 全局 无，时序 全局策略 严格的优先级(抢占式) 两层调度调度器 动态资源集 悲观锁 增量囤积 严格公正 共享状态 全局 乐观锁 调度器策略 优先级抢占 表1. 常见调度器的比较&#xA;Kubernetes 资源调度[2] # Kubernetes 调度的两个阶段[4][5] # 基于谓词和优先级的调度器（Predicates and Priorities） · v1.0.0 ~ v1.14.0 # 调度器扩展（Scheduler Extender） · v1.2.0 - Scheduler extension&#xA;通过调用外部调度器扩展的方式改变调度器的决策；&#xA;Map-Reduce 优先级算法 · v1.5.0 - MapReduce-like scheduler priority functions&#xA;为调度器的优先级算法支持 Map-Reduce 的计算方式，通过引入可并行的 Map 阶段优化调度器的计算性能；&#xA;基于调度框架的调度器（Scheduling Framework） · v1.15.0 ~ 至今 # 调度框架认为 Kubernetes 中目前存在调度（Scheduling）和绑定（Binding）两个循环：</description>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Schedule/k8sScheduler/</guid>
+      <description>资源调度泛型 [1] # 调度系统泛型&#xA;类型 资源选择 排他性 分配粒度 集群策略 中央调度器 全局 无，时序 全局策略 严格的优先级(抢占式) 两层调度调度器 动态资源集 悲观锁 增量囤积 严格公正 共享状态 全局 乐观锁 调度器策略 优先级抢占 表1. 常见调度器的比较&#xA;Kubernetes 资源调度[2] # Kubernetes 调度的两个阶段[4][5] # 基于谓词和优先级的调度器（Predicates and Priorities） · v1.0.0 ~ v1.14.0 # 调度器扩展（Scheduler Extender） · v1.2.0 - Scheduler extension&#xA;通过调用外部调度器扩展的方式改变调度器的决策；&#xA;Map-Reduce 优先级算法 · v1.5.0 - MapReduce-like scheduler priority functions&#xA;为调度器的优先级算法支持 Map-Reduce 的计算方式，通过引入可并行的 Map 阶段优化调度器的计算性能；&#xA;基于调度框架的调度器（Scheduling Framework） · v1.15.0 ~ 至今 # 调度框架认为 Kubernetes 中目前存在调度（Scheduling）和绑定（Binding）两个循环：</description>
+    </item>
+    <item>
+      <title>K8s 集成Springcloud</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Production/Integration/k8sSpringcloud/</link>
+      <pubDate>Sat, 15 Apr 2023 10:42:05 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Production/Integration/k8sSpringcloud/</guid>
+      <description>Case1[2] # 架构 nginx 结合 springcloud gateway erueka + 本地配置 Case2[1] # 架构 k8s ingress 结合spring gateway spring-admin做服务注册, ConfigMap做服务配置 Case3[3] # 架构&#xA;k8s ingress 结合 zuul Eureka做服务注册， ConfigServer做服务配置 网关 候选&#xA;zuul 需要使用 Ingress中配置路由很麻烦 服务配置 候选&#xA;环境变量 Service mysql-svc ConfigMap apollo 服务注册&#xA;老项目 改动Eureka会有风险，建议保留 Eureka 新项目 [4] 用istio envoy side 做 服务发现 候选 Service 基于CoreDNS的服务发现 Env 基于环境变量的服务发现 参考 # 云原生Java架构师的第一课K8s+Docker+KubeSphere+DevOps 166 V 项目Repo git&#xA;SpringCloud微服务电商系统在Kubernetes集群中上线详细教程 用的都是Deployment ，需要部署成StatefulSet&#xA;kubernetes架构师课程 P195-P200 V</description>
+    </item>
+    <item>
+      <title>Kubernetes 高级调度</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Schedule/k8sAdvancedScheduling/</link>
+      <pubDate>Fri, 27 May 2022 18:39:20 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Schedule/k8sAdvancedScheduling/</guid>
+      <description>高级调度 Overview [2] # Affinity vs. Taint [2] # 就污点而言,它的使用通常是负向的, 也就说, 污点常用在某Node不让大多数Pod调度只让少部分Pod调度时,又或者节点根本不参加工作负载时。比如:我们常见的master节点上不调度负载pod,保证master组件的稳定性；节点有特殊资源，大部分应用不需要而少部分应用需要,如GPU。&#xA;就Node Affinity来说,他的使用可以正向的,也就是说,我们想让某个应用的Pod部署在指定的一堆节点上。当然,也可以是负向的,比如说我们常说的Node 反亲和性,只需要把操作符设置为NotIn就能达成预期目标。&#xA;就污点而言，如果节点设置的污点效果是NoSchedule或者NoExecute,意味着没有设置污点容忍的Pod绝不可能调度到这些节点上。&#xA;就Node Affinity而言,如果节点设置了Label,但是Pod没有任何的Node Affinity设置,那么Pod是可以调度到这些节点上的。&#xA;特性 默认 优/劣势 taint 负向的 设置NoSchedule， 默认不可调度 不要改现有pod[2] 亲和，反亲和 正向的 设置了Label， 默认可调度 要改现有pod[2] 亲和性 # NodeAffinity配置[1]&#xA;NodeAffinity配置分类: requiredDuringSchedulingIgnoredDuringExecution (强亲和性) preferredDuringSchedulingIgnoredDuringExecution (首选亲和性) Topology [3] # topologyKey&#xA;参考 # Kubernetes高级调度- Taint和Toleration、Node Affinity分析 详解 K8S Pod 高级调度 kubernetes架构师课程 P97 P98 *** 【2023】云原生Kubernetes全栈架构师：基于世界500强的k8s实战课程 1xx. Kubernetes之Pod调度 未</description>
+    </item>
+    <item>
+      <title>Calico</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Network/k8sCalico/</link>
+      <pubDate>Tue, 03 May 2022 10:15:18 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Network/k8sCalico/</guid>
+      <description>一. 介绍和原理 # calico 是容器网络的又一种解决方案，和其他虚拟网络最大的不同是，它没有采用 overlay 网络做报文的转发，提供了纯 3 层的网络模型。三层通信模型表示每个容器都通过 IP 直接通信，中间通过路由转发找到对方。在这个过程中，容器所在的节点类似于传统的路由器，提供了路由查找的功能。&#xA;要想路由工作能够正常，每个虚拟路由器（容器所在的主机节点）必须有某种方法知道整个集群的路由信息，calico 采用的是 BGP 路由协议，全称是 Border Gateway Protocol。&#xA;BGP(Border Gateway Protocol 边界网关协议): 就是在大规模网络中实现节点路由信息共享的一种协议&#xA;BGP 协议传输的消息&#xD;+ 1 [BGP 消息]&#xD;+ 2 我是宿主机 192.168.1.3&#xD;+ 3 10.233.2.0/24 网段的容器都在我这里 + 4 这些容器的下一跳地址是我 二. 组件 # Calico 的 CNI 插件&#xA;Felix 它是一个 DaemonSet，负责在宿主机上插入路由规则(即:写入 Linux 内核的 FIB 转发信息库)，以及维护 Calico 所需的网络设备等工作。&#xA;路由规则(核心) &amp;lt;目的容器 IP 地址段&amp;gt; via &amp;lt;网关的 IP 地址&amp;gt; dev eth0 iptables的配置组件Felix; 基于iptable/linux kernel包转发; 根据iptables规则进行路由转发; BIRD， 路由广播组件BGP Speaker BIRD是 BGP 的客户端，专门负责在集群里分发路由规则信息。 三.</description>
+    </item>
+    <item>
+      <title>K8S高可用-零停机[自主中断]</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Production/Available/k8sAvailable/</link>
+      <pubDate>Tue, 05 Apr 2022 15:09:31 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Production/Available/k8sAvailable/</guid>
+      <description>&#xA;自主中断和非自主中断[4] # PodDisruptionBudged [4] # 无状态应用： maxUnavailable = 40% 单实例有状态应用: 多实例有状态应用： etcd N, maxUnavailable=1 或者 minAvailable=N 参考 # 模块十一： 将应用迁移至Kubernetes平台 使用 PDB 避免 Kubernetes 集群中断 未 </description>
+    </item>
+    <item>
+      <title>Kubernetes CKS</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Security/k8sCKS/</link>
+      <pubDate>Sat, 15 Jan 2022 23:06:15 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Security/k8sCKS/</guid>
+      <description>Cluster Setup - 10% # Securing a Cluster # 使用网络安全策略来限制集群级别的访问 Use Network security policies to restrict cluster level access 使用CIS基准检查Kubernetes组件(etcd, kubelet, kubedns, kubeapi)的安全配置 Use CIS benchmark to review the security configuration of Kubernetes components (etcd, kubelet, kubedns, kubeapi) Kube-bench - Checks whether Kubernetes is deployed securely by running the checks documented ain the CIS Kubernetes Benchmark. 正确设置带有安全控制的Ingress对象 Properly set up Ingress objects with security control 保护节点元数据和端点 Protect node metadata and endpoints Using Kubernetes network policy to restrict pods access to cloud metadata This example assumes AWS cloud, and metadata IP address is 169.</description>
+    </item>
+    <item>
+      <title>Kubernetes Rook</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Storage/k8sRook/</link>
+      <pubDate>Wed, 12 Jan 2022 22:43:17 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Storage/k8sRook/</guid>
+      <description>Rook for ceph # Rook建立Ceph集群流程[1] # rook的crd建立好之后，&#xA;Rook的operator会把rook的控制面建立出来&#xA;然后把storageclass和csi driver都注册好。&#xA;用户只要建立pvc，pvc里指定用哪个storageclass，然后csi driver会去工作。&#xA;Rook cluster installation [2][3] [I] # Ceph存储类型 # Block FileSystem Object Block Storage [4][5] [II] # install apiVersion: ceph.rook.io/v1 kind: CephBlockPool metadata: name: replicapool namespace: rook-ceph spec: failureDomain: host replicated: size: 3 --- apiVersion: storage.k8s.io/v1 kind: StorageClass metadata: name: rook-ceph-block # Change &amp;#34;rook-ceph&amp;#34; provisioner prefix to match the operator namespace if needed provisioner: rook-ceph.rbd.csi.ceph.com parameters: # clusterID is the namespace where the rook cluster is running clusterID: rook-ceph # Ceph pool into which the RBD image shall be created pool: replicapool .</description>
+    </item>
+    <item>
+      <title>Kubernetes CoreDNS</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sDNS/</link>
+      <pubDate>Wed, 12 Jan 2022 15:26:32 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sDNS/</guid>
+      <description>&#xA;CoreDNS插件架构 # github中&#xA;Kubernetes DNS # Kubernetes服务发现 自定义域名解析 # hosts: 存量代码域名调用 rewrite: 集群外服务调用 forward： 配置存根域 CoreDNS 部署架构 # kubesphere.local prod.kubesphere.local dev.kubesphere.local qa.kubesphere.local test.kubesphere.local reference: # 【Meetup 分享】使用 KubeSphere &amp;amp; CoreDNS 搭建云原生 DNS 详解 DNS 与 CoreDNS 的实现原理 未 </description>
+    </item>
+    <item>
+      <title>Kubernetes OpenShift</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/PaaS/k8sOpenShift/</link>
+      <pubDate>Wed, 05 Jan 2022 21:45:05 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/PaaS/k8sOpenShift/</guid>
+      <description>Interface # CNI&#xA;OpenFlow(OVS)(使用的， 更通用，场景适合的更多)&#xA;Calico CRI OpenShift3.0 用的&#xA;Docker（有守护进程，守护进程宕掉后，运行时会有问题）&#xA;Red Hat Enterprise Linux - 4G大小 OpenShift4.0 用的&#xA;CRI-O（没有守护进程）&#xA;Ret Hat CoreOS - 不到800M大小 CSI&#xA;CEPH(ROOK)&#xA;NFS 入口 ingress openshift 默认是haproxy的ingress（首选建议使用， dns解析， mTLS） 也可以装nginx ingress 也可以装istio ingress gateway（4层选， istio ingress gateway） PaaS # 角色 - RBAC&#xA;配置管理 - LimitRanage， Quota&#xA;联邦集群 - kubefed&#xA;对K8S的增强 # Operator Multus多个虚拟网卡（用的多）&#xA;一个pod有多个虚拟网卡， ovs管理网络 + macvlan网络（性能比较好） kube-virt 虚拟机管理 应用迁移 # 应用改造的难度比较大 多云 # 基于多云的CI/CD # 基于jenkins</description>
+    </item>
+    <item>
+      <title>K8S 弃用Docker</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Container-Runtime/k8sAbandonDocker/</link>
+      <pubDate>Tue, 01 Jun 2021 21:57:51 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Container-Runtime/k8sAbandonDocker/</guid>
+      <description>&#xA;1. # 如果以 kubelet 调用 CRI 为起点，OCI 的 runC 调用为终点，三种模式经历的可执行程序分别是：&#xA;dockershim 模式：dockershim(*)-&amp;gt;dockd-&amp;gt;containerd-&amp;gt;containerd-shim&#xA;cri-containerd 模式：cri-containerd(*)-&amp;gt; containerd-&amp;gt;containerd-shim&#xA;cri-o 模式：cri-o&#xA;K8S弃用Docker是指弃用Docker daemon&#xA;RedHat 推崇的 cri-o → Podman&#xA;2. # 容器引擎可选的替代方案大概有以下几种：&#xA;containerd CRI-O → Podman, Red Hat gVisor → “guest 内核”层 kata-containers → 安全 Nabla 参考： # https://www.infoq.cn/article/VasFWOChD6JoL5avhfAz https://www.zhihu.com/question/433184969 </description>
+    </item>
+    <item>
+      <title>Kubernetes Operator-Etcd</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/OperatorController/k8sOperator/</link>
+      <pubDate>Tue, 19 Nov 2019 10:59:00 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/OperatorController/k8sOperator/</guid>
+      <description>Operator: &amp;ldquo;有状态应用&amp;rdquo;, 自动化运维工作。&#xA;Etcd Operator部署 # Controller + CRD&#xA;etcd Controller Deployment&#xA;etcd CRD API资源类型 kind: &amp;ldquo;EtcdCluster&amp;rdquo;&#xA;etcd高可靠： backup + restore etcd backup etcd备份&#xA;etcd restore etcd恢复: 恢复备份的数据&#xA;普通运维方式etcd运维步骤: # 创建种子节点（集群）的阶段称为：Bootstrap 通过 Etcd 命令行添加一个新成员： $ etcdctl member add infra1 http://10.0.1.11:2380 为这个成员节点生成对应的启动参数，并启动它： etcd&#xD;--data-dir=/var/etcd/data&#xD;--name=infra1&#xD;--initial-advertise-peer-urls=http://10.0.1.11:2380&#xD;--listen-peer-urls=http://0.0.0.0:2380&#xD;--listen-client-urls=http://0.0.0.0:2379&#xD;--advertise-client-urls=http://10.0.1.11:2379&#xD;--initial-cluster=infra0=http://10.0.1.10:2380,infra1=http://10.0.1.11:2380&#xD;--initial-cluster-state=existing etcd Operator # 注: 一个etcd集群，一个controller。&#xA;当这个 YAML 文件第一次被提交到 Kubernetes 之后，Etcd Operator 的 Informer，就会立 刻“感知”到一个新的 EtcdCluster 对象被创建了出来。所以，EventHandler 里的“添加”事 件会被触发。&#xA;而这个 Handler 要做的操作也很简单，即：在 Etcd Operator 内部创建一个对应的 Cluster 对 象（cluster.</description>
+    </item>
+    <item>
+      <title>Kubernetes Workload</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/orchestrate/k8sResource/</link>
+      <pubDate>Sun, 09 Jun 2019 22:13:52 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/orchestrate/k8sResource/</guid>
+      <description>Workload # Basic # Node Namespace Pod [8] ServiceAccount Config # ConfigMap Secret 类型 用途 使用方式 安全 ConfigMap 普通配置 环境变量 文件挂载（卷 Volume）[7] 纯文本 Secret 敏感数据 环境变量 文件挂载 Base64 Core # StatefulSet + Deployment + ReplicaSet CronJob Job DaemonSet CustomResourceDefinition Service # Ingress Service + Volume # LocalVolume PersistentVolume Volume limit 限制 # NetworkPolicy 网络隔离与互通 Resource Quota 资源限制 SecurityContext 安全策略 other # Autoscaling (HPA) PodPreset 参考 # 《Kubenetes in Action》 七牛容器云团队 资源对象 feisky *** 面向 Kubernetes 编程： Kubernetes 是下一代操作系统 *** 第4 章 ： 理解 Pod 和容器设计模式 阿里 第3 章 ： Kubernetes 核心概念 阿里 第5 章 ： 应用编排与管理：核心原理 阿里 K8s 中 ConfigMap 使用介绍 详解 Kubernetes Pod 的实现原理 未 %accordion%附: ConfigMap 使用%accordion%</description>
+    </item>
+    <item>
+      <title>K8S高可用-零停机[探针]</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Production/Available/k8sAvailableHealth/</link>
+      <pubDate>Sat, 22 Oct 2022 09:33:27 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Production/Available/k8sAvailableHealth/</guid>
+      <description>健康检查 # Liveness Probe [2] # 确定何时重启容器. 例如，当应用程序处于运行状态但无法做进一步操作，liveness探针将捕获到deadlock，重启处于该状态下的容器，使应用程序在存在bug的情况下依然能够继续运行下去。&#xA;liveness的初始值为成功。&#xA;Readiness Probe [2] # 确定容器是否已经就绪可以接受流量. 该信号的作用是控制哪些Pod应该作为service的后端。如果Pod处于非就绪状态，那么它们将会被从service的load balancer中移除。&#xA;readiness的初始值为失败。&#xA;startupProbe [4] # 启动检查, 使用启动探针检测容器应用程序是否已经启动&#xA;对于较新的（≥v1.16）Kubernetes 集群，如果是具有不可预测或可变启动时间的应用程序应使用 startup 探针。&#xA;只运行一次。&#xA;探针类型&#xA;httpGet: 指定端口和路径执行 HTTP GET 请求&#xA;tcpSocket: 对容器的 IP 地址上的指定端口执行 TCP 检查&#xA;命令,exec: 在容器内执行指定命令 优雅终止 [5] # 系统底层默认会向主进程发送 SIGTERM 信号，而对剩余子进程发送 SIGKILL 信号。系统这样做的大概原因是因为大家在设计主进程脚本的时候都不会进行信号的捕获和传递，这会导致容器关闭时，多个子进程无法被正常终止，所以系统使用 SIGKILL 这个不可屏蔽信号，而是为了能够在没有任何前提条件的情况下，能够把容器中所有的进程关掉。&#xA;也就是说如果主进程自身不是服务本身，可能会导致是被强制Kill的，解决的方法也很简单，也就是在主进程中对收到的信号做个转发，发送到容器中的其他子进程，这样容器中的所有进程在停止时，都会收到 SIGTERM，而不是 SIGKILL 信号了。&#xA;代码 [6] # Probe apiVersion: v1 kind: Pod metadata: name: nginx namespace: default spec: containers: - name: nginx image: nginx # 存活检测 livenessProbe: failureThreshold: 3 initialDelaySeconds: 30 periodSeconds: 30 successThreshold: 1 tcpSocket: port: 5084 timeoutSeconds: 1 # 就绪检测 readinessProbe: failureThreshold: 3 initialDelaySeconds: 30 periodSeconds: 30 successThreshold: 1 tcpSocket: port: 5084 timeoutSeconds: 1 # 优雅退出 lifecycle: preStop: exec: command: - sleep - 30 terminationGracePeriodSeconds: 60 Service</description>
+    </item>
+    <item>
+      <title>Calico</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Network/k8sCalico1/</link>
+      <pubDate>Fri, 12 Aug 2022 11:55:44 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Network/k8sCalico1/</guid>
+      <description>Best Practice # At a high-level, the key recommendations are: # Use the Kubernetes datastore. 使用K8S datastore Install Typha to ensure datastore scalability. 安装Typha Use no encapsulation for single subnet clusters. 在单一子网的集群中，不要封装 Use IP-in-IP in CrossSubnet mode for multi-subnet clusters. 在多子网集群中，使用IP-in-IP的跨子网模式 Configure Calico MTU based on the network MTU and the chosen routing mode. MTU Add global route reflectors for clusters capable of growing above 50 nodes. 50个nodes以上使用RR(route reflectors) Use GlobalNetworkPolicy for cluster-wide ingress and egress rules.</description>
+    </item>
+    <item>
+      <title>Kubernetes Nginx Ingress</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sIngressNginx/</link>
+      <pubDate>Thu, 10 Feb 2022 22:41:32 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sIngressNginx/</guid>
+      <description>Kubernetes Nginx Ingress [0] # 版本1-K8s官方维护 [1][2] # There are three ways to customize NGINX: ConfigMap: using a Configmap to set global configurations in NGINX. [滚动更新后生效， 针对全局的配置] Annotations: use this if you want a specific configuration for a particular Ingress rule. [立即生效，针对某个域名location进行配置] Custom template: when more specific settings are required, like open_file_cache, adjust listen options as rcvbuf or when is not possible to change the configuration through the ConfigMap. 版本2-Nginx官方维护 [3][4] # 版本1 vs.</description>
+    </item>
+    <item>
+      <title>Kubernetes 安全实践</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Security/k8sSecurityPractice/</link>
+      <pubDate>Sun, 16 Jan 2022 14:09:26 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Security/k8sSecurityPractice/</guid>
+      <description>Microsoft的Kubernetes attack matrix [1] # Kubernetes attack matrix-enhancement [2] # 初始访问 # ● API Server 未授权访问 [5]&#xA;API Server 作为 K8s 集群的管理入口，通常使用 8080 和 6443 端口，其中 8080 端口无需认证，6443端口需要认证且有 TLS 保护。如果开发者使用 8080 端口，并将其暴露在公网上，攻击者就可以通过该端口的 API，直接对集群下发指令。&#xA;另一种场景是运维人员配置不当，将&amp;quot;system:anonymous&amp;quot;用户绑定到&amp;quot;cluster-admin&amp;quot;用户组，从而使6443端口允许匿名用户以管理员权限向集群内部下发指令。&#xA;● kubelet 未授权访问 [5]&#xA;● Docker Daemon 公网暴露&#xA;● K8s configfile 泄露&#xA;K8s configfile 作为 K8s 集群的管理凭证，其中包含有关 K8s 集群的详细信息（API Server、登录凭证）。 如果攻击者能够访问到此文件(如办公网员工机器入侵、泄露到 Github的代码等)，就可以直接通过 API Server 接管 K8s 集群，带来风险隐患。 拿到K8s configfile完整利用流程&#xA;K8s configfile &amp;ndash;&amp;gt; 创建后门Pod/挂载主机路径 &amp;ndash;&amp;gt; 通过Kubectl 进入容器 &amp;ndash;&amp;gt; 利用挂载目录逃逸。 执行 # ● 利用Service Account 容器内部默认携带 K8s Service Account的认证凭据,路径为：/run/secrets/kubernetes.</description>
+    </item>
+    <item>
+      <title>Kubernetes 多租户</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/PaaS/k8sMultiTenancy/</link>
+      <pubDate>Mon, 18 Oct 2021 21:51:13 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/PaaS/k8sMultiTenancy/</guid>
+      <description>一. 概念和原则 # 租户是指一组拥有访问特定软件资源权限的用户集合，在多租户环境中，它还包括共享的应用、服务、数据和各项配置等。 多租户集群必须将租户彼此隔离 集群须在租户之间公平的分配集群资源。 二. Overview # 软隔离：在这种情况下，我们有一个企业，不同的团队访问同一个集群，这需要较少的安全开销，因为用户可以相互信任。&#xA;硬隔离：当 Kubernetes 暴露给具有独立且完全不受信任的用户的多个企业时，这是必需的。&#xA;方案B 软隔离 - hierarchical-namespaces&#xA;https://github.com/kubernetes-sigs/hierarchical-namespaces Kubernetes 的层级命名空间介绍&#xA;方案C 硬隔离 - virtualcluster&#xA;https://github.com/kubernetes-sigs/cluster-api-provider-nested/tree/main/virtualcluster&#xA;三. 方案B 解决方案 # 1. 认证 # 识别访问的用户是谁 K8s可管理2类用户 ServiceAccount&#xA;是存在于K8s中的虚拟账户;&#xA;原生支持的动态认证; 用户认证&#xA;webhook是和企业认证平台集成的重要手段 2. 授权 # 3. 隔离 # 节点隔离&#xA;Taints和Toleration机制&#xA;[Kubernetes 调度 - 污点和容忍度详解] (https://mp.weixin.qq.com/s/rza4euQCLuMLTI5fHdj67Q)&#xA;Taint 和 Toleration（污点和容忍）&#xA;网路隔离 NetworkPolicy 网路策略 - 实质上也是iptables规则&#xA;网络策略通过网络插件来实现，所以必须使用一种支持 NetworkPolicy 的网络方案（如 calico）—— 非 Controller 创建的资源，是不起作用的。&#xA;容器隔离&#xA;5种隔离机制</description>
+    </item>
+    <item>
+      <title>Kubernetes StatefulSet原理和源码</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/orchestrate/k8sStatefulSet/</link>
+      <pubDate>Mon, 11 Nov 2019 15:20:39 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/orchestrate/k8sStatefulSet/</guid>
+      <description>源码分析 # 1. StatefulSet资源定义 # 1.1 StatefulSet定义 # staging/src/k8s.io/api/apps/v1beta2/types.go&#xD;type StatefulSet struct {&#xD;metal.TypeMeta&#xD;metal.ObjectMeta&#xD;Spec StatefulSetspec #1&#xD;Status StatefulSetStatus #2&#xD;} 1.2 StatefulSetspec定义 # #1&#xD;staging/src/k8s.io/api/apps/v1beta2/types.go&#xD;type StatefulSetspec struct {&#xD;/// Pod副本数控制&#x9;Replicas *int32&#xD;/// Pod创建或者删除&#xD;Selector *metav1.LabelSelector&#xD;Template v1.PodTemplateSpec&#xD;VolumeClaimTemplates []v1.PersistentVolumeClaim # 存储状态【2】&#xD;ServiceName string&#xD;PodManagementPolicy PodManagementPolicyType # 2.2节 /// Pod升级和回滚&#xD;UpdateStrategy StatefulSetUpdateStrategy # 2.4节&#xD;RevisionHistoryLimit *int32&#xD;} 1.3 StatefulSetStatus定义 # #2&#xD;staging/src/k8s.io/api/apps/v1beta2/types.go&#xD;type StatefulSetStatus struct {&#xD;ObservedGeneration *int64&#xD;Replicas int32 # 所有属于该 StatefulSet的Pod数量&#xD;ReadyReplicas int32 # 所有属于该 Statefulset的Pod且状态为ready的数量&#xD;CurrentReplicas int32 # 所有属于该 StatefulSet当前版本的Pod数量(升级完成时会等于UpdatedReplicas)&#xD;UpdatedReplicas int32 # 所有属于该 StatefulSet升级版本的Pod数量&#xD;CurrentRevision string # Statefulset当前版本的 set.</description>
+    </item>
+    <item>
+      <title>Kubernetes声明式API</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/OperatorController/k8sDeclarativeAPI/</link>
+      <pubDate>Thu, 29 Aug 2019 18:15:25 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/OperatorController/k8sDeclarativeAPI/</guid>
+      <description>一. CRD # # CRD的定义和使用&#xD;$ tree&#xD;.&#xD;├── controller.go + 自定义控制器： 拿到“实际状态”，然后拿它去跟“期望状态”做对比，执行“业务逻辑”&#xD;├── crd&#xD;│ └── network.yaml + resource的定义【像类定义】&#xD;├── example&#xD;│ └── example-network.yaml + resource的使用【像类实例】&#xD;├── main.go&#xD;└── pkg&#xD;├── apis&#xD;│ └── samplecrd + group │ ├── constants.go&#xD;│ └── v1 + version&#xD;│ ├── doc.go + 代码生成，Global Tag │ ├── register.go + 注册类型（Type）到APIServer中，全局变量&#xD;│ ├── types.go + 类型有哪些字段&#xD;│ └── zz_generated.deepcopy.go 【codegenerated】&#xD;└── client +for自定义控制器【codegenerated】： 拿到“期望状态” ├── clientset&#xD;├── informers + 见下图&#xD;└── listers + 见下图 二.</description>
+    </item>
+    <item>
+      <title>Kubernetes Operator-Redis</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/OperatorController/k8sOperator-redis/</link>
+      <pubDate>Thu, 17 Feb 2022 22:25:07 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/OperatorController/k8sOperator-redis/</guid>
+      <description>Deploy redis cluster operator # kubectl create -f deploy/crds/redis.kun_distributedredisclusters_crd.yaml&#xD;kubectl create -f deploy/crds/redis.kun_redisclusterbackups_crd.yaml&#xD;// cluster-scoped&#xD;$ kubectl create -f deploy/service_account.yaml&#xD;$ kubectl create -f deploy/cluster/cluster_role.yaml&#xD;$ kubectl create -f deploy/cluster/cluster_role_binding.yaml&#xD;$ kubectl create -f deploy/cluster/operator.yaml Deploy a sample Redis Cluster # ## Custom Resource&#xD;$ kubectl create -f deploy/example/custom-resources.yaml&#xD;## Persistent Volume&#xD;$ kubectl create -f deploy/example/persistent.yaml 参考 # redis-cluster-operator kubernetes架构师课程 129 V ***</description>
+    </item>
+    <item>
+      <title>Kubernetes 升级upgrade</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Production/k8sUpgrade/</link>
+      <pubDate>Sun, 16 Jan 2022 23:15:30 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Production/k8sUpgrade/</guid>
+      <description>宏观升级流程 # 1、升级主master节点&#xA;2、升级其他master节点&#xA;3、升级node节点&#xA;微观升级步骤 # 1、先升级kubeadm版本&#xA;2、升级第一个主控制平面节点Master组件&#xA;3、升级第一个主控制平面节点上的Kubelet和kubectl&#xA;4、升级其他控制平面节点&#xA;5、升级Node节点&#xA;6、验证集群&#xA;升级注意事项 # 确定升级前的的kubeadm集群版本。 kubeadm upgrade不会影响到工作负载，仅涉及k8s内部的组件，但是备份etcd数据库是最佳实践。 升级后，所有容器都会重启动，因为容器的hash值已更改。 由于版本的兼容性，只能从一个次要版本升级到另外一个次要版本，不能跳跃升级。 集群控制平面应使用静态Pod和etcd pod或外部etcd。 参考 # Kubernetes版本升级实践&#xA;Kubernetes升级：自己动手的权威指南</description>
+    </item>
+    <item>
+      <title>Kubenetes RBAC</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/PaaS/k8sRBAC/</link>
+      <pubDate>Thu, 14 Nov 2019 17:16:13 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/PaaS/k8sRBAC/</guid>
+      <description>&#xA;参考 # 《深入剖析Kubernetes - 26 基于角色的权限控制：RBAC》 张磊 </description>
+    </item>
+    <item>
+      <title>Kubenetes资源模型</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/orchestrate/k8sResouceModel/</link>
+      <pubDate>Thu, 14 Nov 2019 10:23:19 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/orchestrate/k8sResouceModel/</guid>
+      <description>关键词 # 资源模型, 资源管理&#xA;资源模型 # requests limits # CPU资源被称作 “可压缩资源”: Pod 只会“饥饿”，但不会退出. 内存资源被称作“不可压缩资源”: Pod 会因为 OOM（Out-Of-Memory）被内核杀掉。&#xA;Kubernetes 这种对 CPU 和内存资源限额的设计，实际上参考了 Borg 论文中对**“动态资源边 界”**的定义，既：容器化作业在提交时所设置的资源边界，并不一定是调度系统所必须严格遵守 的，这是因为在实际场景中，大多数作业使用到的资源其实远小于它所请求的资源限额。&#xA;而 Kubernetes 的 requests+limits 的做法，其实就是上述思路的一个简化版：用户在提交 Pod 时，可以声明一个相对较小的 requests 值供调度器使用，而 Kubernetes 真正设置给容器 Cgroups 的，则是相对较大的 limits 值。不难看到，这跟 Borg 的思路相通的。&#xA;limits: 而在真正设置 Cgroups 限制的时候，kubelet 则会按照 limits 的值来进行设置 requests: 在调度的时候，kube-scheduler 只会按照 requests 的值进行计算&#xA;QoS # Guaranteed: requests == limits Burstable: 至少有一个 Container 设置了 requests BestEffort: 没有设置 requests，也没有设置 limits</description>
+    </item>
+    <item>
+      <title>K8s  AdmissionWebhook</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/OperatorController/k8sAdmissionWebhook/</link>
+      <pubDate>Mon, 16 Oct 2023 16:07:04 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/OperatorController/k8sAdmissionWebhook/</guid>
+      <description>MutatingAdmissionWebhook 是如何工作的[1][chat] # MutatingAdmissionWebhook拦截与MutatingWebhookConfiguration中定义的规则匹配的请求，然后将其发送到Webhook服务器进行处理，然后再持久化到etcd 中。 MutatingAdmissionWebhook通过向Webhook服务器发送admission请求来执行变更。Webhook服务器只是遵循Kubernetes的API 的普通HTTP服务器。&#xA;以下图示了MutatingAdmissionWebhook的工作原理: MutatingAdmissionWebhook需要三个对象才能正常工作:&#xA;MutatingWebhookConfiguration&#xA;MutatingAdmissionWebhook需要在apiserver中注册，提供MutatingWebhookConfiguration。在注册过程中，MutatingAdmissionWebhook说明以下内容:&#xA;如何连接到Webhook Admission服务器 如何验证Webhook Admission服务器 Webhook Admission服务器的URL路径 定义了哪些资源和操作它处理的规则 如何处理来自Webhook Admission服务器的无法识别的错误 apiVersion: admissionregistration.k8s.io/v1beta1&#xD;kind: MutatingWebhookConfiguration&#xD;metadata:&#xD;name: sidecar-injector-webhook-cfg&#xD;labels:&#xD;app: sidecar-injector&#xD;webhooks:&#xD;- name: sidecar-injector.morven.me&#xD;clientConfig:&#xD;service:&#xD;name: sidecar-injector-webhook-svc #2&#xD;namespace: default&#xD;path: &amp;#34;/mutate&amp;#34;&#xD;caBundle: ${CA_BUNDLE}&#xD;rules:&#xD;- operations: [ &amp;#34;CREATE&amp;#34; ]&#xD;apiGroups: [&amp;#34;&amp;#34;]&#xD;apiVersions: [&amp;#34;v1&amp;#34;]&#xD;resources: [&amp;#34;pods&amp;#34;]&#xD;namespaceSelector:&#xD;matchLabels:&#xD;sidecar-injector: enabled MutatingAdmissionWebhook本身&#xA;MutatingAdmissionWebhook是一种插件式的Admission控制器，可以配置到apiserver中。MutatingAdmissionWebhook插件从MutatingWebhookConfiguration中获取感兴趣的Admission Webhooks列表。然后，MutatingAdmissionWebhook观察到对apiserver的请求，并拦截与admission webhook规则匹配的请求，并并行地调用它们。&#xA;Webhook Admission Server&#xA;Webhook Admission服务器只是一个符合Kubernetes API的普通HTTP服务器。对于每个API server的请求，MutatingAdmissionWebhook将admissionReview（用于参考的API）发送到相关的webhook admission服务器。webhook admission服务器会从admissionReview中收集信息，如object，oldobject和userInfo，然后返回一个admissionReview响应，其中包括填充了admission决策和可选的Patch以改变资源的AdmissionResponse。</description>
+    </item>
+    <item>
+      <title>Kubernetes 多集群管理</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/PaaS/k8sMultiCluster/</link>
+      <pubDate>Sun, 08 May 2022 22:14:17 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/PaaS/k8sMultiCluster/</guid>
+      <description>&#xA;目标 # 让用户像使用单集群一样来使用多集群。&#xA;多集群部署需要解决哪些问题 # 而多集群管理需要解决以下问题：&#xA;多集群服务的分发部署（deployment、daemonset等）&#xA;跨集群自动迁移与调度（当某个集群异常，服务可以在其他集群自动部署）&#xA;多集群服务发现，网络通信及负载均衡（service，ingress等） 开源和解决方案 # KubeFed 或 Federation v2&#xA;kubefed 集群联邦（Cluster Federation） jimmysong virtual-kubelet Virtual Kubelet&#xA;阿里云virtual-kubelet-autoscaler实现ECI作为弹性补充 通过 virtual-kubelet-autoscaler 将Pod自动调度到虚拟节点 自建Kubernetes集群部署Virtual Kubelet（ECI） 未 简介：Virtual Kubelet video 2018 kubecon 未 深入了解：Virtual Kubelet video 2018 kubecon 未 Karmada（Kubernetes Armada）[5]&#xA;clusternet - 腾讯云&#xA;OCM(Open Cluster Management) - RedHat&#xA;Gardener [3]&#xA;Crossplane [3]&#xA;cluster-api [4]&#xA;参考： # k8s多集群的思考 混合云下的 Kubernetes 多集群管理与应用部署 未 【PingCAP Infra Meetup】No.141 Kubernetes 开发设计模式在 TiDB Cloud 中的应用 基于 ClusterAPI 的集群管理 Karmada: 开源的云原生多云容器编排引擎 华为 </description>
+    </item>
+    <item>
+      <title>kubelet和PLEG</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/orchestrate/k8sPLEG/</link>
+      <pubDate>Sun, 03 Apr 2022 21:40:02 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/orchestrate/k8sPLEG/</guid>
+      <description>&#xA;kubelet管理Pod的核心流程 # Pod启动流程 [2][3] # PLEG # relist操作&#xA;参考：&#xA;kubelet 原理解析二：pleg 《模块七：Kubernetes控制平面组件》 从架构层面了解Kubernetes </description>
+    </item>
+    <item>
+      <title>Kubernetes和VM</title>
+      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/PaaS/k8sVM/</link>
+      <pubDate>Fri, 03 Jun 2022 17:36:53 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/PaaS/k8sVM/</guid>
+      <description>参考 # kubevirt在360的探索之路（k8s接管虚拟化）&#xA;后Kubernetes时代的虚拟机管理技术之kubevirt篇</description>
     </item>
   </channel>
 </rss>
