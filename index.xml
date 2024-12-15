@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Cloud Native</title>
-    <link>https://www6v.github.io/www6vKubernetes/</link>
+    <link>https://www6v.github.io/www6vCloudNative/</link>
     <description>Recent content on Cloud Native</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Mon, 01 Jan 0001 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://www6v.github.io/www6vKubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www6v.github.io/www6vCloudNative/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title></title>
-      <link>https://www6v.github.io/www6vKubernetes/ref/SUMMARY/</link>
+      <link>https://www6v.github.io/www6vCloudNative/ref/SUMMARY/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://www6v.github.io/www6vKubernetes/ref/SUMMARY/</guid>
+      <guid>https://www6v.github.io/www6vCloudNative/ref/SUMMARY/</guid>
       <description>Part I # 云原生 序 Part II # 编排原理&#xA;Kubernetes Deployment Kubernetes Workload Kubernetes StatefulSet原理和源码 Kubenetes 资源模型 kubelet和PLEG Operator &amp;amp;&amp;amp; Controller&#xA;Kubernetes Operator-kubebuilder Kubernetes Operator-Etcd Kubernetes声明式API Kubernetes Operator-Redis K8s AdmissionWebhook Container Runtime&#xA;Kubernetes Runtime K8S 弃用Docker 网络&#xA;Kubernetes网络 Calico Calico 服务和DNS&#xA;Kubernetes服务 Kubernetes CoreDNS Kubernetes Nginx Ingress 存储&#xA;Kubernetes存储 Kubernetes Rook Ceph 总结 etcd 总结 调度&#xA;Kubernetes调度器 Kubernetes 高级调度 监控和AutoScale&#xA;Kubernetes自动伸缩和HPA 可观测性-Prometheus 可观测性-Prometheus HA 可观测性-Kubernetes 生产化&#xA;Available K8S高可用-控制面 K8S高可用-零停机[自主中断] K8S高可用-零停机[探针] 集成 K8S 应用迁移至K8S K8s 集成Springcloud 虚拟机和容器中的内核参数 kernel Kubernetes 升级upgrade PaaS</description>
     </item>
   </channel>

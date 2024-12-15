@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Metric on Cloud Native</title>
-    <link>https://www6v.github.io/www6vKubernetes/categories/metric/</link>
+    <link>https://www6v.github.io/www6vCloudNative/categories/metric/</link>
     <description>Recent content in Metric on Cloud Native</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Sun, 10 Apr 2022 21:58:17 +0000</lastBuildDate>
-    <atom:link href="https://www6v.github.io/www6vKubernetes/categories/metric/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www6v.github.io/www6vCloudNative/categories/metric/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>可观测性-Prometheus</title>
-      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/observabilityPrometheus/</link>
+      <link>https://www6v.github.io/www6vCloudNative/docs/Kubernetes/MonitorAutoScale/observabilityPrometheus/</link>
       <pubDate>Sun, 10 Apr 2022 21:58:17 +0000</pubDate>
-      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/observabilityPrometheus/</guid>
+      <guid>https://www6v.github.io/www6vCloudNative/docs/Kubernetes/MonitorAutoScale/observabilityPrometheus/</guid>
       <description>Metric 之 Prometheus [9] # 非分布式， 联邦 pushgataway 服务发现 拉模式 业务场景 # 业务指标 metric 多云, 多地域监控 # 在远端云上部署Prometheus agent&#xA;Prometheus 存储层的演进 [7] # 1st Generation: Prototype key metric name labels timestamp value 2nd Generation: Prometheus V1 压缩 Timestamp Compression: Double Delta Value Compression Chunk Encoding&#xA;1KB 3rd Generation: Prometheus V2 Prometheus服务发现机制[10][11] # kubernetes_sd_configs: #基于 Kubernetes API实现的服务发现，让prometheus动态发现kubernetes中被监控的目标 static_configs: #静态服务发现，基于prometheus配置文件指定的监控目标 dns_sd_configs: #DNS服务发现监控目标 consul_sd_configs: #Consul服务发现，基于consul服务动态发现监控目标 file_sd_configs: #基于指定的文件实现服务发现，基于指定的文件发现监控目标 参考： # 第十八期: 玩转云原生容器场景的Prometheus监控 腾讯云 云原生正发声 #todo 重看一遍 存储层 # Prometheus 存储层的演进 *** Metric # 《48 | Prometheus、Metrics Server与Kubernetes监控体系》 深入剖析Kubernetes 张磊 《第七模块 ：微服务监控告警Prometheus架构和实践 119.</description>
     </item>
     <item>
       <title>可观测性-Prometheus  HA</title>
-      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/observabilityPrometheusHA/</link>
+      <link>https://www6v.github.io/www6vCloudNative/docs/Kubernetes/MonitorAutoScale/observabilityPrometheusHA/</link>
       <pubDate>Fri, 11 Feb 2022 00:03:55 +0000</pubDate>
-      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/observabilityPrometheusHA/</guid>
+      <guid>https://www6v.github.io/www6vCloudNative/docs/Kubernetes/MonitorAutoScale/observabilityPrometheusHA/</guid>
       <description>高可用方案[1] # 高可用的几种方案 # 基本 HA：即两套 Prometheus 采集完全一样的数据，外边挂负载均衡 HA + 远程存储：除了基础的多副本 Prometheus，还通过 Remote Write 写入到远程存储，解决存储持久化问题 联邦集群：即 Federation，按照功能进行分区，不同的 Shard 采集不同的数据，由Global节点来统一存放，解决监控数据规模的问题。 使用 Thanos 或者 Victoriametrics，来解决全局查询、多副本数据 Join 问题。 问题 # 就算使用官方建议的多副本 + 联邦，仍然会遇到一些问题:&#xA;官方建议数据做 Shard，然后通过Federation来实现高可用， 但是边缘节点和Global节点依然是单点，需要自行决定是否每一层都要使用双节点重复采集进行保活。 也就是仍然会有单机瓶颈。 另外部分敏感报警尽量不要通过Global节点触发，毕竟从Shard节点到Global节点传输链路的稳定性会影响数据到达的效率，进而导致报警实效降低。 例如服务Updown状态，Api请求异常这类报警我们都放在Shard节点进行报警。 原因 # 本质原因是，Prometheus 的本地存储没有数据同步能力，要在保证可用性的前提下，再保持数据一致性是比较困难的，基础的 HA Proxy 满足不了要求，比如：&#xA;集群的后端有 A 和 B 两个实例，A 和 B 之间没有数据同步。A 宕机一段时间，丢失了一部分数据，如果负载均衡正常轮询，请求打到A 上时，数据就会异常。 如果 A 和 B 的启动时间不同，时钟不同，那么采集同样的数据时间戳也不同，就不是多副本同样数据的概念了 就算用了远程存储，A 和 B 不能推送到同一个 TSDB，如果每人推送自己的 TSDB，数据查询走哪边就是问题了。 解决方案 # 在存储、查询两个角度上保证数据的一致 存储角度：如果使用 Remote Write 远程存储， A 和 B后面可以都加一个 Adapter，Adapter做选主逻辑，只有一份数据能推送到 TSDB，这样可以保证一个异常，另一个也能推送成功，数据不丢，同时远程存储只有一份，是共享数据。方案可以参考这篇文章 查询角度：上边的方案实现很复杂且有一定风险，因此现在的大多数方案在查询层面做文章，比如 Thanos 或者 Victoriametrics，仍然是两份数据，但是查询时做数据去重和 Join。只是 Thanos 是通过 Sidecar 把数据放在对象存储，Victoriametrics 是把数据 Remote Write 到自己的 Server 实例，但查询层 Thanos-Query 和 Victor 的 Promxy的逻辑基本一致。 Thanos # 组件 # Bucket Check Compactor Query Rule Sidecar Store receive downsample 特点 # 为多集群Prometheus提供全局接口</description>
     </item>
   </channel>

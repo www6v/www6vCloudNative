@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>服务和DNS on Cloud Native</title>
-    <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/ServicesDNS/</link>
+    <link>https://www6v.github.io/www6vCloudNative/docs/Kubernetes/ServicesDNS/</link>
     <description>Recent content in 服务和DNS on Cloud Native</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate></lastBuildDate>
-    <atom:link href="https://www6v.github.io/www6vKubernetes/docs/Kubernetes/ServicesDNS/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www6v.github.io/www6vCloudNative/docs/Kubernetes/ServicesDNS/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

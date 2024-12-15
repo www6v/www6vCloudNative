@@ -2,52 +2,52 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Cloud Native</title>
-    <link>https://www6v.github.io/www6vKubernetes/tags/</link>
+    <link>https://www6v.github.io/www6vCloudNative/tags/</link>
     <description>Recent content in Tags on Cloud Native</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Mon, 16 Oct 2023 16:07:04 +0000</lastBuildDate>
-    <atom:link href="https://www6v.github.io/www6vKubernetes/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www6v.github.io/www6vCloudNative/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kubernetes</title>
-      <link>https://www6v.github.io/www6vKubernetes/tags/Kubernetes/</link>
+      <link>https://www6v.github.io/www6vCloudNative/tags/Kubernetes/</link>
       <pubDate>Mon, 16 Oct 2023 16:07:04 +0000</pubDate>
-      <guid>https://www6v.github.io/www6vKubernetes/tags/Kubernetes/</guid>
+      <guid>https://www6v.github.io/www6vCloudNative/tags/Kubernetes/</guid>
       <description></description>
     </item>
     <item>
       <title>Prometheus</title>
-      <link>https://www6v.github.io/www6vKubernetes/tags/prometheus/</link>
+      <link>https://www6v.github.io/www6vCloudNative/tags/prometheus/</link>
       <pubDate>Sun, 10 Apr 2022 21:58:17 +0000</pubDate>
-      <guid>https://www6v.github.io/www6vKubernetes/tags/prometheus/</guid>
+      <guid>https://www6v.github.io/www6vCloudNative/tags/prometheus/</guid>
       <description></description>
     </item>
     <item>
       <title>Etcd</title>
-      <link>https://www6v.github.io/www6vKubernetes/tags/etcd/</link>
+      <link>https://www6v.github.io/www6vCloudNative/tags/etcd/</link>
       <pubDate>Wed, 06 Apr 2022 21:19:30 +0000</pubDate>
-      <guid>https://www6v.github.io/www6vKubernetes/tags/etcd/</guid>
+      <guid>https://www6v.github.io/www6vCloudNative/tags/etcd/</guid>
       <description></description>
     </item>
     <item>
       <title>可观测性</title>
-      <link>https://www6v.github.io/www6vKubernetes/tags/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/</link>
+      <link>https://www6v.github.io/www6vCloudNative/tags/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/</link>
       <pubDate>Sun, 30 Jan 2022 22:24:11 +0000</pubDate>
-      <guid>https://www6v.github.io/www6vKubernetes/tags/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/</guid>
+      <guid>https://www6v.github.io/www6vCloudNative/tags/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/</guid>
       <description></description>
     </item>
     <item>
       <title>存储</title>
-      <link>https://www6v.github.io/www6vKubernetes/tags/%E5%AD%98%E5%82%A8/</link>
+      <link>https://www6v.github.io/www6vCloudNative/tags/%E5%AD%98%E5%82%A8/</link>
       <pubDate>Sat, 08 Jan 2022 21:50:33 +0000</pubDate>
-      <guid>https://www6v.github.io/www6vKubernetes/tags/%E5%AD%98%E5%82%A8/</guid>
+      <guid>https://www6v.github.io/www6vCloudNative/tags/%E5%AD%98%E5%82%A8/</guid>
       <description></description>
     </item>
     <item>
       <title>Linux</title>
-      <link>https://www6v.github.io/www6vKubernetes/tags/linux/</link>
+      <link>https://www6v.github.io/www6vCloudNative/tags/linux/</link>
       <pubDate>Sun, 16 Aug 2020 12:27:46 +0000</pubDate>
-      <guid>https://www6v.github.io/www6vKubernetes/tags/linux/</guid>
+      <guid>https://www6v.github.io/www6vCloudNative/tags/linux/</guid>
       <description></description>
     </item>
   </channel>

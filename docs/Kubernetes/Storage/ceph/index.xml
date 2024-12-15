@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ceph 总结 on Cloud Native</title>
-    <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Storage/ceph/</link>
+    <link>https://www6v.github.io/www6vCloudNative/docs/Kubernetes/Storage/ceph/</link>
     <description>Recent content in Ceph 总结 on Cloud Native</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate></lastBuildDate>
-    <atom:link href="https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Storage/ceph/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www6v.github.io/www6vCloudNative/docs/Kubernetes/Storage/ceph/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

@@ -28,7 +28,7 @@ OSD全程Object storage Device,也就是负责响应客户端请求返回具体�
 rbd: 不需要部署独立的守护进程 Cephfs 需要部署独立的守护进程 MDS 对象存储 需要部署独立的守护进程 radosgw 生产环境">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Storage/ceph/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://www6v.github.io/www6vCloudNative/docs/Kubernetes/Storage/ceph/">
   <meta property="og:site_name" content="Cloud Native">
   <meta property="og:title" content="Ceph 总结">
   <meta property="og:description" content="Ceph架构图 # 架构[2] # 基础存储系统
@@ -57,16 +57,16 @@ rbd: 不需要部署独立的守护进程 Cephfs 需要部署独立的守护进�
   <meta property="og:locale" content="en">
   <meta property="og:type" content="website">
 <title>Ceph 总结 | Cloud Native</title>
-<link rel="icon" href="/www6vKubernetes/favicon.png" >
-<link rel="manifest" href="/www6vKubernetes/manifest.json">
-<link rel="canonical" href="https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Storage/ceph/">
-<link rel="stylesheet" href="/www6vKubernetes/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
-  <script defer src="/www6vKubernetes/fuse.min.js"></script>
-  <script defer src="/www6vKubernetes/en.search.min.320cd3caf336d9cce42769640494bf9fe482b08eaec0df754d503d194a89eebe.js" integrity="sha256-MgzTyvM22czkJ2lkBJS/n&#43;SCsI6uwN91TVA9GUqJ7r4=" crossorigin="anonymous"></script>
+<link rel="icon" href="/www6vCloudNative/favicon.png" >
+<link rel="manifest" href="/www6vCloudNative/manifest.json">
+<link rel="canonical" href="https://www6v.github.io/www6vCloudNative/docs/Kubernetes/Storage/ceph/">
+<link rel="stylesheet" href="/www6vCloudNative/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
+  <script defer src="/www6vCloudNative/fuse.min.js"></script>
+  <script defer src="/www6vCloudNative/en.search.min.0310a966c95c7e7cc1010c6826b01b21ee64ae0d7303bfbb14095f0bc7cb33b2.js" integrity="sha256-AxCpZslcfnzBAQxoJrAbIe5krg1zA7&#43;7FAlfC8fLM7I=" crossorigin="anonymous"></script>
 
   
 
-<link rel="alternate" type="application/rss+xml" href="https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Storage/ceph/index.xml" title="Cloud Native" />
+<link rel="alternate" type="application/rss+xml" href="https://www6v.github.io/www6vCloudNative/docs/Kubernetes/Storage/ceph/index.xml" title="Cloud Native" />
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -82,7 +82,7 @@ https://github.com/alex-shpak/hugo-book
         
   <nav>
 <h2 class="book-brand">
-  <a class="flex align-center" href="/www6vKubernetes/"><span>Cloud Native</span>
+  <a class="flex align-center" href="/www6vCloudNative/"><span>Cloud Native</span>
   </a>
 </h2>
 
@@ -144,7 +144,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
   
 
           
@@ -162,7 +162,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
   
 
           
@@ -180,7 +180,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sStatefulSet/" class="">Kubernetes StatefulSet原理和源码</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/orchestrate/k8sStatefulSet/" class="">Kubernetes StatefulSet原理和源码</a>
   
 
           
@@ -198,7 +198,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sResouceModel/" class="">Kubenetes资源模型</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/orchestrate/k8sResouceModel/" class="">Kubenetes资源模型</a>
   
 
           
@@ -216,7 +216,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
   
 
           
@@ -252,7 +252,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8s-operator/" class="">Kubernetes Operator-kubebuilder</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/OperatorController/k8s-operator/" class="">Kubernetes Operator-kubebuilder</a>
   
 
           
@@ -270,7 +270,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sOperator/" class="">Kubernetes Operator-Etcd</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/OperatorController/k8sOperator/" class="">Kubernetes Operator-Etcd</a>
   
 
           
@@ -288,7 +288,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sDeclarativeAPI/" class="">Kubernetes声明式API</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/OperatorController/k8sDeclarativeAPI/" class="">Kubernetes声明式API</a>
   
 
           
@@ -306,7 +306,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sOperator-redis/" class="">Kubernetes Operator-Redis</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/OperatorController/k8sOperator-redis/" class="">Kubernetes Operator-Redis</a>
   
 
           
@@ -324,7 +324,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/OperatorController/k8sAdmissionWebhook/" class="">K8s  AdmissionWebhook</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/OperatorController/k8sAdmissionWebhook/" class="">K8s  AdmissionWebhook</a>
   
 
           
@@ -360,7 +360,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Container-Runtime/k8sRuntime/" class="">Kubernetes Runtime</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Container-Runtime/k8sRuntime/" class="">Kubernetes Runtime</a>
   
 
           
@@ -378,7 +378,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Container-Runtime/k8sAbandonDocker/" class="">K8S 弃用Docker</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Container-Runtime/k8sAbandonDocker/" class="">K8S 弃用Docker</a>
   
 
           
@@ -414,7 +414,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Network/k8sNetwork/" class="">Kubernetes网络</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Network/k8sNetwork/" class="">Kubernetes网络</a>
   
 
           
@@ -432,7 +432,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Network/k8sCalico/" class="">Calico</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Network/k8sCalico/" class="">Calico</a>
   
 
           
@@ -450,7 +450,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Network/k8sCalico1/" class="">Calico</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Network/k8sCalico1/" class="">Calico</a>
   
 
           
@@ -486,7 +486,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sService/" class="">Kubernetes服务</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/ServicesDNS/k8sService/" class="">Kubernetes服务</a>
   
 
           
@@ -504,7 +504,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sDNS/" class="">Kubernetes CoreDNS</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/ServicesDNS/k8sDNS/" class="">Kubernetes CoreDNS</a>
   
 
           
@@ -522,7 +522,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/ServicesDNS/k8sIngressNginx/" class="">Kubernetes Nginx Ingress</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/ServicesDNS/k8sIngressNginx/" class="">Kubernetes Nginx Ingress</a>
   
 
           
@@ -558,7 +558,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Storage/k8sStorage/" class="">Kubernetes存储</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Storage/k8sStorage/" class="">Kubernetes存储</a>
   
 
           
@@ -576,7 +576,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Storage/k8sRook/" class="">Kubernetes Rook</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Storage/k8sRook/" class="">Kubernetes Rook</a>
   
 
           
@@ -594,7 +594,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Storage/ceph/" class="active">Ceph 总结</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Storage/ceph/" class="active">Ceph 总结</a>
   
 
           
@@ -612,7 +612,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Storage/etcd/" class="">etcd 总结</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Storage/etcd/" class="">etcd 总结</a>
   
 
           
@@ -648,7 +648,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Schedule/k8sScheduler/" class="">Kubernetes调度器</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Schedule/k8sScheduler/" class="">Kubernetes调度器</a>
   
 
           
@@ -666,7 +666,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Schedule/k8sAdvancedScheduling/" class="">Kubernetes 高级调度</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Schedule/k8sAdvancedScheduling/" class="">Kubernetes 高级调度</a>
   
 
           
@@ -702,7 +702,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/k8sAutoScale/" class="">Kubernetes自动伸缩和HPA</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/MonitorAutoScale/k8sAutoScale/" class="">Kubernetes自动伸缩和HPA</a>
   
 
           
@@ -720,7 +720,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/observabilityPrometheus/" class="">可观测性-Prometheus</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/MonitorAutoScale/observabilityPrometheus/" class="">可观测性-Prometheus</a>
   
 
           
@@ -738,7 +738,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/observabilityPrometheusHA/" class="">可观测性-Prometheus  HA</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/MonitorAutoScale/observabilityPrometheusHA/" class="">可观测性-Prometheus  HA</a>
   
 
           
@@ -756,7 +756,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/k8sObservability/" class="">可观测性-Kubernetes</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/MonitorAutoScale/k8sObservability/" class="">可观测性-Kubernetes</a>
   
 
           
@@ -805,7 +805,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Production/Available/k8sHA/" class="">K8S高可用-控制面</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Production/Available/k8sHA/" class="">K8S高可用-控制面</a>
   
 
           
@@ -823,7 +823,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Production/Available/k8sAvailable/" class="">K8S高可用-零停机[自主中断]</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Production/Available/k8sAvailable/" class="">K8S高可用-零停机[自主中断]</a>
   
 
           
@@ -841,7 +841,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Production/Available/k8sAvailableHealth/" class="">K8S高可用-零停机[探针]</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Production/Available/k8sAvailableHealth/" class="">K8S高可用-零停机[探针]</a>
   
 
           
@@ -877,7 +877,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Production/Integration/k8sAppMigrate/" class="">K8S 应用迁移至K8S</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Production/Integration/k8sAppMigrate/" class="">K8S 应用迁移至K8S</a>
   
 
           
@@ -895,7 +895,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Production/Integration/k8sSpringcloud/" class="">K8s 集成Springcloud</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Production/Integration/k8sSpringcloud/" class="">K8s 集成Springcloud</a>
   
 
           
@@ -918,7 +918,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Production/linuxKernelParam/" class="">虚拟机和容器中的内核参数 kernel</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Production/linuxKernelParam/" class="">虚拟机和容器中的内核参数 kernel</a>
   
 
           
@@ -936,7 +936,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Production/k8sUpgrade/" class="">Kubernetes 升级upgrade</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Production/k8sUpgrade/" class="">Kubernetes 升级upgrade</a>
   
 
           
@@ -972,7 +972,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sPaaS/" class="">Kubernetes PaaS平台</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/PaaS/k8sPaaS/" class="">Kubernetes PaaS平台</a>
   
 
           
@@ -990,7 +990,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sOpenShift/" class="">Kubernetes OpenShift</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/PaaS/k8sOpenShift/" class="">Kubernetes OpenShift</a>
   
 
           
@@ -1008,7 +1008,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sMultiTenancy/" class="">Kubernetes 多租户</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/PaaS/k8sMultiTenancy/" class="">Kubernetes 多租户</a>
   
 
           
@@ -1026,7 +1026,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sRBAC/" class="">Kubenetes RBAC</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/PaaS/k8sRBAC/" class="">Kubenetes RBAC</a>
   
 
           
@@ -1044,7 +1044,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sMultiCluster/" class="">Kubernetes 多集群管理</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/PaaS/k8sMultiCluster/" class="">Kubernetes 多集群管理</a>
   
 
           
@@ -1062,7 +1062,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/PaaS/k8sVM/" class="">Kubernetes和VM</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/PaaS/k8sVM/" class="">Kubernetes和VM</a>
   
 
           
@@ -1098,7 +1098,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Security/k8sSecurity/" class="">Kubernetes安全-Security</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Security/k8sSecurity/" class="">Kubernetes安全-Security</a>
   
 
           
@@ -1116,7 +1116,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Security/k8sCKS/" class="">Kubernetes CKS</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Security/k8sCKS/" class="">Kubernetes CKS</a>
   
 
           
@@ -1134,7 +1134,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/www6vKubernetes/docs/Kubernetes/Security/k8sSecurityPractice/" class="">Kubernetes 安全实践</a>
+    <a href="/www6vCloudNative/docs/Kubernetes/Security/k8sSecurityPractice/" class="">Kubernetes 安全实践</a>
   
 
           
@@ -1187,14 +1187,14 @@ https://github.com/alex-shpak/hugo-book
         
   <div class="flex align-center justify-between">
   <label for="menu-control">
-    <img src="/www6vKubernetes/svg/menu.svg" class="book-icon" alt="Menu" />
+    <img src="/www6vCloudNative/svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
   <h3>Ceph 总结</h3>
 
   <label for="toc-control">
     
-    <img src="/www6vKubernetes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    <img src="/www6vCloudNative/svg/toc.svg" class="book-icon" alt="Table of Contents" />
     
   </label>
 </div>

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>可观测性 on Cloud Native</title>
-    <link>https://www6v.github.io/www6vKubernetes/tags/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/</link>
+    <link>https://www6v.github.io/www6vCloudNative/tags/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/</link>
     <description>Recent content in 可观测性 on Cloud Native</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Sun, 30 Jan 2022 22:24:11 +0000</lastBuildDate>
-    <atom:link href="https://www6v.github.io/www6vKubernetes/tags/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www6v.github.io/www6vCloudNative/tags/%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>可观测性-Kubernetes</title>
-      <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/k8sObservability/</link>
+      <link>https://www6v.github.io/www6vCloudNative/docs/Kubernetes/MonitorAutoScale/k8sObservability/</link>
       <pubDate>Sun, 30 Jan 2022 22:24:11 +0000</pubDate>
-      <guid>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/MonitorAutoScale/k8sObservability/</guid>
+      <guid>https://www6v.github.io/www6vCloudNative/docs/Kubernetes/MonitorAutoScale/k8sObservability/</guid>
       <description>Kubernetes可观察性 [1] # NPD： node problem detector kube-eventer： Kubernetes 事件离线工具 Kubernetes Metrics监控方案 [2] # cadvisor/exporter+prometheus+grafana&#xA;Kubernetes Logs监控方案[3][4] # %accordion%es-statefulset.yaml%accordion%&#xA;apiVersion: apps/v1 kind: StatefulSet metadata: name: elasticsearch-logging namespace: logging labels: k8s-app: elasticsearch-logging version: v7.10.2 addonmanager.kubernetes.io/mode: Reconcile spec: serviceName: elasticsearch-logging replicas: 2 selector: matchLabels: k8s-app: elasticsearch-logging version: v7.10.2 template: metadata: labels: k8s-app: elasticsearch-logging version: v7.10.2 spec: serviceAccountName: elasticsearch-logging containers: - image: quay.io/fluentd_elasticsearch/elasticsearch:v7.10.2 name: elasticsearch-logging imagePullPolicy: Always ... ports: - containerPort: 9200 name: db protocol: TCP - containerPort: 9300 name: transport protocol: TCP volumeMounts: - name: elasticsearch-logging mountPath: /data env: - name: &amp;#34;NAMESPACE&amp;#34; valueFrom: fieldRef: fieldPath: metadata.</description>
     </item>
   </channel>

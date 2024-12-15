@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Container Runtime on Cloud Native</title>
-    <link>https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Container-Runtime/</link>
+    <link>https://www6v.github.io/www6vCloudNative/docs/Kubernetes/Container-Runtime/</link>
     <description>Recent content in Container Runtime on Cloud Native</description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate></lastBuildDate>
-    <atom:link href="https://www6v.github.io/www6vKubernetes/docs/Kubernetes/Container-Runtime/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www6v.github.io/www6vCloudNative/docs/Kubernetes/Container-Runtime/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
