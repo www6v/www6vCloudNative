@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ServiceMesh on Cloud Native</title>
+    <link>https://www6v.github.io/www6vCloudNative/tags/serviceMesh/</link>
+    <description>Recent content in ServiceMesh on Cloud Native</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 15 Apr 2023 22:02:28 +0000</lastBuildDate>
+    <atom:link href="https://www6v.github.io/www6vCloudNative/tags/serviceMesh/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>istio 灰度发布</title>
+      <link>https://www6v.github.io/www6vCloudNative/docs/Service-Mesh/%E5%AE%9E%E8%B7%B5/istioGray/</link>
+      <pubDate>Sat, 15 Apr 2023 22:02:28 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vCloudNative/docs/Service-Mesh/%E5%AE%9E%E8%B7%B5/istioGray/</guid>
+      <description>灰度发布 # 灰度发布 基础： 服务多版本 两个Deployment 不同的路由规则 场景 蓝绿部署，A/B test 金丝雀部署 分类 基于流量比例的灰度发布 #4 基于请求内容的灰度发布 实战[1] # VirtualService # apiVersion: networking.istio.io/v1alpha3 kind: VirtualService metadata: name: cat-vs spec: hosts: - &amp;#34;cat.catface996.com&amp;#34; gateways: - cat-gateway http: ## gray 路由规则 - match: - headers: env: exact: gray route: - destination: host: cat-svc subset: gray ## prod 路由规则 - match: - headers: env: exact: prod route: - destination: host: cat-svc subset: prod ## 默认 路由规则 - route: - destination: host: cat-svc subset: prod --- apiVersion: networking.</description>
+    </item>
+    <item>
+      <title>istio 数据平面-ambient 模式</title>
+      <link>https://www6v.github.io/www6vCloudNative/docs/Service-Mesh/%E5%8E%9F%E7%90%86/%E6%95%B0%E6%8D%AE%E9%9D%A2/istioDataplaneAmbient/</link>
+      <pubDate>Sat, 02 Jul 2022 12:20:15 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vCloudNative/docs/Service-Mesh/%E5%8E%9F%E7%90%86/%E6%95%B0%E6%8D%AE%E9%9D%A2/istioDataplaneAmbient/</guid>
+      <description>&#xA;Sidecar 模式的限制 # ambient 模式 # Ambient Mode 的本质：&#xA;它的本质是分离 sidecar proxy（Envoy）中的 L4 和 L7 功能，让一部分仅需要安全功能的用户可以最小阻力（低资源消耗、运维成本）地使用 Istio service mesh。 Ambient Mode 的意义：&#xA;因为它 sidecar 模式兼容，用户在采纳 Ambient Mode 获得了 mTLS 和有限的可观察性及 TPC 路由等 L4 功能，之后可以更方便的过度到 sidecar mode 以获得完全的 L7 功能。这给用户采纳 Istio 提供了更多模式选择，优化了 Istio 采纳路径。 参考 # 关于 Istio 推出 Ambient 数据平面模式的看法 *** Istio 无 sidecar 代理数据平面 ambient 模式简介 什么是 Ambient Mesh？ </description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>K8s on Cloud Native</title>
+    <link>https://www6v.github.io/www6vCloudNative/tags/k8s/</link>
+    <description>Recent content in K8s on Cloud Native</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 20 Jul 2019 07:46:52 +0000</lastBuildDate>
+    <atom:link href="https://www6v.github.io/www6vCloudNative/tags/k8s/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Istio、Kubernetes和Spring Cloud中服务的比对</title>
+      <link>https://www6v.github.io/www6vCloudNative/docs/Service-Mesh/%E5%8E%9F%E7%90%86/istio-k8s-service/</link>
+      <pubDate>Sat, 20 Jul 2019 07:46:52 +0000</pubDate>
+      <guid>https://www6v.github.io/www6vCloudNative/docs/Service-Mesh/%E5%8E%9F%E7%90%86/istio-k8s-service/</guid>
+      <description>k8s vs. istio # 特性 k8s-服务编排,资源调度 istio-流量管理 定义 Service&#xA;Deployment&#xA;Endpoint Service&#xA;服务版本 服务实例 入口 NodePort&#xA;LoadBalance&#xA;Ingress Gateway（LoadBalance Service） 出口 Egress ServiceEntry 服务发现 DNS（CoreDNS）&#xA;apiserver + kube-proxy Pilot + Envoy 服务路由 VirtualService 熔断&amp;amp;监控检查 容器：存活探针&#xA;服务：就绪探针 DestinationRule 负载均衡 DestinationRule 生命周期管理&#xA;故障迁移，自愈&#xA;伸缩 原生 基于k8s 有状态调度 StatefulSet Operator（CRD+Controller） 配置管理 ConfigMap &amp;amp; Secrets 灰度 Deployment:滚动升级&#xA;最佳实践：两个Deployment VirtualService 多集群 Federation 1. 多控制面&#xA;2.集群感知单控制面(Split Horizon EDS) spring Cloud vs. spring Cloud alibaba vs. istio # 特性 spring Cloud-服务治理</description>
+    </item>
+  </channel>
+</rss>

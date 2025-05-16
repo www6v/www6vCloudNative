@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="流量管理 # 组件 # Pilot Design Overview (来自 Istio old_pilot_repo)
+图例说明：图中红色的线表示控制流，黑色的线表示数据流。蓝色部分为和Pilot相关的组件。
+控制面组件
+Discovery Services istio crd 数据面组件
+Pilot-agent Envoy Istio 庖丁解牛1：组件概览 腾讯云 钟华
+流量管理模型 # VirtualService
+定义了一系列针对指定服务的流量路由规则;
+将流量路由到给定目标地址;
+通常和目标规则（DestinationRule）成对出现;
+DestinationRule
+定义虚拟服务路由目标地址的真实地址，即子集（subset）；
+设置负载均衡方式： round robin（默认），随机，权重，最少请求数；
+ServiceEntry
+外部服务定义: 把外部服务注册到网格中 功能： 为外部服务转发请求 添加超时重试等策略 扩展网格 Gateway
+描述了一个负载均衡器，用于承载网格边缘的进入和发出连接。
+EnvoyFilter
+描述了针对代理服务的过滤器，用来定制由 Istio Pilot 生成的代理配置.
+Sidecar
+调整Envoy代理接管的端口和协议；
+限制Envoy代理可访问的服务；
+总结
+管理内部流量：VirtualService &#43; DestinationRule
+管理外部流量：Gateway
+管理服务：ServiceEntry
+参考 # Istio流量管理实现机制深度解析 赵化冰 腾讯云容器团队内部Istio专题分享 腾讯云 钟华 极客时间 《Service Mesh实战 - 核心功能之流量控制：Istio是如何实现流量控制功能的？》 马若飞 官方Examples 0-5 G # 流量管理 istio官网 引 配置请求路由 done 流量转移 done TCP 流量转移 done ,验证有点问题 设置请求超时 done 熔断 done 最佳实践 # 流量管理最佳实践">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://www6v.github.io/www6vCloudNative/docs/Service-Mesh/%E5%8E%9F%E7%90%86/%E6%8E%A7%E5%88%B6%E9%9D%A2/istioTrafficManagement/">
+  <meta property="og:site_name" content="Cloud Native">
+  <meta property="og:title" content="Istio流量管理">
+  <meta property="og:description" content="流量管理 # 组件 # Pilot Design Overview (来自 Istio old_pilot_repo)
+图例说明：图中红色的线表示控制流，黑色的线表示数据流。蓝色部分为和Pilot相关的组件。
+控制面组件
+Discovery Services istio crd 数据面组件
+Pilot-agent Envoy Istio 庖丁解牛1：组件概览 腾讯云 钟华
+流量管理模型 # VirtualService
+定义了一系列针对指定服务的流量路由规则;
+将流量路由到给定目标地址;
+通常和目标规则（DestinationRule）成对出现;
+DestinationRule
+定义虚拟服务路由目标地址的真实地址，即子集（subset）；
+设置负载均衡方式： round robin（默认），随机，权重，最少请求数；
+ServiceEntry
+外部服务定义: 把外部服务注册到网格中 功能： 为外部服务转发请求 添加超时重试等策略 扩展网格 Gateway
+描述了一个负载均衡器，用于承载网格边缘的进入和发出连接。
+EnvoyFilter
+描述了针对代理服务的过滤器，用来定制由 Istio Pilot 生成的代理配置.
+Sidecar
+调整Envoy代理接管的端口和协议；
+限制Envoy代理可访问的服务；
+总结
+管理内部流量：VirtualService &#43; DestinationRule
+管理外部流量：Gateway
+管理服务：ServiceEntry
+参考 # Istio流量管理实现机制深度解析 赵化冰 腾讯云容器团队内部Istio专题分享 腾讯云 钟华 极客时间 《Service Mesh实战 - 核心功能之流量控制：Istio是如何实现流量控制功能的？》 马若飞 官方Examples 0-5 G # 流量管理 istio官网 引 配置请求路由 done 流量转移 done TCP 流量转移 done ,验证有点问题 设置请求超时 done 熔断 done 最佳实践 # 流量管理最佳实践">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+<title>Istio流量管理 | Cloud Native</title>
+<link rel="icon" href="/www6vCloudNative/favicon.png" >
+<link rel="manifest" href="/www6vCloudNative/manifest.json">
+<link rel="canonical" href="https://www6v.github.io/www6vCloudNative/docs/Service-Mesh/%E5%8E%9F%E7%90%86/%E6%8E%A7%E5%88%B6%E9%9D%A2/istioTrafficManagement/">
+<link rel="stylesheet" href="/www6vCloudNative/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css" integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin="anonymous">
+  <script defer src="/www6vCloudNative/fuse.min.js"></script>
+  <script defer src="/www6vCloudNative/en.search.min.16750a28df836b43533ef80a86f415f8bd28becc90be162a8c2d8b3669c757a7.js" integrity="sha256-FnUKKN&#43;Da0NTPvgKhvQV&#43;L0ovsyQvhYqjC2LNmnHV6c=" crossorigin="anonymous"></script>
+
+  
+
+<link rel="alternate" type="application/rss+xml" href="https://www6v.github.io/www6vCloudNative/docs/Service-Mesh/%E5%8E%9F%E7%90%86/%E6%8E%A7%E5%88%B6%E9%9D%A2/istioTrafficManagement/index.xml" title="Cloud Native" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/www6vCloudNative/"><span>Cloud Native</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5fb053a2152aa4f1ffd94985a23daa81" class="toggle"  />
+    <label for="section-5fb053a2152aa4f1ffd94985a23daa81" class="flex justify-between">
+      <a role="button" class="">Kubernetes</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>编排原理</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/orchestrate/k8sDeployment/" class="">Kubernetes Deployment</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/orchestrate/k8sResource/" class="">Kubernetes Workload</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/orchestrate/k8sStatefulSet/" class="">Kubernetes StatefulSet原理和源码</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/orchestrate/k8sResouceModel/" class="">Kubenetes资源模型</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/orchestrate/k8sPLEG/" class="">kubelet和PLEG</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Operator &amp; Controller</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/OperatorController/k8s-operator/" class="">Kubernetes Operator-kubebuilder</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/OperatorController/k8sOperator/" class="">Kubernetes Operator-Etcd</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/OperatorController/k8sDeclarativeAPI/" class="">Kubernetes声明式API</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/OperatorController/k8sOperator-redis/" class="">Kubernetes Operator-Redis</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/OperatorController/k8sAdmissionWebhook/" class="">K8s  AdmissionWebhook</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Container Runtime</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Container-Runtime/k8sRuntime/" class="">Kubernetes Runtime</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Container-Runtime/k8sAbandonDocker/" class="">K8S 弃用Docker</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>网络</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Network/k8sNetwork/" class="">Kubernetes网络</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Network/k8sCalico/" class="">Calico</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Network/k8sCalico1/" class="">Calico</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>服务和DNS</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/ServicesDNS/k8sService/" class="">Kubernetes服务</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/ServicesDNS/k8sDNS/" class="">Kubernetes CoreDNS</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/ServicesDNS/k8sIngressNginx/" class="">Kubernetes Nginx Ingress</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>存储</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Storage/k8sStorage/" class="">Kubernetes存储</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Storage/k8sRook/" class="">Kubernetes Rook</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Storage/ceph/" class="">Ceph 总结</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Storage/etcd/" class="">etcd 总结</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>调度</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Schedule/k8sScheduler/" class="">Kubernetes调度器</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Schedule/k8sAdvancedScheduling/" class="">Kubernetes 高级调度</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>监控和AutoScale</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/MonitorAutoScale/k8sAutoScale/" class="">Kubernetes自动伸缩和HPA</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/MonitorAutoScale/observabilityPrometheus/" class="">可观测性-Prometheus</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/MonitorAutoScale/observabilityPrometheusHA/" class="">可观测性-Prometheus  HA</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/MonitorAutoScale/k8sObservability/" class="">可观测性-Kubernetes</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>生产化</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>Available</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Production/Available/k8sHA/" class="">K8S高可用-控制面</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Production/Available/k8sAvailable/" class="">K8S高可用-零停机[自主中断]</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Production/Available/k8sAvailableHealth/" class="">K8S高可用-零停机[探针]</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>集成</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Production/Integration/k8sAppMigrate/" class="">K8S 应用迁移至K8S</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Production/Integration/k8sSpringcloud/" class="">K8s 集成Springcloud</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Production/linuxKernelParam/" class="">虚拟机和容器中的内核参数 kernel</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Production/k8sUpgrade/" class="">Kubernetes 升级upgrade</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>PaaS</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/PaaS/k8sPaaS/" class="">Kubernetes PaaS平台</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/PaaS/k8sOpenShift/" class="">Kubernetes OpenShift</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/PaaS/k8sMultiTenancy/" class="">Kubernetes 多租户</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/PaaS/k8sRBAC/" class="">Kubenetes RBAC</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/PaaS/k8sMultiCluster/" class="">Kubernetes 多集群管理</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/PaaS/k8sVM/" class="">Kubernetes和VM</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>安全</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Security/k8sSecurity/" class="">Kubernetes安全-Security</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Security/k8sCKS/" class="">Kubernetes CKS</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Kubernetes/Security/k8sSecurityPractice/" class="">Kubernetes 安全实践</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-9a51f9703d5f174596a4e72f0883d2c4" class="toggle" checked />
+    <label for="section-9a51f9703d5f174596a4e72f0883d2c4" class="flex justify-between">
+      <a role="button" class="">Service Mesh</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-da6babb5036cede185e2d26b3d760780" class="toggle" checked />
+    <label for="section-da6babb5036cede185e2d26b3d760780" class="flex justify-between">
+      <a role="button" class="">原理</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Service-Mesh/%E5%8E%9F%E7%90%86/istio/" class="">istio</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>控制面</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Service-Mesh/%E5%8E%9F%E7%90%86/%E6%8E%A7%E5%88%B6%E9%9D%A2/istioControlPanel/" class="">istio 控制面ControlPanel</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Service-Mesh/%E5%8E%9F%E7%90%86/%E6%8E%A7%E5%88%B6%E9%9D%A2/istioTrafficManagement/" class="active">Istio流量管理</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <span>数据面</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Service-Mesh/%E5%8E%9F%E7%90%86/%E6%95%B0%E6%8D%AE%E9%9D%A2/istioDataplane/" class="">istio数据平面-sidecar</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Service-Mesh/%E5%8E%9F%E7%90%86/%E6%95%B0%E6%8D%AE%E9%9D%A2/istioDataplaneAmbient/" class="">istio 数据平面-ambient 模式</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Service-Mesh/%E5%8E%9F%E7%90%86/istio-k8s-service/" class="">Istio、Kubernetes和Spring Cloud中服务的比对</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Service-Mesh/%E5%8E%9F%E7%90%86/istioKnowledgeMap/" class="">Istio知识图谱</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b1b3fa005ab82cf29669705a15d76d45" class="toggle"  />
+    <label for="section-b1b3fa005ab82cf29669705a15d76d45" class="flex justify-between">
+      <a role="button" class="">实践</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Service-Mesh/%E5%AE%9E%E8%B7%B5/istioGray/" class="">istio 灰度发布</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Service-Mesh/%E5%AE%9E%E8%B7%B5/istioCommand/" class="">istio常用命令</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Service-Mesh/%E5%AE%9E%E8%B7%B5/istioSetup-bookinfo/" class="">istio安装 &#43; Bookinfo示例</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Service-Mesh/%E5%AE%9E%E8%B7%B5/istioServiceFailover/" class="">Istio Service Failover</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-9b107edb89eca6e998f454dc3aae06e5" class="toggle"  />
+    <label for="section-9b107edb89eca6e998f454dc3aae06e5" class="flex justify-between">
+      <a role="button" class="">集成</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Service-Mesh/%E5%AE%9E%E8%B7%B5/%E9%9B%86%E6%88%90/istioMigrateFromSpringCloud/" class="">SpringCloud迁移到istio</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/www6vCloudNative/docs/Service-Mesh/%E5%AE%9E%E8%B7%B5/%E9%9B%86%E6%88%90/istioSpringcloud/" class="">istio 集成 Springcloud</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/www6vCloudNative/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Istio流量管理</h3>
+
+  <label for="toc-control">
+    
+    <img src="/www6vCloudNative/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#流量管理">流量管理</a>
+          <ul>
+            <li></li>
+          </ul>
+        </li>
+        <li><a href="#参考">参考</a>
+          <ul>
+            <li><a href="#官方examples-0-5--g">官方Examples 0-5  G</a></li>
+            <li><a href="#最佳实践">最佳实践</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p></p>
+<!-- more -->
+<h2 id="流量管理">
+  流量管理
+  <a class="anchor" href="#%e6%b5%81%e9%87%8f%e7%ae%a1%e7%90%86">#</a>
+</h2>
+<p><img src="./images/istio-traffic-manage.jpg" alt="istio流量管理" /></p>
+<h5 id="组件">
+  组件
+  <a class="anchor" href="#%e7%bb%84%e4%bb%b6">#</a>
+</h5>
+<div style="text-align: center;">
+<p><img src="https://user-images.githubusercontent.com/5608425/64623501-a5a88100-d41b-11e9-9262-8414adb5831a.png" alt="Pilot流量管理" /><br>
+Pilot Design Overview (来自 <a href="https://github.com/istio/old_pilot_repo/blob/master/doc/design.md">Istio old_pilot_repo</a>)<br>
+图例说明：图中红色的线表示控制流，黑色的线表示数据流。蓝色部分为和Pilot相关的组件。</p>
+</div>
+<ul>
+<li>
+<p>控制面组件</p>
+<ul>
+<li>Discovery Services</li>
+<li>istio crd</li>
+</ul>
+</li>
+<li>
+<p>数据面组件</p>
+<ul>
+<li>Pilot-agent</li>
+<li>Envoy</li>
+</ul>
+</li>
+</ul>
+<p><a href="https://mp.weixin.qq.com/s/VwqxrZsVmn4a5PcVckaLxA">Istio 庖丁解牛1：组件概览</a>  腾讯云 钟华</p>
+<h5 id="流量管理模型">
+  流量管理模型
+  <a class="anchor" href="#%e6%b5%81%e9%87%8f%e7%ae%a1%e7%90%86%e6%a8%a1%e5%9e%8b">#</a>
+</h5>
+<ul>
+<li>
+<p><strong>VirtualService</strong><br>
+定义了一系列针对指定服务的流量<strong>路由规则</strong>;<br>
+将流量路由到给定目标地址;<br>
+通常和目标规则（DestinationRule）成对出现;</p>
+</li>
+<li>
+<p><strong>DestinationRule</strong><br>
+定义虚拟服务路由<strong>目标地址</strong>的<strong>真实地址</strong>，即<strong>子集（subset）</strong>；<br>
+设置<strong>负载均衡方式</strong>： round robin（默认），随机，权重，最少请求数；</p>
+</li>
+<li>
+<p>ServiceEntry</p>
+<ul>
+<li>外部服务定义: 把外部服务注册到网格中</li>
+<li>功能：
+<ul>
+<li>为外部服务转发请求</li>
+<li>添加超时重试等策略</li>
+<li>扩展网格</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Gateway</strong><br>
+描述了一个负载均衡器，用于承载网格边缘的进入和发出连接。</p>
+</li>
+<li>
+<p>EnvoyFilter<br>
+描述了针对代理服务的过滤器，用来定制由 Istio Pilot 生成的代理配置.</p>
+</li>
+<li>
+<p>Sidecar<br>
+调整Envoy代理接管的端口和协议；<br>
+限制Envoy代理可访问的服务；</p>
+</li>
+</ul>
+<p><strong>总结</strong><br>
+管理内部流量：VirtualService + DestinationRule<br>
+管理外部流量：Gateway<br>
+管理服务：ServiceEntry</p>
+<h2 id="参考">
+  参考
+  <a class="anchor" href="#%e5%8f%82%e8%80%83">#</a>
+</h2>
+<ol>
+<li><a href="https://zhaohuabing.com/post/2018-09-25-istio-traffic-management-impl-intro/">Istio流量管理实现机制深度解析</a>  赵化冰</li>
+<li><a href="https://mp.weixin.qq.com/s/NjMncH84uEl_PywOFFMlFA">腾讯云容器团队内部Istio专题分享</a> 腾讯云 钟华</li>
+<li><a href="https://time.geekbang.org/course/intro/100049401">极客时间 《Service Mesh实战 - 核心功能之流量控制：Istio是如何实现流量控制功能的？》</a> 马若飞</li>
+</ol>
+<h3 id="官方examples-0-5--g">
+  官方Examples 0-5  G
+  <a class="anchor" href="#%e5%ae%98%e6%96%b9examples-0-5--g">#</a>
+</h3>
+<ol start="0">
+<li><a href="https://preliminary.istio.io/zh/docs/concepts/traffic-management">流量管理</a>  istio官网 引</li>
+<li><a href="https://preliminary.istio.io/zh/docs/tasks/traffic-management/request-routing/">配置请求路由</a> done</li>
+<li><a href="https://preliminary.istio.io/zh/docs/tasks/traffic-management/traffic-shifting/">流量转移</a> done</li>
+<li><a href="https://preliminary.istio.io/zh/docs/tasks/traffic-management/tcp-traffic-shifting/">TCP 流量转移</a> done ,验证有点问题</li>
+<li><a href="https://preliminary.istio.io/zh/docs/tasks/traffic-management/request-timeouts/">设置请求超时</a> done</li>
+<li><a href="https://preliminary.istio.io/zh/docs/tasks/traffic-management/circuit-breaking/">熔断</a> done</li>
+</ol>
+<h3 id="最佳实践">
+  最佳实践
+  <a class="anchor" href="#%e6%9c%80%e4%bd%b3%e5%ae%9e%e8%b7%b5">#</a>
+</h3>
+<p><a href="https://istio.io/latest/zh/docs/ops/best-practices/traffic-management/">流量管理最佳实践</a></p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#流量管理">流量管理</a>
+          <ul>
+            <li></li>
+          </ul>
+        </li>
+        <li><a href="#参考">参考</a>
+          <ul>
+            <li><a href="#官方examples-0-5--g">官方Examples 0-5  G</a></li>
+            <li><a href="#最佳实践">最佳实践</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
